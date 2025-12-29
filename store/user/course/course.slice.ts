@@ -3,7 +3,7 @@ import { fetchCourseList } from "./course.thunk";
 import { SliceState, Course } from "./course.type";
 
 const initialState: SliceState<Course[]> = {
-  data: [],
+  data: null,
   loading: false,
   error: undefined,
 };
@@ -19,7 +19,7 @@ const courseReducer = createSlice({
       })
       .addCase(fetchCourseList.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload.content;
+        state.data = action.payload;
       })
       .addCase(fetchCourseList.rejected, (state, action) => {
         state.loading = false;
