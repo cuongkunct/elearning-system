@@ -1,7 +1,7 @@
 import { ApiError } from "@/types/api.type";
 
 export type SliceState<T> = {
-  data: T;
+  data: T | null;
   loading: boolean;
   error: ApiError | undefined;
 };
