@@ -1,11 +1,3 @@
-import { ApiError } from "@/types/api.type";
-
-export type SliceState<T> = {
-  data: T | null;
-  loading: boolean;
-  error: ApiError | undefined;
-};
-
 export type Course = {
   maKhoaHoc: string;
   biDanh: string;
@@ -26,4 +18,12 @@ export type Course = {
     maDanhMucKhoahoc: string;
     tenDanhMucKhoaHoc: string;
   };
+};
+
+export type CoursePaginationResponse = {
+  currentPage: number;
+  count: number;
+  totalPages: number;
+  totalCount: number;
+  items: Course[];
 };

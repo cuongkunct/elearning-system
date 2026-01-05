@@ -1,21 +1,28 @@
-"use client";
-import { title } from "@/components/primitives";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { DispatchType, RootState } from "@/store/index";
-import { fetchCourseList } from "@/store/user/course/course.thunk";
+import { getCoursesPagination } from "@/services/user/courses/course.service";
+import CourseCard from "../component/CourseCard";
+import Pagination from "./component/Pagination";
 
-export default function CoursePage() {
-  const dispatch = useDispatch<DispatchType>();
-  const { data, loading } = useSelector((state: RootState) => state.course);
+type Props = {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+};
 
-  useEffect(() => {
-    dispatch(fetchCourseList());
-  }, [dispatch]);
+export default async function CoursePage({ searchParams }: Props) {
+  const params = await searchParams; // ✅ BẮT BUỘC await
+  const page = Number(params.page) || 1;
+
+  const result = await getCoursesPagination(page);
 
   return (
-    <div>
-      <h1 className={title()}>Docs</h1>
-    </div>
+    <>
+      <div className="">
+        <CourseCard courses={result.items} />
+        <Pagination
+          currentPage={result.currentPage}
+          totalPages={result.totalPages}
+        />
+      </div>
+    </>
   );
 }
