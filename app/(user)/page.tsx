@@ -8,6 +8,8 @@ import {
   mergeCategoryWithCourseCount,
 } from "@/services/user/category/category.service";
 import Link from "next/link";
+import Image from "next/image";
+import StudentReviewSlider from "./component/StudentReviewSlider";
 
 export default async function Home() {
   const { courses, categories } = await getCourseAndCategory();
@@ -55,7 +57,7 @@ export default async function Home() {
   return (
     <div>
       <SlideShow />
-      <div className="flex flex-col gap-2 items-center justify-center pt-4">
+      <section className="flex flex-col gap-2 items-center justify-center pt-4">
         <p className={title({ size: "sm" })}>
           <strong className="text-red-500">3.288 </strong>
           business & <strong className="text-red-500"> 664.443 </strong>
@@ -65,22 +67,86 @@ export default async function Home() {
           To transform knowledge into personal strength, organizational
           performance, and national resilience.
         </p>
-      </div>
+      </section>
       <PartnerList />
-      <div className="mt-6">
+      <section className="mt-6">
         <h1 className={title({ size: "sm" })}>Specialized topics</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  items-center justify-between gap-2  p-8">
           {renderCategory()}
         </div>
-      </div>
-      <div className="py-8 ">
+      </section>
+      <section className="py-8 ">
         <h1 className={title({ size: "sm" })}>The most popular course</h1>
         <CourseCard courses={topLearnedCategories} />
-      </div>
-      <div className="py-8">
+      </section>
+      <section className="py-8">
         <h1 className={title({ size: "sm" })}>The most viewed course</h1>
         <CourseCard courses={topViewedCategories} />
-      </div>
+      </section>
+
+      <section className="py-20 ">
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <p className={title({ size: "sm" })}>
+              Gitiho For Leading Business – Nền tảng kiến tạo tổ chức học tập
+              theo đuổi hiệu suất cao
+            </p>
+
+            <p className="mt-6  max-w-xl">
+              Giúp cho tổ chức của bạn phát triển đột phá, chinh phục các mục
+              tiêu khát khao qua con đường đào tạo và phát triển đội ngũ.
+            </p>
+
+            <button className="mt-8 inline-flex items-center justify-center rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-4 transition">
+              Trở thành giảng viên
+            </button>
+          </div>
+          <div className="relative flex justify-center">
+            <div className="relative z-10 rounded-2xl shadow-xl overflow-hidden">
+              <Image
+                src="/thumb_gv.png"
+                alt="Học online"
+                width={420}
+                height={280}
+                className="object-cover"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+          <div className="relative flex justify-center">
+            {/* Image 1 */}
+            <div className="relative z-10 rounded-2xl shadow-xl overflow-hidden">
+              <Image
+                src="/thumb_biz.png"
+                alt="Học online"
+                width={420}
+                height={280}
+                className="object-cover"
+              />
+            </div>
+          </div>
+          <div>
+            <p className={title({ size: "sm" })}>
+              Gitiho For Leading Business – Nền tảng kiến tạo tổ chức học tập
+              theo đuổi hiệu suất cao
+            </p>
+
+            <p className="mt-6  max-w-xl">
+              Giúp cho tổ chức của bạn phát triển đột phá, chinh phục các mục
+              tiêu khát khao qua con đường đào tạo và phát triển đội ngũ.
+            </p>
+
+            <button className="mt-8 inline-flex items-center justify-center rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-4 transition">
+              Đăng ký cho doanh nghiệp
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-4">
+        <StudentReviewSlider />
+      </section>
     </div>
   );
 }
