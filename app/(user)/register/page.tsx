@@ -2,7 +2,7 @@
 import React from "react";
 import { Form, Input, Button } from "@heroui/react";
 
-export default function Login() {
+export default function Register() {
   const [action, setAction] = React.useState<string | null>(null);
 
   return (
