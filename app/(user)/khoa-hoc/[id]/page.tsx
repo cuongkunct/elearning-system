@@ -61,6 +61,7 @@ export default async function CourseDetailPage({ params }: Props) {
   const filteredCourses = relatedCourses
     .filter((item: Course) => item.maKhoaHoc !== course.maKhoaHoc)
     .slice(0, 5);
+
   return (
     <main className="min-h-screen bg-gray-50">
       {/* HERO */}

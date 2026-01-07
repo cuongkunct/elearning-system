@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import StudentReviewSlider from "./component/StudentReviewSlider";
+import BusinessList from "./component/Business";
 
 export default async function Home() {
   const { courses, categories } = await getCourseAndCategory();
@@ -69,39 +70,49 @@ export default async function Home() {
         </p>
       </section>
       <PartnerList />
-      <section className="mt-6">
-        <h1 className={title({ size: "sm" })}>Specialized topics</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  items-center justify-between gap-2  p-8">
+      <section className="">
+        <h1 className={`${title({ size: "sm" })} pt-12 pb-4`}>
+          Specialized topics
+        </h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  items-center justify-between gap-2">
           {renderCategory()}
         </div>
       </section>
-      <section className="py-8 ">
-        <h1 className={title({ size: "sm" })}>The most popular course</h1>
+      <section className="">
+        <h1 className={`${title({ size: "sm" })} pt-12 pb-4`}>
+          The most popular course
+        </h1>
         <CourseCard courses={topLearnedCategories} />
       </section>
-      <section className="py-8">
-        <h1 className={title({ size: "sm" })}>The most viewed course</h1>
+      <section className="">
+        <h1 className={`${title({ size: "sm" })} pt-12 pb-4`}>
+          The most viewed course
+        </h1>
         <CourseCard courses={topViewedCategories} />
       </section>
 
-      <section className="py-20 ">
+      <section className="">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className={title({ size: "sm" })}>
-              Gitiho For Leading Business – Nền tảng kiến tạo tổ chức học tập
-              theo đuổi hiệu suất cao
+          <div className="pt-12 pb-4">
+            <p className={`${title({ size: "sm" })}`}>
+              TOT Teacher - Where experts become inspirational figures.
             </p>
 
             <p className="mt-6  max-w-xl">
-              Giúp cho tổ chức của bạn phát triển đột phá, chinh phục các mục
-              tiêu khát khao qua con đường đào tạo và phát triển đội ngũ.
+              Become a TOT instructor – where you can spread knowledge, share
+              valuable skills and experiences with learners. Transform your own
+              value into inspiration and expand your influence within the
+              professional community.
             </p>
 
             <button className="mt-8 inline-flex items-center justify-center rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-4 transition">
-              Trở thành giảng viên
+              Become a teacher
             </button>
+            <p className="mt-6  max-w-xl text-primary font-semibold">
+              Teaching 664,967 students with TOT
+            </p>
           </div>
-          <div className="relative flex justify-center">
+          <div className="relative flex justify-center pt-12 pb-4">
             <div className="relative z-10 rounded-2xl shadow-xl overflow-hidden">
               <Image
                 src="/thumb_gv.png"
@@ -128,18 +139,22 @@ export default async function Home() {
           </div>
           <div>
             <p className={title({ size: "sm" })}>
-              Gitiho For Leading Business – Nền tảng kiến tạo tổ chức học tập
-              theo đuổi hiệu suất cao
+              TOT For Leading Business – A platform for creating high-performing
+              learning organizations pursuing high performance
             </p>
 
             <p className="mt-6  max-w-xl">
-              Giúp cho tổ chức của bạn phát triển đột phá, chinh phục các mục
-              tiêu khát khao qua con đường đào tạo và phát triển đội ngũ.
+              Help your organization achieve breakthrough growth and conquer
+              your ambitious goals through team training and development.
             </p>
 
             <button className="mt-8 inline-flex items-center justify-center rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-4 transition">
-              Đăng ký cho doanh nghiệp
+              Explore TOT for Business
             </button>
+            <p className="mt-6  max-w-xl text-primary font-semibold">
+              3,288 businesses have registered their personnel.
+            </p>
+            <BusinessList />
           </div>
         </div>
       </section>
