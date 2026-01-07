@@ -2,7 +2,6 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import Image from "next/image";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -11,36 +10,57 @@ import "swiper/css/pagination";
 const reviews = [
   {
     id: 1,
-    source: "Học viên Frontend",
-    title: "Học xong làm được dự án thực tế",
+    source: "Frontend Student",
+    title: "Able to Build Real Projects After the Course",
     content:
-      "Khóa học giúp mình hiểu rõ React, Next.js và tự tin apply công việc.",
+      "The course helped me clearly understand React and Next.js and feel confident applying for jobs.",
     image: "/student/hv1.png",
-    name: "Nguyễn Văn A",
+    name: "Mr.Dean",
   },
   {
     id: 2,
-    source: "Học viên Backend",
-    title: "Giảng viên dạy rất dễ hiểu",
-    content: "Mình từ mất gốc đến có thể tự xây dựng API và deploy project.",
-    image: "/student/hv1.png",
-    name: "Trần Thị B",
+    source: "Backend Student",
+    title: "The Instructor Explains Everything Very Clearly",
+    content:
+      "I went from having no foundation to being able to build APIs and deploy projects on my own.",
+    image: "/student/hv2.png",
+    name: "Ms.Anna",
   },
   {
     id: 3,
-    source: "Học viên Fullstack",
-    title: "Lộ trình rõ ràng – hỗ trợ tốt",
-    content: "Mentor support nhanh, bài tập sát thực tế doanh nghiệp.",
-    image: "/student/hv1.png",
-    name: "Lê Văn C",
+    source: "Frontend Student",
+    title: "Able to Build Real Projects After the Course",
+    content:
+      "The course helped me clearly understand React and Next.js and feel confident applying for jobs.",
+    image: "/student/hv3.png",
+    name: "Mr.Dean",
   },
   {
     id: 4,
-    source: "Học viên Data",
-    title: "Ứng dụng được ngay vào công việc",
-    content: "Học xong mình áp dụng được vào dự án công ty luôn.",
+    source: "Backend Student",
+    title: "The Instructor Explains Everything Very Clearly",
+    content:
+      "I went from having no foundation to being able to build APIs and deploy projects on my own.",
     image: "/student/hv1.png",
-    name: "Phạm Thị D",
+    name: "Ms.Anna",
+  },
+  {
+    id: 5,
+    source: "Frontend Student",
+    title: "Able to Build Real Projects After the Course",
+    content:
+      "The course helped me clearly understand React and Next.js and feel confident applying for jobs.",
+    image: "/student/hv2.png",
+    name: "Mr.Dean",
+  },
+  {
+    id: 6,
+    source: "Backend Student",
+    title: "The Instructor Explains Everything Very Clearly",
+    content:
+      "I went from having no foundation to being able to build APIs and deploy projects on my own.",
+    image: "/student/hv3.png",
+    name: "Ms.Anna",
   },
 ];
 
@@ -48,17 +68,15 @@ export default function StudentReviewSlider() {
   return (
     <section className="py-16 ">
       <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-3xl font-bold mb-10">
-          Học viên nói gì về chúng tôi?
-        </h2>
+        <h2 className="text-3xl font-bold mb-10">What Our Students Say</h2>
 
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={24}
           slidesPerView={1}
           autoplay={{ delay: 4000 }}
-          pagination={{ clickable: true }}
-          navigation
+          pagination={{ clickable: false }}
+          // navigation
           breakpoints={{
             640: {
               slidesPerView: 1,
@@ -74,25 +92,23 @@ export default function StudentReviewSlider() {
           {reviews.map((item) => (
             <SwiperSlide key={item.id}>
               <div className="bg-gray-50 rounded-xl shadow-sm p-6 h-full flex flex-col gap-4">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={220}
-                  height={140}
-                  className="rounded-lg object-cover"
-                />
-
-                <span className="text-sm text-blue-600 font-medium">
+                <div className="w-full h-50 rounded-md  overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <span className="text-sm  font-medium text-primary">
                   {item.source}
                 </span>
-
-                <h3 className="font-semibold text-lg">{item.title}</h3>
-
-                <p className="text-gray-600 text-sm leading-relaxed">
+                <h3 className="font-semibold text-lg text-primary">
+                  {item.title}
+                </h3>
+                <p className=" text-sm leading-relaxed text-gray-700">
                   {item.content}
                 </p>
-
-                <div className="mt-auto pt-4 border-t text-sm font-medium">
+                <div className="mt-auto pt-4 border-t text-sm font-medium text-red-700">
                   {item.name}
                 </div>
               </div>

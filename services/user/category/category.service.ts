@@ -1,4 +1,3 @@
-import page from "@/app/(user)/page";
 import {
   Category,
   CategoryWithCount,
@@ -9,13 +8,12 @@ import { Course } from "@/types/user/course/course.type";
 // 2 - Lấy danh mục khóa học
 const BACKEND_URL = process.env.NEXT_BACKEND_URL;
 const TOKEN_CYBERSOFT = process.env.NEXT_TOKEN_CYBERSOFT;
-
+console.log("BACKEND_URL:", BACKEND_URL);
 export async function getListCategory(): Promise<Category[]> {
   const res = await fetch(`${BACKEND_URL}QuanLyKhoaHoc/LayDanhMucKhoaHoc`, {
     headers: {
       TokenCybersoft: TOKEN_CYBERSOFT!,
     },
-    cache: "no-store",
   });
   if (!res.ok) throw new Error("Fetch courses failed");
   return res.json();
