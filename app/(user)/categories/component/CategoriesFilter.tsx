@@ -9,8 +9,8 @@ type Props = {
 export default function CategoriesFilter({ categories }: Props) {
   return (
     <div className="flex-[3] flex flex-col gap-4 border rounded-md p-4">
-      {categories.map((c) => (
-        <Checkbox key={c.maDanhMuc}>{c.tenDanhMuc}</Checkbox>
+      {categories.map((category: Category) => (
+        <Checkbox key={category.maDanhMuc}>{category.tenDanhMuc}</Checkbox>
       ))}
     </div>
   );
