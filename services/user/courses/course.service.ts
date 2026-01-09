@@ -2,15 +2,25 @@ import {
   Course,
   CoursePaginationResponse,
 } from "@/types/user/course/course.type";
-
 const BACKEND_URL = process.env.NEXT_BACKEND_URL;
 const TOKEN_CYBERSOFT = process.env.NEXT_TOKEN_CYBERSOFT;
+
 /* service to get courses with pagination */
 export async function getCoursesPagination(
-  page: number
+  page: number,
+  searchKey?: string
 ): Promise<CoursePaginationResponse> {
-  const res = await fetch(
-    `${BACKEND_URL}QuanLyKhoaHoc/LayDanhSachKhoaHoc_PhanTrang?page=${page}&pageSize=10&MaNhom=GP01`,
+  const url = new URL(
+    `${BACKEND_URL}QuanLyKhoaHoc/LayDanhSachKhoaHoc_PhanTrang`
+  );
+  url.searchParams.set("page", String(page));
+  url.searchParams.set("pageSize", "10");
+  url.searchParams.set("MaNhom", "GP01");
+  if (searchKey) {
+    url.searchParams.set("tenKhoaHoc", searchKey);
+  }
+  console.log(" url:", url);
+  const res = await fetch(url,
     {
       headers: { TokenCybersoft: TOKEN_CYBERSOFT! },
       cache: "no-store",

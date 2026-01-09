@@ -5,9 +5,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 type Props = {
   currentPage: number;
   totalPages: number;
+  searchKey?: string
 };
 
-export default function Pagination({ currentPage, totalPages }: Props) {
+export default function Pagination({ currentPage, totalPages, searchKey  }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -16,7 +17,7 @@ export default function Pagination({ currentPage, totalPages }: Props) {
     params.set("page", String(page));
     router.push(`?${params.toString()}`);
   };
-
+  
   const windowSize = 3;
   const half = Math.floor(windowSize / 2);
 

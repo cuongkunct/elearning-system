@@ -18,26 +18,37 @@ import { siteConfig } from "@/config/user/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { SearchIcon, Logo } from "@/components/icons";
 import { Button } from "@heroui/button";
-import { usePathname } from "next/navigation";
+import { usePathname , useRouter} from "next/navigation";
+import { useState } from "react";
 
 export const Navbar = () => {
+  const rout = useRouter();
   const pathname = usePathname();
-  console.log("pathname, ", pathname);
+  const [searchKey, setSearchKey] = useState("");
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    rout.push(`/search?key=${searchKey}`);
+  }
   const searchInput = (
+    <form onSubmit={handleSubmit}>
     <Input
       aria-label="Search"
       className="w-[400px]"
+      onChange={(e) => setSearchKey(e.target.value)}
+      value={searchKey}
       classNames={{
         inputWrapper: "bg-default-100",
         input: "text-sm",
       }}
       labelPlacement="outside"
       placeholder="Search 200 + courses..."
-      startContent={
+      type="search"
+      endContent={
         <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
       }
-      type="search"
     />
+    </form>
+    
   );
 
   return (
