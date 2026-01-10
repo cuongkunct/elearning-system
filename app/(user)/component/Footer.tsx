@@ -10,8 +10,8 @@ export default function Footer() {
           <div>
             <h2 className="text-xl font-bold">E-Learning</h2>
             <p className="mt-2 text-sm text-default-500">
-              Nền tảng học trực tuyến giúp bạn nâng cao kỹ năng và phát triển sự
-              nghiệp.
+              Online learning platforms help you improve your skills and advance
+              your career.
             </p>
             <div className="flex items-center gap-4 mt-4">
               <Link href="#" aria-label="facebook">
@@ -29,47 +29,47 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <h3 className="font-semibold mb-3">Khóa học</h3>
+            <h3 className="font-semibold mb-3">Course</h3>
             <ul className="space-y-2 text-sm text-default-500">
               <li>
-                <Link href="#">Frontend</Link>
+                <Link href="/categories?id=FrontEnd">Frontend</Link>
               </li>
               <li>
-                <Link href="#">Backend</Link>
+                <Link href="/categories?id=BackEnd">Backend</Link>
               </li>
               <li>
-                <Link href="#">Fullstack</Link>
+                <Link href="/categories?id=FullStack">Fullstack</Link>
               </li>
               <li>
-                <Link href="#">Mobile App</Link>
+                <Link href="/categories?id=DiDong">Mobile App</Link>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold mb-3">Hỗ trợ</h3>
+            <h3 className="font-semibold mb-3">Support</h3>
             <ul className="space-y-2 text-sm text-default-500">
               <li>
-                <Link href="#">Trung tâm trợ giúp</Link>
+                <Link href="#">Help Center</Link>
               </li>
               <li>
-                <Link href="#">Liên hệ</Link>
+                <Link href="#">Contact</Link>
               </li>
               <li>
-                <Link href="#">Câu hỏi thường gặp</Link>
+                <Link href="#">Frequently asked questions</Link>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold mb-3">Chính sách</h3>
+            <h3 className="font-semibold mb-3">Policy</h3>
             <ul className="space-y-2 text-sm text-default-500">
               <li>
-                <Link href="#">Điều khoản</Link>
+                <Link href="#">Terms of service</Link>
               </li>
               <li>
-                <Link href="#">Bảo mật</Link>
+                <Link href="#">Privacy</Link>
               </li>
               <li>
-                <Link href="#">Hoàn tiền</Link>
+                <Link href="#">Refund</Link>
               </li>
             </ul>
           </div>
@@ -78,7 +78,7 @@ export default function Footer() {
           <span>
             © {new Date().getFullYear()} E-Learning. All rights reserved.
           </span>
-          <span className="mt-2 md:mt-0">Made with ❤️ by Your Team</span>
+          <span className="mt-2 md:mt-0">Made with ❤️ by Cuong Dev</span>
         </div>
       </div>
     </footer>
