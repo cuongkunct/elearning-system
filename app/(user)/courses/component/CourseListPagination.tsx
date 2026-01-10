@@ -1,12 +1,12 @@
 "use client";
 
-import {Pagination} from "@heroui/react";
-import {useRouter, useSearchParams} from "next/navigation";
+import { Pagination } from "@heroui/react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type Props = {
   items: any[];
-  currentPage: number;
-  totalPages: number;
+  currentPage?: number;
+  totalPages?: number;
 };
 
 export default function CourseListPagination({

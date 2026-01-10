@@ -1,36 +1,99 @@
 import { getListCategory } from "@/services/user/category/category.service";
 import CategoriesFilter from "./component/CategoriesFilter";
-import { getAllCourses } from "@/services/user/courses/course.service";
-import { Course } from "@/types/user/course/course.type";
+import {
+  getRelatedCourses,
+  getCoursesPagination,
+} from "@/services/user/courses/course.service";
 import CourseCard from "../component/CourseCard";
+import CourseListPagination from "../courses/component/CourseListPagination";
+import CategoriesIntro from "../component/CategoriesIntro";
+import SortButtons from "./component/SortButtons";
+import { Course } from "@/types/user/course/course.type";
+type CategoriesPageProps = {
+  searchParams: {
+    id?: string;
+    sort?: string;
+    page?: string;
+  };
+};
 
-export default async function CategoriesPage(props: any) {
-  const { categories_ids } = await props.searchParams;
-  console.log(" categories_ids:", categories_ids);
+export default async function CategoriesPage({
+  searchParams,
+}: CategoriesPageProps) {
+  const { id, sort, page } = searchParams;
+  console.log("searchParams:", id, sort, page);
+  const currentPage = Number(page) || 1;
   const categories = await getListCategory();
-  const courseList = await getAllCourses();
-  const selectedCategories = categories_ids ? categories_ids.split(",") : [];
-  
+  let courseList: {
+    items: Course[];
+    currentPage?: number;
+    totalPages?: number;
+  };
+  let showPagination = false;
 
-const filteredCourses =
-  selectedCategories.length === 0
-    ? courseList
-    : courseList.filter((item) =>
-        selectedCategories.includes(
-          item.danhMucKhoaHoc.maDanhMucKhoahoc
-        )
-      );
+  if (!id) {
+    const res = await getCoursesPagination(currentPage);
+    courseList = {
+      items: res.items,
+      currentPage: res.currentPage,
+      totalPages: res.totalPages,
+    };
+    showPagination = true;
+  } else {
+    const res = await getRelatedCourses(id);
+    courseList = {
+      items: res,
+    };
+  }
+
+  // sort
+  if (sort === "views") {
+    courseList.items.sort((a, b) => b.luotXem - a.luotXem);
+  } else if (sort === "users") {
+    courseList.items.sort((a, b) => b.soLuongHocVien - a.soLuongHocVien);
+  }
 
   return (
-    <div className="flex w-full px-8 py-8 gap-4">
-      {/* Categories (Client Component) */}
-      <CategoriesFilter categories={categories} />
-
-      {/* Content SEO */}
-      <div className="flex-[7] border rounded-md p-4">
-        <h1 className="text-xl font-semibold">Content</h1>
-        <CourseCard courses={filteredCourses} />
+    <div>
+      <div className="lg:flex w-full gap-4">
+        {/* CATEGORY FILTER */}
+        <aside className="">
+          {categories?.length > 0 && (
+            <CategoriesFilter categories={categories} />
+          )}
+        </aside>
+        <main className="flex-[7]">
+          <SortButtons />
+          <div className="flex justify-end mb-2">
+            <p className="text-gray-700 text-sm font-semibold mb-2 mr-0">
+              {courseList?.items?.length
+                ? `${courseList.items.length} course${courseList.items.length > 1 ? "s" : ""} found`
+                : "No courses found"}
+            </p>
+          </div>
+          {showPagination ? (
+            <>
+              <CourseCard courses={courseList.items} />
+              <div className="flex items-center justify-center p-4">
+                <CourseListPagination
+                  items={courseList.items}
+                  currentPage={courseList.currentPage}
+                  totalPages={courseList.totalPages}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <CourseCard courses={courseList?.items} />
+            </>
+          )}
+        </main>
       </div>
+      {showPagination ? (
+        <div>
+          <CategoriesIntro />
+        </div>
+      ) : null}
     </div>
   );
 }
