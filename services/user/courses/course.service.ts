@@ -65,9 +65,14 @@ export async function getCourseDetail(maKhoaHoc: string) {
 }
 
 /* service to get related courses by maDanhMuc */
-export async function getRelatedCourses(maDanhMuc: string) {
-  const res = await fetch(
-    `${BACKEND_URL}QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?maDanhMuc=${maDanhMuc}&MaNhom=GP01`,
+export async function getRelatedCourses(maDanhMuc?: string) {
+  const url = new URL(
+    `${BACKEND_URL}QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?MaNhom=GP01`
+  )
+  if (maDanhMuc) {
+    url.searchParams.set("maDanhMuc", maDanhMuc);
+  }
+  const res = await fetch(url,
     {
       headers: {
         TokenCybersoft: TOKEN_CYBERSOFT || "",
@@ -75,7 +80,6 @@ export async function getRelatedCourses(maDanhMuc: string) {
       next: { revalidate: 60 },
     }
   );
-
   if (!res.ok) {
     throw new Error("Failed to fetch related courses");
   }
