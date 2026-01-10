@@ -20,7 +20,8 @@ type CategoriesPageProps = {
 export default async function CategoriesPage({
   searchParams,
 }: CategoriesPageProps) {
-  const { id, sort, page } = searchParams;
+  const params = searchParams;
+  const { id, sort, page } = params;
   console.log("searchParams:", id, sort, page);
   const currentPage = Number(page) || 1;
   const categories = await getListCategory();
@@ -47,9 +48,9 @@ export default async function CategoriesPage({
   }
 
   // sort
-  if (sort === "views") {
+  if (sort === "viewed") {
     courseList.items.sort((a, b) => b.luotXem - a.luotXem);
-  } else if (sort === "users") {
+  } else if (sort === "joined") {
     courseList.items.sort((a, b) => b.soLuongHocVien - a.soLuongHocVien);
   }
 

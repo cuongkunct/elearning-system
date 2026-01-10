@@ -8,7 +8,6 @@ import { Course } from "@/types/user/course/course.type";
 // 2 - Lấy danh mục khóa học
 const BACKEND_URL = process.env.NEXT_BACKEND_URL;
 const TOKEN_CYBERSOFT = process.env.NEXT_TOKEN_CYBERSOFT;
-console.log("BACKEND_URL:", BACKEND_URL);
 export async function getListCategory(): Promise<Category[]> {
   const res = await fetch(`${BACKEND_URL}QuanLyKhoaHoc/LayDanhMucKhoaHoc`, {
     headers: {

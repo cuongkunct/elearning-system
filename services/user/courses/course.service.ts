@@ -19,13 +19,11 @@ export async function getCoursesPagination(
   if (searchKey) {
     url.searchParams.set("tenKhoaHoc", searchKey);
   }
-  console.log(" url:", url);
-  const res = await fetch(url,
-    {
-      headers: { TokenCybersoft: TOKEN_CYBERSOFT! },
-      cache: "no-store",
-    }
-  );
+
+  const res = await fetch(url, {
+    headers: { TokenCybersoft: TOKEN_CYBERSOFT! },
+    cache: "no-store",
+  });
 
   if (!res.ok) throw new Error("Fetch courses failed");
   return res.json();
@@ -68,18 +66,16 @@ export async function getCourseDetail(maKhoaHoc: string) {
 export async function getRelatedCourses(maDanhMuc?: string) {
   const url = new URL(
     `${BACKEND_URL}QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?MaNhom=GP01`
-  )
+  );
   if (maDanhMuc) {
     url.searchParams.set("maDanhMuc", maDanhMuc);
   }
-  const res = await fetch(url,
-    {
-      headers: {
-        TokenCybersoft: TOKEN_CYBERSOFT || "",
-      },
-      next: { revalidate: 60 },
-    }
-  );
+  const res = await fetch(url, {
+    headers: {
+      TokenCybersoft: TOKEN_CYBERSOFT || "",
+    },
+    next: { revalidate: 60 },
+  });
   if (!res.ok) {
     throw new Error("Failed to fetch related courses");
   }

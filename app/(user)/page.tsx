@@ -25,7 +25,10 @@ export default async function Home() {
 
   const renderCategory = () => {
     return categoryWithCount.map((category: CategoryWithCount) => (
-      <Link href={`/category/${category.maDanhMuc}`} key={category.maDanhMuc}>
+      <Link
+        href={`/categories?id=${category.maDanhMuc}`}
+        key={category.maDanhMuc}
+      >
         <div
           className="border border-gray-400 rounded-md w-60 h-10 p-2 flex items-center  cursor-pointer "
           key={category.maDanhMuc}
