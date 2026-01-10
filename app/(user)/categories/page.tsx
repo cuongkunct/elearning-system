@@ -10,17 +10,17 @@ import CategoriesIntro from "../component/CategoriesIntro";
 import SortButtons from "./component/SortButtons";
 import { Course } from "@/types/user/course/course.type";
 type CategoriesPageProps = {
-  searchParams: Promise<{
+  searchParams: {
     id?: string;
     sort?: string;
     page?: string;
-  }>;
+  };
 };
 
 export default async function CategoriesPage({
   searchParams,
 }: CategoriesPageProps) {
-  const params = await searchParams;
+  const params = searchParams;
   const { id, sort, page } = params;
   console.log("searchParams:", id, sort, page);
   const currentPage = Number(page) || 1;
