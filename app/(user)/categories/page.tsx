@@ -9,19 +9,17 @@ import CourseListPagination from "../courses/component/CourseListPagination";
 import CategoriesIntro from "../component/CategoriesIntro";
 import SortButtons from "./component/SortButtons";
 import { Course } from "@/types/user/course/course.type";
-type CategoriesPageProps = {
+
+export default async function CategoriesPage({
+  searchParams,
+}: {
   searchParams: {
     id?: string;
     sort?: string;
     page?: string;
   };
-};
-
-export default async function CategoriesPage({
-  searchParams,
-}: CategoriesPageProps) {
-  const params = searchParams;
-  const { id, sort, page } = params;
+}) {
+  const { id, sort, page } = searchParams;
   console.log("searchParams:", id, sort, page);
   const currentPage = Number(page) || 1;
   const categories = await getListCategory();
