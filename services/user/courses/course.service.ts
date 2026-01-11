@@ -34,7 +34,7 @@ export async function getAllCourses(): Promise<Course[]> {
     `${BACKEND_URL}QuanLyKhoaHoc/LayDanhSachKhoaHoc?MaNhom=GP01`,
     {
       headers: { TokenCybersoft: TOKEN_CYBERSOFT! },
-      cache: "no-store",
+      next: { revalidate: 60 }, // ISR – 60s cập nhật
     }
   );
 
@@ -51,10 +51,6 @@ export async function getCourseDetail(maKhoaHoc: string) {
         revalidate: 60, // ISR – 60s cập nhật
       },
     }
-  );
-  console.log(
-    "Fetch URL:",
-    `${BACKEND_URL}QuanLyKhoaHoc/LayThongTinKhoaHoc?maKhoaHoc=${maKhoaHoc}`
   );
   if (!res.ok) {
     throw new Error("Failed to fetch course detail");
@@ -74,7 +70,7 @@ export async function getRelatedCourses(maDanhMuc?: string) {
     headers: {
       TokenCybersoft: TOKEN_CYBERSOFT || "",
     },
-    next: { revalidate: 60 },
+    next: { revalidate: 60 }, // ISR – 60s cập nhật cache lại dữ liệu một lần,
   });
   if (!res.ok) {
     throw new Error("Failed to fetch related courses");

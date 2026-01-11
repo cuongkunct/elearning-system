@@ -9,7 +9,13 @@ import CourseListPagination from "../courses/component/CourseListPagination";
 import CategoriesIntro from "../component/CategoriesIntro";
 import SortButtons from "./component/SortButtons";
 import { Course } from "@/types/user/course/course.type";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Online Courses",
+  description:
+    "Browse our collection of online courses in programming, design, and technology.",
+};
 export default async function CategoriesPage({
   searchParams,
 }: {
@@ -29,7 +35,6 @@ export default async function CategoriesPage({
     totalPages?: number;
   };
   let showPagination = false;
-
   if (!id) {
     const res = await getCoursesPagination(currentPage);
     courseList = {

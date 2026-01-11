@@ -31,7 +31,7 @@ export default function CourseCard({ courses }: CourseCardProps) {
       }
     >
       {courses.map((item: Course) => (
-        <Link key={item.maKhoaHoc} href={`/khoa-hoc/${item.maKhoaHoc}`}>
+        <Link key={item.maKhoaHoc} href={`/course/${item.maKhoaHoc}`}>
           <Card
             isPressable
             shadow="sm"
@@ -62,9 +62,7 @@ export default function CourseCard({ courses }: CourseCardProps) {
                 isSearchPage ? "flex-3" : ""
               }`}
             >
-              <b className="line-clamp-2 text-base">
-                {item.tenKhoaHoc}
-              </b>
+              <b className="line-clamp-2 text-base">{item.tenKhoaHoc}</b>
 
               <div className="flex justify-between w-full text-sm text-default-500">
                 <span>👁 {item.luotXem} lượt xem</span>
@@ -72,7 +70,6 @@ export default function CourseCard({ courses }: CourseCardProps) {
               </div>
             </CardFooter>
           </Card>
-
         </Link>
       ))}
     </div>
