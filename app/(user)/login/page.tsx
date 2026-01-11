@@ -7,7 +7,7 @@ export default function Login() {
 
   return (
     <Form
-      className="w-full max-w-xs flex flex-col gap-4"
+      className="w-full max-w-xs flex flex-col gap-4 border border-gray-400 p-4 rounded-md"
       onReset={() => setAction("reset")}
       onSubmit={(e) => {
         e.preventDefault();
