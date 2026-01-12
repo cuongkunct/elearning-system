@@ -18,8 +18,9 @@ import { siteConfig } from "@/config/user/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { SearchIcon, Logo } from "@/components/icons";
 import { Button } from "@heroui/button";
-import { usePathname , useRouter} from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { Avatar } from "@heroui/react";
 
 export const Navbar = () => {
   const rout = useRouter();
@@ -28,27 +29,28 @@ export const Navbar = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     rout.push(`/search?key=${searchKey}`);
-  }
+  };
+  const accessToken = localStorage.getItem("accessToken");
+
   const searchInput = (
     <form onSubmit={handleSubmit}>
-    <Input
-      aria-label="Search"
-      className="w-[400px]"
-      onChange={(e) => setSearchKey(e.target.value)}
-      value={searchKey}
-      classNames={{
-        inputWrapper: "bg-default-100",
-        input: "text-sm",
-      }}
-      labelPlacement="outside"
-      placeholder="Search 200 + courses..."
-      type="search"
-      endContent={
-        <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
-      }
-    />
+      <Input
+        aria-label="Search"
+        className="w-[400px]"
+        onChange={(e) => setSearchKey(e.target.value)}
+        value={searchKey}
+        classNames={{
+          inputWrapper: "bg-default-100",
+          input: "text-sm",
+        }}
+        labelPlacement="outside"
+        placeholder="Search 200 + courses..."
+        type="search"
+        endContent={
+          <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
+        }
+      />
     </form>
-    
   );
 
   return (
@@ -104,6 +106,19 @@ export const Navbar = () => {
           <Button as={Link} color="default" href="/register" variant="flat">
             Sign Up
           </Button>
+        </NavbarItem>
+        <NavbarItem>
+          <Button as={Link} color="danger" variant="flat">
+            Logout
+          </Button>
+        </NavbarItem>
+
+        <NavbarItem>
+          <Avatar
+            isBordered
+            radius="md"
+            src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+          />
         </NavbarItem>
       </NavbarContent>
 

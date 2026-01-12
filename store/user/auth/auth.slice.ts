@@ -4,62 +4,115 @@ import {
   UserRegister,
   UserRegisterResponse,
 } from "@/types/user/auth/register.type";
+import { UserLogin, UserLoginResponse } from "@/types/user/auth/login.type";
+
 
 // 1 - Đăng ký
 export const registerUser = createAsyncThunk<
   UserRegisterResponse,
   UserRegister,
-  { rejectValue: string }
+  { rejectValue: { statusCode: number; content: string } }
 >("createUserThunk", async (userData, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(
-      `/QuanLyNguoiDung/DangKy`,
-      userData
-    );
-    return response.data;
+    const response = await axiosInstance.post(`QuanLyNguoiDung/DangKy`, userData);
+    return {
+      statusCode: response.status,
+      content: response.data,
+    };
   } catch (error: any) {
-    return rejectWithValue(error);
+    return rejectWithValue({
+    statusCode: error.response?.status || 500,
+     content: error || "An error occurred",
+  });
   }
 });
 
+export const loginUser = createAsyncThunk<
+  UserLoginResponse,
+  UserLogin,
+  { rejectValue: { statusCode: number; content: string } }
+>("loginUserThunk", async (userData, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.post(
+      `QuanLyNguoiDung/DangNhap`,
+      userData
+    );
+    return {
+      statusCode: response.status,
+      content: response.data,
+    };
+  } catch (error: any) {
+    return rejectWithValue({
+      statusCode: error.response?.status || 500,
+      content: error || "Login failed",
+    });
+  }
+}) 
+
 interface SliceState {
-  data: UserRegisterResponse | null;
-  loading: boolean;
-  error: string | undefined;
+  registerData: UserRegisterResponse | null;
+  registerLoading: boolean;
+  registerError: {
+    statusCode: number;
+    content: string;
+  } | undefined;
+
+  loginData: UserLoginResponse | null;
+  loginLoading: boolean;
+  loginError: {
+    statusCode: number;
+    content: string;
+  } | undefined;
 }
 
 const initialState: SliceState = {
-  data: null,
-  loading: false,
-  error: undefined,
+  registerData: null,
+  registerLoading: false,
+  registerError: undefined,
+
+  loginData: null,
+  loginLoading: false,
+  loginError: undefined,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    resetState(state) {
-      state.data = null;
-      state.loading = false;
-      state.error = undefined;
-    },
+    
   },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
-        state.loading = true;
-        state.error = undefined;
+        state.registerLoading = true;
+        state.registerError = {
+          statusCode: 500,
+          content: "",
+        };
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.data = action.payload;
+        state.registerLoading = false;
+        state.registerData = action.payload;
       })
       .addCase(registerUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.registerLoading = false;
+        state.registerError = action.payload;
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.loginLoading = true;
+        state.loginError = undefined;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loginLoading = false;
+        state.loginData = action.payload;
+        localStorage.setItem("accessToken", action.payload.content.accessToken);
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loginLoading = false;
+        state.loginError = action.payload;
       });
   },
 });
 
-export const { resetState } = authSlice.actions;
+// export const { resetState } = authSlice.actions;
 export default authSlice.reducer;

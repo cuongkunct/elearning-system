@@ -10,17 +10,18 @@ import { addToast, ToastProvider } from "@heroui/react";
 export default function Register() {
   const router = useRouter();
   const dispatch = useDispatch<DispatchType>();
-  const { onOpen } = useDisclosure();
-  const authState = useSelector((state: RootState) => state.auth);
   const [open, setOpen] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [errorContent, setErrorContent] = useState<string | null>(null);
-  console.log("Register State:", authState);
+
   return (
     <Form
       className="
-    w-full max-w-2xl
+            w-[600px]
+        mx-auto
     flex flex-col gap-8
+    justify-center
+    items-center
     rounded-2xl
     p-10
     shadow-2xl
@@ -36,7 +37,7 @@ export default function Register() {
           console.log("Register successful:", res);
           if (res.statusCode === 200) {
             setOpen(true);
-            setErr(res.message);
+            setErr("Register successful");
             addToast({
               title: "Registration Successful",
               description: "You have registered successfully.",

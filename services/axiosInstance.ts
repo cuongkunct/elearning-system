@@ -12,7 +12,7 @@ const CYBERSOFT_TOKEN: string =
 
 // 🎯 Axios instance
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: "https://movienew.cybersoft.edu.vn/api",
+  baseURL: "https://elearningnew.cybersoft.edu.vn/api/",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",

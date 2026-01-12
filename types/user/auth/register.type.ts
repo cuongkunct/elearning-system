@@ -9,7 +9,6 @@ export type UserRegister = {
 
 export type UserRegisterResponse = {
   statusCode: number;
-  message: string;
   content: {
     taiKhoan: string;
     matKhau: string;
