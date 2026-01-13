@@ -18,6 +18,9 @@ export const metadata: Metadata = {
     default: "TOT - E-Learning Platform | Learn Anytime, Anywhere",
     template: "%s | E-Learning Platform",
   },
+  icons: {
+    icon: "/logo.png",
+  },
   description:
     "TOT - E-Learning platform offering high-quality online courses in programming, design, business, and technology. Learn anytime, anywhere with expert instructors.",
   keywords: [
@@ -54,7 +57,7 @@ export const metadata: Metadata = {
       "Join thousands of learners and upgrade your skills with high-quality online courses.",
     images: [
       {
-        url: "https://your-elearning.com/og-image.png",
+        url: "http://localhost:3000/logo.png",
         width: 1200,
         height: 630,
         alt: "E-Learning Platform",
@@ -67,7 +70,7 @@ export const metadata: Metadata = {
     title: "E-Learning Platform | Learn Anytime, Anywhere",
     description:
       "High-quality online courses in programming, design, and business.",
-    images: ["https://your-elearning.com/og-image.png"],
+    images: ["http://localhost:3000/logo.png"],
   },
 
   alternates: {
@@ -81,11 +84,11 @@ export default async function Home() {
   const categoryWithCount = mergeCategoryWithCourseCount(courses, categories);
   const topLearnedCategories = courses
     .sort((a, b) => b.soLuongHocVien - a.soLuongHocVien)
-    .slice(0, 10);
+    .slice(0, 12);
 
   const topViewedCategories = courses
     .sort((a, b) => b.luotXem - a.luotXem)
-    .slice(0, 10);
+    .slice(0, 12);
 
   const renderCategory = () => {
     return categoryWithCount.map((category: CategoryWithCount) => (

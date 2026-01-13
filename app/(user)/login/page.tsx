@@ -1,15 +1,18 @@
 "use client";
-import React from "react";
-import { Form, Input, Button } from "@heroui/react";
+import React, { useState } from "react";
+import { Form, Input, Button, addToast } from "@heroui/react";
 import { loginUser } from "@/store/user/auth/auth.slice";
 import { useDispatch } from "react-redux";
 import { DispatchType } from "@/store";
 import { useRouter } from "next/navigation";
+import NotificationModal from "../component/NotificationModal";
+import { UserLoginResponse } from "@/types/user/auth/login.type";
 
 export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch<DispatchType>();
-  const [action, setAction] = React.useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
 
   return (
     <Form
@@ -24,7 +27,6 @@ export default function Login() {
         shadow-2xl
         border border-gray-200
       "
-      onReset={() => setAction("reset")}
       onSubmit={async (e) => {
         e.preventDefault();
         let data: any = JSON.parse(
@@ -34,10 +36,16 @@ export default function Login() {
         try {
           const res = await dispatch(loginUser(data)).unwrap();
           if (res.statusCode === 200) {
+            addToast({
+              title: "Login Successful",
+              description: "You have login successfully.",
+              color: "success",
+            });
             router.push("/");
           }
-        } catch (error) {
-          console.log(error);
+        } catch (err: any) {
+          setOpen(true);
+          setErr(err.content);
         }
       }}
     >
@@ -63,6 +71,12 @@ export default function Login() {
         name="matKhau"
         placeholder="Enter your password"
         type="password"
+      />
+      <NotificationModal
+        title={err ?? "Registration Failed"}
+        color={err ? "danger" : "success"}
+        isOpen={open}
+        onClose={() => setOpen(false)}
       />
       <div className="flex gap-2">
         <Button color="primary" type="submit">

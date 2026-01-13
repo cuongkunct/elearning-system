@@ -19,14 +19,10 @@ export const metadata: Metadata = {
 export default async function CategoriesPage({
   searchParams,
 }: {
-  searchParams: {
-    id?: string;
-    sort?: string;
-    page?: string;
-  };
+  searchParams?: { id?: string; page?: string; sort?: string };
 }) {
-  const { id, sort, page } = searchParams;
-  console.log("searchParams:", id, sort, page);
+  const { id, page, sort } = (await searchParams) || {};
+
   const currentPage = Number(page) || 1;
   const categories = await getListCategory();
   let courseList: {
