@@ -23,7 +23,7 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const { id } = await params; // ✅ do this
+  const { id } = params; // ✅ do this
   const course = await getCourseDetail(id);
 
   if (!course) {
@@ -48,7 +48,7 @@ export async function generateMetadata({
 }
 
 export default async function CourseDetailPage({ params }: Props) {
-  const { id } = await params;
+  const { id } = params;
   const course = await getCourseDetail(id);
   if (!course) {
     return (
