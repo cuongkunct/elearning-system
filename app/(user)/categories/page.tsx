@@ -17,16 +17,17 @@ export const metadata: Metadata = {
     "Browse our collection of online courses in programming, design, and technology.",
 };
 type CategoriesPageProps = {
-  searchParams?: {
+  searchParams?: Promise<{
     id?: string;
     page?: string;
     sort?: string;
-  };
+  }>;
 };
+
 export default async function CategoriesPage({
   searchParams,
 }: CategoriesPageProps) {
-  const { id, page, sort } = searchParams || {};
+  const { id, page, sort } = (await searchParams) ?? {};
 
   const currentPage = Number(page) || 1;
   const categories = await getListCategory();
