@@ -20,17 +20,33 @@ import { SearchIcon, Logo } from "@/components/icons";
 import { Button } from "@heroui/button";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { Avatar } from "@heroui/react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/index";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Avatar,
+} from "@heroui/react";
+import { logout } from "@/store/user/auth/auth.slice";
+import { useDispatch } from "react-redux";
 
 export const Navbar = () => {
   const rout = useRouter();
+  const dispatch = useDispatch();
   const pathname = usePathname();
   const [searchKey, setSearchKey] = useState("");
+  const { loginData } = useSelector((state: RootState) => state.auth);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     rout.push(`/search?key=${searchKey}`);
   };
-  const accessToken = localStorage.getItem("accessToken");
+  const handleLogout = () => {
+    dispatch(logout());
+    rout.push("/login");
+  };
 
   const searchInput = (
     <form onSubmit={handleSubmit}>
@@ -97,28 +113,50 @@ export const Navbar = () => {
           <ThemeSwitch />
         </NavbarItem>
         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
-        <NavbarItem>
+        <NavbarItem className={loginData?.content?.accessToken ? "hidden" : ""}>
           <Button as={Link} color="primary" href="/login" variant="flat">
             Login
           </Button>
         </NavbarItem>
-        <NavbarItem>
+        <NavbarItem className={loginData?.content?.accessToken ? "hidden" : ""}>
           <Button as={Link} color="default" href="/register" variant="flat">
             Sign Up
           </Button>
         </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} color="danger" variant="flat">
-            Logout
-          </Button>
-        </NavbarItem>
-
-        <NavbarItem>
-          <Avatar
-            isBordered
-            radius="md"
-            src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-          />
+        <NavbarItem className={loginData?.content?.accessToken ? "" : "hidden"}>
+          <div className="flex items-center gap-4">
+            <Dropdown placement="bottom-end">
+              <DropdownTrigger>
+                <Avatar
+                  isBordered
+                  as="button"
+                  className="transition-transform"
+                  name={loginData?.content?.hoTen}
+                />
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownItem
+                  key="profile"
+                  className="h-14 gap-2"
+                  onClick={() => rout.push("/profile")}
+                >
+                  <p className="font-semibold">My Profile</p>
+                  <p className="font-semibold">{loginData?.content?.hoTen}</p>
+                </DropdownItem>
+                <DropdownItem key="my_courses">Registered Course</DropdownItem>
+                <DropdownItem key="help_and_feedback">
+                  Help & Feedback
+                </DropdownItem>
+                <DropdownItem
+                  key="logout"
+                  color="danger"
+                  onClick={handleLogout}
+                >
+                  Log Out
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
         </NavbarItem>
       </NavbarContent>
 

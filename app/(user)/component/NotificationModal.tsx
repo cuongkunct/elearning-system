@@ -13,13 +13,11 @@ import {
 export default function NotificationModal({
   title,
   color,
-  description,
   isOpen,
   onClose,
 }: {
   title: string;
   color: "danger" | "success" | "warning";
-  description: string;
   isOpen: boolean;
   onClose: () => void;
 }) {
@@ -46,11 +44,6 @@ export default function NotificationModal({
             >
               {title}
             </ModalHeader>
-
-            <ModalBody>
-              <p>{description}</p>
-            </ModalBody>
-
             <ModalFooter>
               <Button
                 color="danger"

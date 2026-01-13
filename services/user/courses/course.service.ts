@@ -4,7 +4,7 @@ import {
 } from "@/types/user/course/course.type";
 const BACKEND_URL = process.env.NEXT_BACKEND_URL;
 const TOKEN_CYBERSOFT = process.env.NEXT_TOKEN_CYBERSOFT;
-
+import { categorySeoMap } from "@/app/(user)/component/SeoDescription";
 /* service to get courses with pagination */
 export async function getCoursesPagination(
   page: number,

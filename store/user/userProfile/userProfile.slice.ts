@@ -1,42 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "@/services/axiosInstance";
 import {
-  UserRegister,
-  UserRegisterResponse,
-} from "@/types/user/auth/register.type";
-import { UserLogin, UserLoginResponse } from "@/types/user/auth/login.type";
-import { log } from "console";
-
+  ProfileRequest,
+  ProfileResponse,
+} from "@/types/user/userProfile/userProfile.type";
 
 // 1 - Đăng ký
-export const registerUser = createAsyncThunk<
-  UserRegisterResponse,
-  UserRegister,
+export const fetchGetUserProfile = createAsyncThunk<
+  ProfileResponse,
+  ProfileRequest,
   { rejectValue: { statusCode: number; content: string } }
->("createUserThunk", async (userData, { rejectWithValue }) => {
-  try {
-    const response = await axiosInstance.post(`QuanLyNguoiDung/DangKy`, userData);
-    return {
-      statusCode: response.status,
-      content: response.data,
-    };
-  } catch (error: any) {
-    return rejectWithValue({
-    statusCode: error.response?.status || 500,
-     content: error || "An error occurred",
-  });
-  }
-});
-
-export const loginUser = createAsyncThunk<
-  UserLoginResponse,
-  UserLogin,
-  { rejectValue: { statusCode: number; content: string } }
->("loginUserThunk", async (userData, { rejectWithValue }) => {
+>("getProfileInfoThunk", async (taikhoan, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(
-      `QuanLyNguoiDung/DangNhap`,
-      userData
+      `QuanLyNguoiDung/ThongTinTaiKhoan`,
+      taikhoan
     );
     return {
       statusCode: response.status,
@@ -45,35 +23,22 @@ export const loginUser = createAsyncThunk<
   } catch (error: any) {
     return rejectWithValue({
       statusCode: error.response?.status || 500,
-      content: error || "Login failed",
+      content: error || "An error occurred",
     });
   }
-}) 
+});
 
-interface SliceState {
-  registerData: UserRegisterResponse | null;
-  registerLoading: boolean;
-  registerError: {
-    statusCode: number;
-    content: string;
-  } | undefined;
-
-  loginData: UserLoginResponse | null;
-  loginLoading: boolean;
-  loginError: {
-    statusCode: number;
-    content: string;
-  } | undefined;
-}
+interface SliceState {}
 
 const initialState: SliceState = {
   registerData: null,
   registerLoading: false,
   registerError: undefined,
   // Login
-  loginData: typeof window !== "undefined" && localStorage.getItem("userData")
-    ? JSON.parse(localStorage.getItem("userData") as string)
-    : null,
+  loginData:
+    typeof window !== "undefined" && localStorage.getItem("userData")
+      ? JSON.parse(localStorage.getItem("userData") as string)
+      : null,
   loginLoading: false,
   loginError: undefined,
 };
@@ -82,10 +47,10 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
- logout: (state) => {
-  state.loginData = null;
-  localStorage.removeItem("userData");
- }
+    logout: (state) => {
+      state.loginData = null;
+      localStorage.removeItem("userData");
+    },
   },
   extraReducers: (builder) => {
     builder

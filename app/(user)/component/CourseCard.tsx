@@ -26,7 +26,7 @@ export default function CourseCard({ courses }: CourseCardProps) {
             grid-cols-1
             sm:grid-cols-2
             md:grid-cols-3
-            ${isCategoryPage ? "lg:grid-cols-3" : "lg:grid-cols-5"}
+            ${isCategoryPage ? "lg:grid-cols-3" : "lg:grid-cols-4"}
           `
       }
     >

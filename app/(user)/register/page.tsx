@@ -12,7 +12,6 @@ export default function Register() {
   const dispatch = useDispatch<DispatchType>();
   const [open, setOpen] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const [errorContent, setErrorContent] = useState<string | null>(null);
 
   return (
     <Form
@@ -47,8 +46,7 @@ export default function Register() {
           }
         } catch (err: any) {
           setOpen(true);
-          setErr(err.message);
-          setErrorContent(err.content);
+          setErr(err.content);
         }
       }}
     >
@@ -115,7 +113,6 @@ export default function Register() {
       <NotificationModal
         title={err ?? "Registration Failed"}
         color={err ? "danger" : "success"}
-        description={errorContent ?? "An error occurred"}
         isOpen={open}
         onClose={() => setOpen(false)}
       />
