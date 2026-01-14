@@ -6,22 +6,27 @@ export const siteConfig = {
   navItems: [
     {
       label: "Home",
+      title: "Dashboard",
       href: "/admin",
     },
     {
-      label: "User management",
+      label: "User",
+      title: "User management",
       href: "/admin/docs",
     },
     {
-      label: "Course management",
+      label: "Course",
+      title: "Course management",
       href: "/admin/pricing",
     },
     {
-      label: "Blog Admin",
+      label: "Blog",
+      title: "Blog Admin",
       href: "/admin/blog",
     },
     {
-      label: "About Admin",
+      label: "About",
+      title: "About Admin",
       href: "/admin/about",
     },
   ],

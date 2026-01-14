@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div>Đây là trang home nè</div>;
+  return <div className="bg-white rounded-[8] px-4">Đây là trang home nè</div>;
 }

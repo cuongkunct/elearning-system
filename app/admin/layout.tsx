@@ -9,6 +9,7 @@ import { siteConfig } from "@/config/admin/site";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/admin/navbar";
 import Footer from "../(user)/component/Footer";
+import { AdminSidebar } from "@/components/admin/sidebar";
 
 export const metadata: Metadata = {
   title: {
@@ -38,17 +39,19 @@ export default function RootLayout({
       <head />
       <body
         className={clsx(
-          "min-h-screen text-foreground bg-background font-sans antialiased",
+          "min-h-screen text-foreground bg-[#F9F9F9] font-sans antialiased",
           fontSans.variable
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <div className="relative flex flex-col h-screen ">
+          <div className="relative flex flex-col h-screen pb-12 px-4 py-6">
             <Navbar />
-            <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
-              {children}
-            </main>
-            <Footer />
+            <div className="flex flex-1 pt-6">
+              <AdminSidebar />
+              <main className="flex-1 px-6">
+                <div className="mx-auto w-full max-w-7xl">{children}</div>
+              </main>
+            </div>
           </div>
         </Providers>
       </body>
