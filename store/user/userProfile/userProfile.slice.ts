@@ -1,89 +1,126 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "@/services/axiosInstance";
 import {
-  ProfileRequest,
   ProfileResponse,
+  updateUserProfileRequest,
+  updateUserProfileResponse,
 } from "@/types/user/userProfile/userProfile.type";
 
 // 1 - Đăng ký
 export const fetchGetUserProfile = createAsyncThunk<
   ProfileResponse,
-  ProfileRequest,
+  void,
   { rejectValue: { statusCode: number; content: string } }
->("getProfileInfoThunk", async (taikhoan, { rejectWithValue }) => {
+>("getProfileInfoThunk", async (_, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(
-      `QuanLyNguoiDung/ThongTinTaiKhoan`,
-      taikhoan
+      "QuanLyNguoiDung/ThongTinTaiKhoan"
     );
     return {
       statusCode: response.status,
       content: response.data,
-    };
+    } as ProfileResponse;
   } catch (error: any) {
     return rejectWithValue({
       statusCode: error.response?.status || 500,
-      content: error || "An error occurred",
+      content: error?.message || "An error occurred",
     });
   }
 });
 
-interface SliceState {}
+export const fetchUpdateUserProfile = createAsyncThunk<
+  updateUserProfileResponse,
+  updateUserProfileRequest,
+  { rejectValue: { statusCode: number; content: string } }
+>(
+  "updateProfileInfoThunk",
+  async (updateUserProfileRequest, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.put(
+        "QuanLyNguoiDung/CapNhatThongTinNguoiDung",
+        updateUserProfileRequest
+      );
+      return {
+        statusCode: response.status,
+        content: response.data,
+      } as updateUserProfileResponse;
+    } catch (error: any) {
+      console.log(error);
+      return rejectWithValue({
+        statusCode: error.response?.status || 500,
+        content: error?.message || "An error occurred",
+      });
+    }
+  }
+);
+
+interface SliceState {
+  userProfile: ProfileResponse | null;
+  userProfileLoading: boolean;
+  userProfileError:
+    | {
+        statusCode: number;
+        content: string;
+      }
+    | undefined;
+
+  updateUserProfile: updateUserProfileResponse | null;
+  updateUserProfileLoading: boolean;
+  updateUserProfileError:
+    | {
+        statusCode: number;
+        content: string;
+      }
+    | undefined;
+}
 
 const initialState: SliceState = {
-  registerData: null,
-  registerLoading: false,
-  registerError: undefined,
-  // Login
-  loginData:
-    typeof window !== "undefined" && localStorage.getItem("userData")
-      ? JSON.parse(localStorage.getItem("userData") as string)
-      : null,
-  loginLoading: false,
-  loginError: undefined,
+  userProfile: null,
+  userProfileLoading: false,
+  userProfileError: undefined,
+
+  updateUserProfile: null,
+  updateUserProfileLoading: false,
+  updateUserProfileError: undefined,
 };
 
-const authSlice = createSlice({
-  name: "auth",
+const userSlice = createSlice({
+  name: "userReducer",
   initialState,
-  reducers: {
-    logout: (state) => {
-      state.loginData = null;
-      localStorage.removeItem("userData");
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(registerUser.pending, (state) => {
-        state.registerLoading = true;
-        state.registerError = {
+      .addCase(fetchGetUserProfile.pending, (state) => {
+        state.userProfileLoading = true;
+        state.userProfileError = {
           statusCode: 500,
           content: "",
         };
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
-        state.registerLoading = false;
-        state.registerData = action.payload;
+      .addCase(fetchGetUserProfile.fulfilled, (state, action) => {
+        state.userProfileLoading = false;
+        state.userProfile = action.payload;
       })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.registerLoading = false;
-        state.registerError = action.payload;
+      .addCase(fetchGetUserProfile.rejected, (state, action) => {
+        state.userProfileLoading = false;
+        state.userProfileError = action.payload;
       })
-      .addCase(loginUser.pending, (state) => {
-        state.loginLoading = true;
-        state.loginError = undefined;
+      .addCase(fetchUpdateUserProfile.pending, (state) => {
+        state.updateUserProfileLoading = true;
+        state.updateUserProfileError = {
+          statusCode: 500,
+          content: "",
+        };
       })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.loginLoading = false;
-        state.loginData = action.payload;
-        localStorage.setItem("userData", JSON.stringify(action.payload));
+      .addCase(fetchUpdateUserProfile.fulfilled, (state, action) => {
+        state.updateUserProfileLoading = false;
+        state.updateUserProfile = action.payload;
       })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.loginLoading = false;
-        state.loginError = action.payload;
+      .addCase(fetchUpdateUserProfile.rejected, (state, action) => {
+        state.updateUserProfileLoading = false;
+        state.updateUserProfileError = action.payload;
       });
   },
 });
 
-export const { logout } = authSlice.actions;
-export default authSlice.reducer;
+export default userSlice.reducer;

@@ -24,6 +24,9 @@ const axiosInstance: AxiosInstance = axios.create({
 // =======================
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    const usser = localStorage.getItem("userData");
+    const accessToken = usser ? JSON.parse(usser).content.accessToken : "";
+    config.headers.set("Authorization", "Bearer " + accessToken);
     config.headers.set("TokenCybersoft", CYBERSOFT_TOKEN);
     return config;
   },
