@@ -7,7 +7,6 @@ import {
 import { UserLogin, UserLoginResponse } from "@/types/user/auth/login.type";
 import { log } from "console";
 
-
 // 1 - Đăng ký
 export const registerUser = createAsyncThunk<
   UserRegisterResponse,
@@ -15,16 +14,19 @@ export const registerUser = createAsyncThunk<
   { rejectValue: { statusCode: number; content: string } }
 >("createUserThunk", async (userData, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(`QuanLyNguoiDung/DangKy`, userData);
+    const response = await axiosInstance.post(
+      `QuanLyNguoiDung/DangKy`,
+      userData
+    );
     return {
       statusCode: response.status,
       content: response.data,
     };
   } catch (error: any) {
     return rejectWithValue({
-    statusCode: error.response?.status || 500,
-     content: error || "An error occurred",
-  });
+      statusCode: error.response?.status || 500,
+      content: error || "An error occurred",
+    });
   }
 });
 
@@ -48,22 +50,26 @@ export const loginUser = createAsyncThunk<
       content: error || "Login failed",
     });
   }
-}) 
+});
 
 interface SliceState {
   registerData: UserRegisterResponse | null;
   registerLoading: boolean;
-  registerError: {
-    statusCode: number;
-    content: string;
-  } | undefined;
+  registerError:
+    | {
+        statusCode: number;
+        content: string;
+      }
+    | undefined;
 
   loginData: UserLoginResponse | null;
   loginLoading: boolean;
-  loginError: {
-    statusCode: number;
-    content: string;
-  } | undefined;
+  loginError:
+    | {
+        statusCode: number;
+        content: string;
+      }
+    | undefined;
 }
 
 const initialState: SliceState = {
@@ -71,9 +77,10 @@ const initialState: SliceState = {
   registerLoading: false,
   registerError: undefined,
   // Login
-  loginData: typeof window !== "undefined" && localStorage.getItem("userData")
-    ? JSON.parse(localStorage.getItem("userData") as string)
-    : null,
+  loginData:
+    typeof window !== "undefined" && localStorage.getItem("userData")
+      ? JSON.parse(localStorage.getItem("userData") as string)
+      : null,
   loginLoading: false,
   loginError: undefined,
 };
@@ -82,10 +89,10 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
- logout: (state) => {
-  state.loginData = null;
-  localStorage.removeItem("userData");
- }
+    logout: (state) => {
+      state.loginData = null;
+      localStorage.removeItem("userData");
+    },
   },
   extraReducers: (builder) => {
     builder

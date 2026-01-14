@@ -10,6 +10,7 @@ import {
   categorySeoMap,
   courseIntroductionByCategory,
 } from "../../component/SeoDescription";
+import JoinCourseCard from "../../component/JoinCourseCard";
 
 type Props = {
   params: {
@@ -78,65 +79,32 @@ export default async function CourseDetailPage({ params }: Props) {
     course.moTa;
   return (
     <main className="min-h-screen dark:bg-gray-900">
-      {/* HERO */}
-      <section className="bg-gradient-to-r from-blue-300 to-indigo-700 ">
+      <section className="bg-gradient-to-r from-blue-300 to-indigo-700 rounded-br-3xl rounded-tl-3xl">
         <div className="max-w-6xl mx-auto px-6 py-16">
           <p className="text-sm uppercase opacity-80">
             {course.danhMucKhoaHoc.tenDanhMucKhoaHoc}
           </p>
-
           <h1 className="text-4xl md:text-5xl font-bold mt-2">
             {course.tenKhoaHoc}
           </h1>
-
           <p className="mt-4 max-w-2xl text-lg opacity-90">
             {categoryDescription}
           </p>
           <p className="mt-4 max-w-2xl text-lg opacity-90">{course.moTa}</p>
           <div className="mt-6 flex gap-6 text-sm">
-            <span>👁 {course.luotXem} views</span>
-            <span>👨‍🎓 {course.soLuongHocVien} students</span>
+            <span>{course.luotXem} views</span>
+            <span>{course.soLuongHocVien} students</span>
           </div>
         </div>
       </section>
 
-      {/* CONTENT */}
       <section className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-3 gap-8">
-        {/* LEFT */}
         <div className="md:col-span-2 space-y-6">
           <h2 className="text-2xl font-semibold">Course introduction</h2>
           <p className=" leading-relaxed">{intro}</p>
         </div>
-
-        {/* RIGHT */}
-        <aside className="bg-white rounded-xl shadow p-6 space-y-4">
-          <Image
-            src={course.hinhAnh}
-            alt={course.tenKhoaHoc}
-            width={400}
-            height={250}
-            className="rounded-lg object-cover"
-          />
-
-          <div className="text-sm text-gray-600 space-y-2">
-            <p>
-              👨‍🏫 <strong>Teacher:</strong> {course.nguoiTao.hoTen}
-            </p>
-            <p>
-              📂 <strong>Category:</strong>{" "}
-              {course.danhMucKhoaHoc.tenDanhMucKhoaHoc}
-            </p>
-            <p>
-              📅 <strong>Create date:</strong> {course.ngayTao}
-            </p>
-          </div>
-
-          <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition">
-            Register now
-          </button>
-        </aside>
+        <JoinCourseCard course={course} />
       </section>
-      {/* ====== RELATED COURSES ====== */}
       {filteredCourses.length > 0 && (
         <section className="max-w-6xl mx-auto px-6 pb-16">
           <h2 className="text-3xl font-bold mb-6">Related courses</h2>
