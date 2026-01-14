@@ -1,11 +1,17 @@
-export default function ProfileLayout({
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+export default function ProfileGuard({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <section className="">
-      <div className="">{children}</div>
-    </section>
-  );
+  const router = useRouter();
+  const userData = localStorage.getItem("userData");
+  if (!userData) {
+    router.replace("/login");
+  }
+  return <>{children}</>;
 }
