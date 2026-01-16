@@ -8,7 +8,6 @@ import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/user/navbar";
 import Footer from "./component/Footer";
 
-
 export const metadata: Metadata = {
   title: {
     default: "TOT - E-Learning Platform | Learn Anytime, Anywhere",

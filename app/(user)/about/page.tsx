@@ -66,7 +66,7 @@ export default function AboutPage() {
               Sharing knowledge, learning experiences, and skill development
               tailored for individuals and businesses.
             </p>
-            <Button onPress={() => router.push("/categories")} color="primary">
+            <Button onPress={() => router.push("/course")} color="primary">
               Join Now
             </Button>
           </div>
@@ -378,9 +378,7 @@ export default function AboutPage() {
               {categories.map((item) => (
                 <div
                   key={item.maDanhMuc}
-                  onClick={() =>
-                    router.push(`/categories?id=${item.maDanhMuc}`)
-                  }
+                  onClick={() => router.push(`/courses?id=${item.maDanhMuc}`)}
                   className="flex flex-col items-center justify-center p-6 rounded-xl transition-all duration-300 cursor-pointer
                            bg-white text-slate-800 border border-transparent
                            shadow-[0_8px_30px_rgb(0,0,0,0.12)] 

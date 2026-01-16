@@ -32,16 +32,16 @@ export default function Footer() {
             <h3 className="font-semibold mb-3">Course</h3>
             <ul className="space-y-2 text-sm text-default-500">
               <li>
-                <Link href="/categories?id=FrontEnd">Frontend</Link>
+                <Link href="/courses?id=FrontEnd">Frontend</Link>
               </li>
               <li>
-                <Link href="/categories?id=BackEnd">Backend</Link>
+                <Link href="/courses?id=BackEnd">Backend</Link>
               </li>
               <li>
-                <Link href="/categories?id=FullStack">Fullstack</Link>
+                <Link href="/courses?id=FullStack">Fullstack</Link>
               </li>
               <li>
-                <Link href="/categories?id=DiDong">Mobile App</Link>
+                <Link href="/courses?id=DiDong">Mobile App</Link>
               </li>
             </ul>
           </div>

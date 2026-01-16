@@ -25,15 +25,12 @@ export default async function Home() {
 
   const renderCategory = () => {
     return categoryWithCount.map((category: CategoryWithCount) => (
-      <Link
-        href={`/categories?id=${category.maDanhMuc}`}
-        key={category.maDanhMuc}
-      >
+      <Link href={`/courses?id=${category.maDanhMuc}`} key={category.maDanhMuc}>
         <div
-          className="border border-gray-400 rounded-md w-60 h-10 p-2 flex items-center  cursor-pointer "
+          className="border border-gray-400 rounded-md w-full p-2 flex items-center  cursor-pointer "
           key={category.maDanhMuc}
         >
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 w-full">
             <p className="font-normal">{category.tenDanhMuc}</p>
             <div className="flex items-center gap-1 text-sm text-gray-500 ml-auto">
               <p className="font-normal">{category.soLuong}</p>
@@ -74,10 +71,8 @@ export default async function Home() {
       </section>
       <PartnerList />
       <section className="flex flex-col items-center justify-center md:block">
-        <h1 className={`${title({ size: "sm" })}  pb-4`}>
-          Specialized topics
-        </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+        <h1 className={`${title({ size: "sm" })}  pb-4`}>Specialized topics</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 w-full">
           {renderCategory()}
         </div>
       </section>

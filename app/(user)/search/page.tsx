@@ -1,7 +1,7 @@
-import CourseListPagination from "../categories/component/CourseListPagination";
+import CourseListPagination from "../courses/component/CourseListPagination";
 import { getCoursesPagination } from "@/services/user/courses/course.service";
 import CourseCard from "../component/CourseCard";
-import SortButtons from "../categories/component/SortButtons";
+import SortButtons from "../courses/component/SortButtons";
 
 export default async function Search(props: any) {
   const { key, page, sort } = await props.searchParams;
