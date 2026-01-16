@@ -43,6 +43,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     const userCookie = Cookies.get("userData");
+    console.log(" userCookie", userCookie);
     if (userCookie) {
       try {
         setLoginData(JSON.parse(userCookie));
@@ -51,6 +52,8 @@ export const Navbar = () => {
       }
     }
   }, []);
+
+  console.log(loginData);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -142,7 +142,7 @@ export default function CategoriesDescription() {
           className="bg-white rounded-xl p-5 border shadow-sm"
         >
           <Link
-            href={`/categories?id=${item.maDanhMuc}`}
+            href={`/courses?id=${item.maDanhMuc}`}
             className="text-lg font-semibold text-primary hover:underline"
           >
             {item.tenDanhMuc}
