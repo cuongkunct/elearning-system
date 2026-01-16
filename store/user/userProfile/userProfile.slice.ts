@@ -58,20 +58,20 @@ interface SliceState {
   userProfile: ProfileResponse | null;
   userProfileLoading: boolean;
   userProfileError:
-    | {
-        statusCode: number;
-        content: string;
-      }
-    | undefined;
+  | {
+    statusCode: number;
+    content: string;
+  }
+  | undefined;
 
   updateUserProfile: updateUserProfileResponse | null;
   updateUserProfileLoading: boolean;
   updateUserProfileError:
-    | {
-        statusCode: number;
-        content: string;
-      }
-    | undefined;
+  | {
+    statusCode: number;
+    content: string;
+  }
+  | undefined;
 }
 
 const initialState: SliceState = {

@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Avatar, Card } from "@heroui/react";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,6 +46,8 @@ export default function ProfilePage() {
       dispatch(fetchGetUserProfile());
     }
   }, [dispatch, userInfo]);
+
+
 
   return (
     <div className="max-w-7xl mx-auto p-6">

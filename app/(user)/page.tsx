@@ -11,74 +11,7 @@ import Link from "next/link";
 import Image from "next/image";
 import StudentReviewSlider from "./component/StudentReviewSlider";
 import BusinessList from "./component/Business";
-import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: {
-    default: "TOT - E-Learning Platform | Learn Anytime, Anywhere",
-    template: "%s | E-Learning Platform",
-  },
-  icons: {
-    icon: "/logo.png",
-  },
-  description:
-    "TOT - E-Learning platform offering high-quality online courses in programming, design, business, and technology. Learn anytime, anywhere with expert instructors.",
-  keywords: [
-    "e-learning",
-    "tot",
-    "online courses",
-    "programming courses",
-    "learn online",
-    "education platform",
-    "web development",
-    "frontend",
-    "backend",
-    "react",
-    "nextjs",
-  ],
-  authors: [{ name: "TOT Team" }],
-  creator: "TOT - E-Learning Platform",
-  publisher: "TOT - E-Learning Platform",
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-    },
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "https://your-elearning.com",
-    siteName: "E-Learning Platform",
-    title: "E-Learning Platform | Learn Anytime, Anywhere",
-    description:
-      "Join thousands of learners and upgrade your skills with high-quality online courses.",
-    images: [
-      {
-        url: "http://localhost:3000/logo.png",
-        width: 1200,
-        height: 630,
-        alt: "E-Learning Platform",
-      },
-    ],
-  },
-
-  twitter: {
-    card: "summary_large_image",
-    title: "E-Learning Platform | Learn Anytime, Anywhere",
-    description:
-      "High-quality online courses in programming, design, and business.",
-    images: ["http://localhost:3000/logo.png"],
-  },
-
-  alternates: {
-    canonical: "https://your-elearning.com/elearning",
-  },
-
-  category: "education",
-};
 export default async function Home() {
   const { courses, categories } = await getCourseAndCategory();
   const categoryWithCount = mergeCategoryWithCourseCount(courses, categories);
@@ -140,15 +73,15 @@ export default async function Home() {
         </p>
       </section>
       <PartnerList />
-      <section className="">
-        <h1 className={`${title({ size: "sm" })} pt-12 pb-4`}>
+      <section className="flex flex-col items-center justify-center md:block">
+        <h1 className={`${title({ size: "sm" })}  pb-4`}>
           Specialized topics
         </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  items-center justify-between gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
           {renderCategory()}
         </div>
       </section>
-      <section className="">
+      <section className="flex flex-col items-center justify-center md:block">
         <h1 className={`${title({ size: "sm" })} pt-12 pb-4`}>
           The most popular course
         </h1>
