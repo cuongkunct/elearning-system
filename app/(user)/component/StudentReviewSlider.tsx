@@ -68,7 +68,7 @@ export default function StudentReviewSlider() {
   return (
     <section className="py-16 ">
       <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-3xl font-bold mb-10">What Our Students Say</h2>
+        <h2 className="text-2xl font-bold mb-10">What Our Students Say</h2>
 
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
@@ -91,7 +91,7 @@ export default function StudentReviewSlider() {
         >
           {reviews.map((item) => (
             <SwiperSlide key={item.id}>
-              <div className="bg-gray-50 rounded-xl shadow-sm p-6 h-full flex flex-col gap-4">
+              <div className="dark:bg-gray-700 light:bg-white shadow-sm p-6 h-full flex flex-col gap-4 roun">
                 <div className="w-full h-50 rounded-md  overflow-hidden">
                   <img
                     src={item.image}
@@ -99,16 +99,16 @@ export default function StudentReviewSlider() {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <span className="text-sm  font-medium text-primary">
+                <span className="text-sm  font-medium ">
                   {item.source}
                 </span>
-                <h3 className="font-semibold text-lg text-primary">
+                <h3 className="font-semibold text-lg ">
                   {item.title}
                 </h3>
-                <p className=" text-sm leading-relaxed text-gray-700">
+                <p className=" text-sm leading-relaxed ">
                   {item.content}
                 </p>
-                <div className="mt-auto pt-4 border-t text-sm font-medium text-red-700">
+                <div className="mt-auto pt-4 border-t text-sm font-medium ">
                   {item.name}
                 </div>
               </div>

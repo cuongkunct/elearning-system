@@ -9,10 +9,6 @@ export const siteConfig = {
       href: "/",
     },
     {
-      label: "Course",
-      href: "/courses",
-    },
-    {
       label: "Categories",
       href: "/categories",
     },
@@ -25,10 +21,6 @@ export const siteConfig = {
     {
       label: "Home",
       href: "/",
-    },
-    {
-      label: "Courses",
-      href: "/courses",
     },
     {
       label: "Careers",

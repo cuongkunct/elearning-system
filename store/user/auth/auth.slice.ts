@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "@/services/axiosInstance";
+import Cookies from "js-cookie";
 import {
   UserRegister,
   UserRegisterResponse,
 } from "@/types/user/auth/register.type";
 import { UserLogin, UserLoginResponse } from "@/types/user/auth/login.type";
-import { log } from "console";
+
 
 // 1 - Đăng ký
 export const registerUser = createAsyncThunk<
@@ -56,20 +57,20 @@ interface SliceState {
   registerData: UserRegisterResponse | null;
   registerLoading: boolean;
   registerError:
-    | {
-        statusCode: number;
-        content: string;
-      }
-    | undefined;
+  | {
+    statusCode: number;
+    content: string;
+  }
+  | undefined;
 
   loginData: UserLoginResponse | null;
   loginLoading: boolean;
   loginError:
-    | {
-        statusCode: number;
-        content: string;
-      }
-    | undefined;
+  | {
+    statusCode: number;
+    content: string;
+  }
+  | undefined;
 }
 
 const initialState: SliceState = {
@@ -77,10 +78,7 @@ const initialState: SliceState = {
   registerLoading: false,
   registerError: undefined,
   // Login
-  loginData:
-    typeof window !== "undefined" && localStorage.getItem("userData")
-      ? JSON.parse(localStorage.getItem("userData") as string)
-      : null,
+  loginData: null,
   loginLoading: false,
   loginError: undefined,
 };
@@ -91,7 +89,7 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.loginData = null;
-      localStorage.removeItem("userData");
+      Cookies.remove("userData");
     },
   },
   extraReducers: (builder) => {
@@ -118,7 +116,12 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loginLoading = false;
         state.loginData = action.payload;
-        localStorage.setItem("userData", JSON.stringify(action.payload));
+        Cookies.set("userData", JSON.stringify(action.payload), {
+          expires: 7,
+          sameSite: "lax",
+          secure: true,
+          path: "/",
+        });
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loginLoading = false;

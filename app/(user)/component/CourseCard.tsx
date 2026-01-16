@@ -2,7 +2,7 @@
 
 import { Card, CardBody, CardFooter } from "@heroui/react";
 import { Course } from "@/types/user/course/course.type";
-import SafeImage from "../courses/component/SafeImage";
+import SafeImage from "../categories/component/SafeImage";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -22,10 +22,12 @@ export default function CourseCard({ courses }: CourseCardProps) {
         isSearchPage
           ? "flex flex-col gap-4"
           : `
-            grid gap-2
+            grid 
             grid-cols-1
             sm:grid-cols-2
             md:grid-cols-3
+            gap-4
+            w-full
             ${isCategoryPage ? "lg:grid-cols-3" : "lg:grid-cols-4"}
           `
       }
@@ -35,17 +37,15 @@ export default function CourseCard({ courses }: CourseCardProps) {
           <Card
             isPressable
             shadow="sm"
-            className={`cursor-pointer w-full ${
-              isSearchPage ? "flex flex-col sm:flex-row items-start gap-3" : ""
-            }`}
+            className={`cursor-pointer w-full ${isSearchPage ? "flex flex-col sm:flex-row items-start gap-3" : ""
+              }`}
           >
             {/* IMAGE */}
             <CardBody
-              className={`p-0 overflow-hidden shrink-0 flex items-center justify-center ${
-                isSearchPage
-                  ? "w-full h-[120px] sm:w-[100px] sm:h-[150px]"
-                  : "h-[180px]"
-              }`}
+              className={`p-0 overflow-hidden shrink-0 flex items-center justify-center ${isSearchPage
+                ? "w-full h-[120px] sm:w-[100px] sm:h-[150px]"
+                : "h-[180px]"
+                }`}
             >
               <SafeImage
                 src={item.hinhAnh}
@@ -58,9 +58,8 @@ export default function CourseCard({ courses }: CourseCardProps) {
 
             {/* CONTENT */}
             <CardFooter
-              className={`flex flex-col items-start gap-2 w-full ${
-                isSearchPage ? "flex-3" : ""
-              }`}
+              className={`flex flex-col items-start gap-2 w-full ${isSearchPage ? "flex-3" : ""
+                }`}
             >
               <b className="line-clamp-2 text-base">{item.tenKhoaHoc}</b>
 

@@ -19,9 +19,8 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import { SearchIcon, Logo } from "@/components/icons";
 import { Button } from "@heroui/button";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/index";
+import { useEffect, useState } from "react";
+
 import {
   Dropdown,
   DropdownTrigger,
@@ -31,13 +30,27 @@ import {
 } from "@heroui/react";
 import { logout } from "@/store/user/auth/auth.slice";
 import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
+import { UserLoginResponse } from "@/types/user/auth/login.type";
 
 export const Navbar = () => {
   const rout = useRouter();
   const dispatch = useDispatch();
   const pathname = usePathname();
-  const [searchKey, setSearchKey] = useState("");
-  const { loginData } = useSelector((state: RootState) => state.auth);
+  const [searchKey, setSearchKey] = useState<string>("");
+
+  const [loginData, setLoginData] = useState<UserLoginResponse | null>(null);
+
+  useEffect(() => {
+    const userCookie = Cookies.get("userData");
+    if (userCookie) {
+      try {
+        setLoginData(JSON.parse(userCookie));
+      } catch {
+        setLoginData(null);
+      }
+    }
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

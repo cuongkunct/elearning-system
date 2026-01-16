@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { DispatchType } from "@/store";
 import { useRouter } from "next/navigation";
 import NotificationModal from "../component/NotificationModal";
-import { UserLoginResponse } from "@/types/user/auth/login.type";
+
 
 export default function Login() {
   const router = useRouter();

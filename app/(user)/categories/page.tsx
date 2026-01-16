@@ -5,7 +5,7 @@ import {
   getCoursesPagination,
 } from "@/services/user/courses/course.service";
 import CourseCard from "../component/CourseCard";
-import CourseListPagination from "../courses/component/CourseListPagination";
+import CourseListPagination from "./component/CourseListPagination";
 import CategoriesIntro from "../component/CategoriesIntro";
 import SortButtons from "./component/SortButtons";
 import { Course } from "@/types/user/course/course.type";
