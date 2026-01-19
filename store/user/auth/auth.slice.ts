@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "@/services/axiosInstance";
 import Cookies from "js-cookie";
+
 import {
   UserRegister,
   UserRegisterResponse,
 } from "@/types/user/auth/register.type";
 import { UserLogin, UserLoginResponse } from "@/types/user/auth/login.type";
-
 
 // 1 - Đăng ký
 export const registerUser = createAsyncThunk<
@@ -17,7 +17,7 @@ export const registerUser = createAsyncThunk<
   try {
     const response = await axiosInstance.post(
       `QuanLyNguoiDung/DangKy`,
-      userData
+      userData,
     );
     return {
       statusCode: response.status,
@@ -39,7 +39,7 @@ export const loginUser = createAsyncThunk<
   try {
     const response = await axiosInstance.post(
       `QuanLyNguoiDung/DangNhap`,
-      userData
+      userData,
     );
     return {
       statusCode: response.status,
@@ -57,20 +57,20 @@ interface SliceState {
   registerData: UserRegisterResponse | null;
   registerLoading: boolean;
   registerError:
-  | {
-    statusCode: number;
-    content: string;
-  }
-  | undefined;
+    | {
+        statusCode: number;
+        content: string;
+      }
+    | undefined;
 
   loginData: UserLoginResponse | null;
   loginLoading: boolean;
   loginError:
-  | {
-    statusCode: number;
-    content: string;
-  }
-  | undefined;
+    | {
+        statusCode: number;
+        content: string;
+      }
+    | undefined;
 }
 
 const initialState: SliceState = {

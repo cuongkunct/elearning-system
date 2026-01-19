@@ -50,7 +50,7 @@ const categoryDescriptions = [
 export default function CategoriesDescription() {
   return (
     <div className="space-y-4">
-      <div className="space-y-6 text-gray-700 leading-relaxed">
+      <div className="space-y-6  leading-relaxed">
         <p>
           Sự phát triển của các website học trực tuyến đã giúp cho bất kỳ ai
           cũng có thể học tập, tiếp thu kiến thức và mở rộng tri thức, từ đó
@@ -61,11 +61,17 @@ export default function CategoriesDescription() {
 
         <p>
           Hãy khám phá ngay các khóa học online tại nền tảng giáo dục trực tuyến{" "}
-          <span className="font-medium text-primary">TOT.com</span>, nơi đồng
-          hành cùng bạn trên hành trình học tập và phát triển bản thân mỗi ngày.
+          <Link
+            className="font-medium text-primary"
+            href="http://localhost:3000"
+          >
+            TOT.com
+          </Link>
+          , nơi đồng hành cùng bạn trên hành trình học tập và phát triển bản
+          thân mỗi ngày.
         </p>
 
-        <h2 className="text-xl font-semibold text-gray-900">
+        <h2 className="text-xl font-semibold ">
           Những con số biết nói về xu hướng học online
         </h2>
 
@@ -113,7 +119,7 @@ export default function CategoriesDescription() {
           lẫn các tổ chức đào tạo.
         </p>
 
-        <h2 className="text-xl font-semibold text-gray-900">
+        <h2 className="text-xl font-semibold ">
           Học online – cách giúp bạn “học, học nữa, học mãi”
         </h2>
 
@@ -125,7 +131,7 @@ export default function CategoriesDescription() {
           cao năng lực và mở rộng cơ hội nghề nghiệp.
         </p>
 
-        <h2 className="text-xl font-semibold text-gray-900">
+        <h2 className="text-xl font-semibold">
           10+ khóa học online hữu ích nhất hiện nay
         </h2>
 
@@ -139,7 +145,7 @@ export default function CategoriesDescription() {
       {categoryDescriptions.map((item) => (
         <div
           key={item.maDanhMuc}
-          className="bg-white rounded-xl p-5 border shadow-sm"
+          className="bg-white rounded-xl p-5 shadow-lg shadow-blue-200"
         >
           <Link
             href={`/courses?id=${item.maDanhMuc}`}

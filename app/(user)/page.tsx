@@ -11,7 +11,8 @@ import Link from "next/link";
 import Image from "next/image";
 import StudentReviewSlider from "./component/StudentReviewSlider";
 import BusinessList from "./component/Business";
-
+import Button from "../(user)/component/ui/Button";
+import { ArrowIcon } from "@/components/icons";
 export default async function Home() {
   const { courses, categories } = await getCourseAndCategory();
   const categoryWithCount = mergeCategoryWithCourseCount(courses, categories);
@@ -27,8 +28,16 @@ export default async function Home() {
     return categoryWithCount.map((category: CategoryWithCount) => (
       <Link href={`/courses?id=${category.maDanhMuc}`} key={category.maDanhMuc}>
         <div
-          className="border border-gray-400 rounded-md w-full p-2 flex items-center  cursor-pointer "
           key={category.maDanhMuc}
+          className="
+                    w-full p-2 flex items-center cursor-pointer rounded-md border
+                    border-gray-300
+                    bg-white text-gray-800
+                    hover:bg-gray-200 hover:border-gray-400 hover:shadow-sm
+                    dark:bg-gray-800 dark:text-white dark:border-gray-600
+                    dark:hover:bg-gray-700 dark:hover:border-gray-500
+                    transition-all duration-200 ease-in-out
+                    "
         >
           <div className="flex items-center gap-4 w-full">
             <p className="font-normal">{category.tenDanhMuc}</p>
@@ -81,12 +90,26 @@ export default async function Home() {
           The most popular course
         </h1>
         <CourseCard courses={topLearnedCategories} />
+        <div className="flex justify-center items-center mt-8">
+          <Link href="/courses">
+            <Button>
+              See more <ArrowIcon />
+            </Button>
+          </Link>
+        </div>
       </section>
       <section className="">
         <h1 className={`${title({ size: "sm" })} pt-12 pb-4`}>
           The most viewed course
         </h1>
         <CourseCard courses={topViewedCategories} />
+        <div className="flex justify-center items-center mt-8">
+          <Link href="/courses">
+            <Button>
+              See more <ArrowIcon />
+            </Button>
+          </Link>
+        </div>
       </section>
 
       <section className="">

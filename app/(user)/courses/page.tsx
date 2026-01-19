@@ -96,7 +96,7 @@ export default async function CategoriesPage({
         </main>
       </div>
       {showPagination ? (
-        <div>
+        <div className="py-18">
           <CategoriesIntro />
         </div>
       ) : null}
