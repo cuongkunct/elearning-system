@@ -9,7 +9,7 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  if (!userData && (pathname === "/profile")) {
+  if (!userData && pathname === "/profile") {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 

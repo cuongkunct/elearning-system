@@ -46,19 +46,13 @@ export default function AboutPage() {
   ];
   return (
     <div className="w-full min-h-screen">
-      {/* HERO BLOG */}
-      <section className="relative h-screen w-full">
-        {/* Background image */}
+      <section className="relative w-full h-64 md:h-96 lg:h-[500px]">
         <img
           src="blog-banner.png"
           alt="Blog background"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover"
         />
-
-        {/* Overlay */}
         <div className="absolute inset-0 bg-gray-900/50" />
-
-        {/* Content */}
         <div className="relative z-10 flex h-full items-center">
           <div className="mx-auto max-w-7xl px-8">
             <h1 className="text-5xl font-bold mb-4 text-white">Blog TOT</h1>
@@ -66,7 +60,7 @@ export default function AboutPage() {
               Sharing knowledge, learning experiences, and skill development
               tailored for individuals and businesses.
             </p>
-            <Button onPress={() => router.push("/course")} color="primary">
+            <Button onPress={() => router.push("/courses")} color="primary">
               Join Now
             </Button>
           </div>
@@ -354,13 +348,10 @@ export default function AboutPage() {
       </div>
       <section className="py-5 px-4     transition-colors duration-300 overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          {/* Title */}
           <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-16 tracking-tight">
             Course Categories at TOT
           </h2>
-
           <div className="flex flex-col lg:flex-row items-center gap-12">
-            {/* Left Side: Image Banner */}
             <div className="w-full lg:w-5/12 relative group">
               <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
@@ -372,8 +363,6 @@ export default function AboutPage() {
                 <div className="absolute inset-0 bg-blue-900/20 mix-blend-multiply"></div>
               </div>
             </div>
-
-            {/* Right Side: Category Grid */}
             <div className="w-full lg:w-7/12 grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6">
               {categories.map((item) => (
                 <div

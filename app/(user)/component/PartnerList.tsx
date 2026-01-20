@@ -18,7 +18,7 @@ export default function PartnerList() {
           {partners.map((partner) => (
             <div
               key={partner.id}
-              className="flex items-center justify-center grayscale opacity-90 hover:grayscale-0 hover:opacity-100 transition"
+              className="flex items-center justify-center hover:scale-150 transition-all duration-500"
             >
               <Image
                 src={partner.logo}

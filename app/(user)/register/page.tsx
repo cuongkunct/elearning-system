@@ -7,12 +7,14 @@ import { registerUser } from "@/store/user/auth/auth.slice";
 import { useRouter } from "next/navigation";
 import NotificationModal from "../component/NotificationModal";
 import { addToast, ToastProvider } from "@heroui/react";
+import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
 export default function Register() {
   const router = useRouter();
   const dispatch = useDispatch<DispatchType>();
   const [open, setOpen] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-
+  const [isVisible, setIsVisible] = React.useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
   return (
     <Form
       className="
@@ -31,7 +33,7 @@ export default function Register() {
         const data = Object.fromEntries(new FormData(e.currentTarget));
         try {
           const res = await dispatch(
-            registerUser(JSON.parse(JSON.stringify(data)))
+            registerUser(JSON.parse(JSON.stringify(data))),
           ).unwrap();
           console.log("Register successful:", res);
           if (res.statusCode === 200) {
@@ -65,12 +67,25 @@ export default function Register() {
         />
 
         <Input
-          isRequired
+          endContent={
+            <button
+              aria-label="toggle password visibility"
+              className="focus:outline-solid outline-transparent"
+              type="button"
+              onClick={toggleVisibility}
+            >
+              {isVisible ? (
+                <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+              ) : (
+                <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+              )}
+            </button>
+          }
+          name="matKhau"
           label="Password"
           labelPlacement="outside"
-          name="matKhau"
           placeholder="Enter your password"
-          type="password"
+          type={isVisible ? "text" : "password"}
         />
 
         <Input

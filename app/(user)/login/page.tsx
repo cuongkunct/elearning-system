@@ -6,14 +6,15 @@ import { useDispatch } from "react-redux";
 import { DispatchType } from "@/store";
 import { useRouter } from "next/navigation";
 import NotificationModal from "../component/NotificationModal";
-
+import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
 
 export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch<DispatchType>();
   const [open, setOpen] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-
+  const [isVisible, setIsVisible] = React.useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
   return (
     <Form
       className="
@@ -30,7 +31,7 @@ export default function Login() {
       onSubmit={async (e) => {
         e.preventDefault();
         let data: any = JSON.parse(
-          JSON.stringify(Object.fromEntries(new FormData(e.currentTarget)))
+          JSON.stringify(Object.fromEntries(new FormData(e.currentTarget))),
         );
         console.log("User dtaa:", data);
         try {
@@ -64,13 +65,25 @@ export default function Login() {
       />
 
       <Input
-        isRequired
-        errorMessage="Please enter a valid password"
+        endContent={
+          <button
+            aria-label="toggle password visibility"
+            className="focus:outline-solid outline-transparent"
+            type="button"
+            onClick={toggleVisibility}
+          >
+            {isVisible ? (
+              <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+            ) : (
+              <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+            )}
+          </button>
+        }
+        name="matKhau"
         label="Password"
         labelPlacement="outside"
-        name="matKhau"
         placeholder="Enter your password"
-        type="password"
+        type={isVisible ? "text" : "password"}
       />
       <NotificationModal
         title={err ?? "Registration Failed"}

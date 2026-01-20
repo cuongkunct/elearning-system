@@ -19,7 +19,7 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import { SearchIcon, Logo } from "@/components/icons";
 import { Button } from "@heroui/button";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   Dropdown,
@@ -38,12 +38,10 @@ export const Navbar = () => {
   const dispatch = useDispatch();
   const pathname = usePathname();
   const [searchKey, setSearchKey] = useState<string>("");
-
   const [loginData, setLoginData] = useState<UserLoginResponse | null>(null);
 
   useEffect(() => {
     const userCookie = Cookies.get("userData");
-    console.log(" userCookie", userCookie);
     if (userCookie) {
       try {
         setLoginData(JSON.parse(userCookie));
@@ -53,7 +51,13 @@ export const Navbar = () => {
     }
   }, []);
 
-  console.log(loginData);
+  useEffect(() => {
+    if (pathname !== "/search") {
+      setSearchKey("");
+    }
+  }, [pathname]);
+
+  const loginDataMemo = useMemo(() => loginData, [loginData]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -109,7 +113,7 @@ export const Navbar = () => {
               <NextLink
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  `data-[active=true]:text-primary data-[active=true]:font-medium ${item.href === pathname ? "text-primary font-medium" : ""}`
+                  `data-[active=true]:text-primary data-[active=true]:font-medium ${item.href === pathname ? "text-primary font-medium" : ""}`,
                 )}
                 color="foreground"
                 href={item.href}
@@ -129,17 +133,23 @@ export const Navbar = () => {
           <ThemeSwitch />
         </NavbarItem>
         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
-        <NavbarItem className={loginData?.content?.accessToken ? "hidden" : ""}>
+        <NavbarItem
+          className={loginDataMemo?.content?.accessToken ? "hidden" : ""}
+        >
           <Button as={Link} color="primary" href="/login" variant="flat">
             Login
           </Button>
         </NavbarItem>
-        <NavbarItem className={loginData?.content?.accessToken ? "hidden" : ""}>
+        <NavbarItem
+          className={loginDataMemo?.content?.accessToken ? "hidden" : ""}
+        >
           <Button as={Link} color="default" href="/register" variant="flat">
             Sign Up
           </Button>
         </NavbarItem>
-        <NavbarItem className={loginData?.content?.accessToken ? "" : "hidden"}>
+        <NavbarItem
+          className={loginDataMemo?.content?.accessToken ? "" : "hidden"}
+        >
           <div className="flex items-center gap-4">
             <Dropdown placement="bottom-end">
               <DropdownTrigger>
@@ -147,7 +157,7 @@ export const Navbar = () => {
                   isBordered
                   as="button"
                   className="transition-transform"
-                  name={loginData?.content?.hoTen}
+                  name={loginDataMemo?.content?.hoTen}
                 />
               </DropdownTrigger>
               <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -157,7 +167,9 @@ export const Navbar = () => {
                   onClick={() => rout.push("/profile")}
                 >
                   <p className="font-semibold">My Profile</p>
-                  <p className="font-semibold">{loginData?.content?.hoTen}</p>
+                  <p className="font-semibold">
+                    {loginDataMemo?.content?.hoTen}
+                  </p>
                 </DropdownItem>
                 <DropdownItem key="my_courses">Registered Course</DropdownItem>
                 <DropdownItem key="help_and_feedback">
