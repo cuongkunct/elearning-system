@@ -57,28 +57,28 @@ interface SliceState {
   registerData: UserRegisterResponse | null;
   registerLoading: boolean;
   registerError:
-    | {
-        statusCode: number;
-        content: string;
-      }
-    | undefined;
+  | {
+    statusCode: number;
+    content: string;
+  }
+  | undefined;
 
   loginData: UserLoginResponse | null;
   loginLoading: boolean;
   loginError:
-    | {
-        statusCode: number;
-        content: string;
-      }
-    | undefined;
+  | {
+    statusCode: number;
+    content: string;
+  }
+  | undefined;
 }
 
 const initialState: SliceState = {
   registerData: null,
   registerLoading: false,
   registerError: undefined,
-  // Login
-  loginData: null,
+  // Login 
+  loginData: Cookies.get("userData") ? JSON.parse(Cookies.get("userData") || "") : null,
   loginLoading: false,
   loginError: undefined,
 };

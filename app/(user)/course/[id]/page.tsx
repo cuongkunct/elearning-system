@@ -4,14 +4,14 @@ import {
 } from "@/services/user/courses/course.service";
 import { Metadata } from "next";
 import { Course } from "@/types/user/course/course.type";
-import CourseCard from "../../component/CourseCard";
+import CourseCard from "../../../../components/user/shared/CourseCard";
 import {
   categorySeoMap,
   courseIntroductionByCategory,
-} from "../../component/SeoDescription";
-import JoinCourseCard from "../../component/JoinCourseCard";
+} from "../../../../components/user/sections/SeoDescription";
+import JoinCourseCard from "../../courses/_components/JoinCourseCard";
 import { ArrowIcon } from "@/components/icons";
-import Button from "../../component/ui/Button";
+import Button from "../../../../components/user/ui/Button";
 import Link from "next/link";
 type Props = {
   params: {

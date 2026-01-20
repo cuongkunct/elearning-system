@@ -1,7 +1,7 @@
 import SlideShow from "@/components/user/SlideShow";
 import { title } from "@/components/primitives";
-import PartnerList from "./component/PartnerList";
-import CourseCard from "../(user)/component/CourseCard";
+import PartnerList from "./_components/PartnerList";
+import CourseCard from "../../components/user/shared/CourseCard";
 import { CategoryWithCount } from "@/types/user/category/category.type";
 import {
   getCourseAndCategory,
@@ -9,9 +9,9 @@ import {
 } from "@/services/user/category/category.service";
 import Link from "next/link";
 import Image from "next/image";
-import StudentReviewSlider from "./component/StudentReviewSlider";
-import BusinessList from "./component/Business";
-import Button from "../(user)/component/ui/Button";
+import StudentReviewSlider from "../../components/user/sections/StudentReviewSlider";
+import BusinessList from "./_components/Business";
+import Button from "../../components/user/ui/Button";
 import { ArrowIcon } from "@/components/icons";
 export default async function Home() {
   const { courses, categories } = await getCourseAndCategory();

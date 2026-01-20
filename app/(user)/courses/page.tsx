@@ -1,13 +1,13 @@
 import { getListCategory } from "@/services/user/category/category.service";
-import CategoriesFilter from "./component/CategoriesFilter";
+import CategoriesFilter from "./_components/CategoriesFilter";
 import {
   getRelatedCourses,
   getCoursesPagination,
 } from "@/services/user/courses/course.service";
-import CourseCard from "../component/CourseCard";
-import CourseListPagination from "./component/CourseListPagination";
-import CategoriesIntro from "../component/CategoriesIntro";
-import SortButtons from "./component/SortButtons";
+import CourseCard from "../../../components/user/shared/CourseCard";
+import CourseListPagination from "./_components/CourseListPagination";
+import CategoriesIntro from "./_components/CategoriesIntro";
+import SortButtons from "./_components/SortButtons";
 import { Course } from "@/types/user/course/course.type";
 import { Metadata } from "next";
 

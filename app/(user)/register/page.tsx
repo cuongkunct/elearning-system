@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DispatchType, RootState } from "@/store";
 import { registerUser } from "@/store/user/auth/auth.slice";
 import { useRouter } from "next/navigation";
-import NotificationModal from "../component/NotificationModal";
+import NotificationModal from "../../../components/user/shared/NotificationModal";
 import { addToast, ToastProvider } from "@heroui/react";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
 export default function Register() {
