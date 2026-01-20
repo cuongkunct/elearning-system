@@ -5,7 +5,7 @@ import { loginUser } from "@/store/user/auth/auth.slice";
 import { useDispatch } from "react-redux";
 import { DispatchType } from "@/store";
 import { useRouter } from "next/navigation";
-import NotificationModal from "../component/NotificationModal";
+import NotificationModal from "../../../components/user/shared/NotificationModal";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
 
 export default function Login() {

@@ -23,7 +23,6 @@ export async function getCourseAndCategory() {
     getAllCourses(),
     getListCategory(),
   ]);
-
   return {
     courses,
     categories,
@@ -38,7 +37,6 @@ export function mergeCategoryWithCourseCount(
     const soLuong = courses.filter(
       (course) => course.danhMucKhoaHoc.maDanhMucKhoahoc === category.maDanhMuc
     ).length;
-
     return {
       ...category,
       soLuong,

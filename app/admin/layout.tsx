@@ -8,7 +8,7 @@ import { Providers } from "../providers";
 import { siteConfig } from "@/config/admin/site";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/admin/navbar";
-import Footer from "../(user)/component/Footer";
+import Footer from "../../components/user/layout/Footer";
 import { AdminSidebar } from "@/components/admin/sidebar";
 
 export const metadata: Metadata = {
