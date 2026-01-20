@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Avatar, Card } from "@heroui/react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,54 +9,87 @@ import {
   fetchGetUserProfile,
   fetchUpdateUserProfile,
 } from "@/store/user/userProfile/userProfile.slice";
+import Cookies from "js-cookie";
 
 export default function ProfilePage() {
   const dispatch = useDispatch<DispatchType>();
-  const userInfo = useSelector(
-    (state: RootState) => state.userProfile.userProfile?.content
-  );
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const userInfo = useSelector(
+    (state: RootState) => state.userProfile.userProfile?.content,
+  );
+
+  const [isEdit, setIsEdit] = useState(false);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
-    taiKhoan: userInfo?.taiKhoan || "",
-    hoTen: userInfo?.hoTen || "",
-    email: userInfo?.email || "",
-    soDT: userInfo?.soDT || "",
-    matKhau: userInfo?.matKhau || "",
-    maNhom: userInfo?.maNhom || "",
-    maLoaiNguoiDung: userInfo?.maLoaiNguoiDung || "",
+    taiKhoan: "",
+    hoTen: "",
+    email: "",
+    soDT: "",
+    matKhau: "",
+    maNhom: "",
+    maLoaiNguoiDung: "",
   });
-  const [isEdit, setIsEdit] = useState(false);
+
+  /* =======================
+     READ COOKIE (CLIENT ONLY)
+  ======================== */
+  useEffect(() => {
+    const userData = Cookies.get("userData");
+    if (!userData) return;
+
+    const token = JSON.parse(userData).content.accessToken;
+    setAccessToken(token);
+
+    dispatch(fetchGetUserProfile({ accessToken: token }));
+  }, [dispatch]);
+
+  /* =======================
+     SYNC FORM DATA
+  ======================== */
+  useEffect(() => {
+    if (!userInfo) return;
+
+    setFormData({
+      taiKhoan: userInfo.taiKhoan || "",
+      hoTen: userInfo.hoTen || "",
+      email: userInfo.email || "",
+      soDT: userInfo.soDT || "",
+      matKhau: userInfo.matKhau || "",
+      maNhom: userInfo.maNhom || "",
+      maLoaiNguoiDung: userInfo.maLoaiNguoiDung || "",
+    });
+  }, [userInfo]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  useEffect(() => {
-    setFormData({
-      taiKhoan: userInfo?.taiKhoan || "",
-      hoTen: userInfo?.hoTen || "",
-      email: userInfo?.email || "",
-      soDT: userInfo?.soDT || "",
-      matKhau: userInfo?.matKhau || "",
-      maNhom: userInfo?.maNhom || "",
-      maLoaiNguoiDung: userInfo?.maLoaiNguoiDung || "",
-    });
-  }, [userInfo, isEdit]);
+  /* =======================
+     SUBMIT UPDATE PROFILE
+  ======================== */
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!accessToken) return;
 
-  useEffect(() => {
-    if (!userInfo) {
-      dispatch(fetchGetUserProfile());
-    }
-  }, [dispatch, userInfo]);
-  if (!mounted || !userInfo) return null;
+    await dispatch(
+      fetchUpdateUserProfile({
+        data: formData,
+        accessToken,
+      }),
+    );
+
+    await dispatch(fetchGetUserProfile({ accessToken }));
+    setIsEdit(false);
+  };
+
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+        {/* ===== LEFT CARD ===== */}
         <Card className="md:col-span-1 p-6 rounded-2xl shadow">
           <div className="flex flex-col items-center gap-4">
             <Avatar name={userInfo?.hoTen} className="w-24 h-24" />
@@ -63,6 +97,7 @@ export default function ProfilePage() {
               <p className="font-semibold">{userInfo?.hoTen}</p>
               <p className="text-sm text-gray-500">{userInfo?.email}</p>
             </div>
+
             <div className="w-full text-sm text-gray-600 space-y-2">
               <p>
                 <span className="font-medium">Username:</span>{" "}
@@ -79,84 +114,74 @@ export default function ProfilePage() {
           </div>
         </Card>
 
+        {/* ===== FORM ===== */}
         <Form
           className="md:col-span-4 flex flex-col gap-8 rounded-2xl p-10 shadow-xl"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            let data: any = JSON.parse(
-              JSON.stringify(Object.fromEntries(new FormData(e.currentTarget)))
-            );
-            try {
-              await dispatch(fetchUpdateUserProfile(data));
-              await dispatch(fetchGetUserProfile());
-              setIsEdit(false);
-            } catch (error) {
-              console.log(error);
-            }
-          }}
+          onSubmit={handleSubmit}
         >
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-semibold uppercase">
-              Profile Information
-            </h1>
-          </div>
+          <h1 className="text-2xl font-semibold uppercase">
+            Profile Information
+          </h1>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Input
               label="Username"
               name="taiKhoan"
-              value={formData?.taiKhoan}
-              color="danger"
+              value={formData.taiKhoan}
               isReadOnly
             />
+
             <Input
               label="Password"
               name="matKhau"
-              value={formData?.matKhau}
+              value={formData.matKhau}
               isReadOnly={!isEdit}
               onChange={handleChange}
               endContent={isEdit ? <EditIcon /> : null}
             />
+
             <Input
               label="Group"
               name="maNhom"
-              color="danger"
-              value={formData?.maNhom}
+              value={formData.maNhom}
               isReadOnly
             />
+
             <Input
               label="User type"
-              color="danger"
               name="maLoaiNguoiDung"
-              value={formData?.maLoaiNguoiDung}
+              value={formData.maLoaiNguoiDung}
               isReadOnly
             />
 
             <Input
               label="Full name"
               name="hoTen"
-              onChange={handleChange}
-              value={formData?.hoTen}
+              value={formData.hoTen}
               isReadOnly={!isEdit}
+              onChange={handleChange}
               endContent={isEdit ? <EditIcon /> : null}
             />
+
             <Input
               label="Email"
-              type="email"
               name="email"
-              onChange={handleChange}
-              value={formData?.email}
+              value={formData.email}
               isReadOnly={!isEdit}
+              onChange={handleChange}
               endContent={isEdit ? <EditIcon /> : null}
             />
+
             <Input
               label="Phone"
               name="soDT"
-              value={formData?.soDT}
+              value={formData.soDT}
               isReadOnly={!isEdit}
               onChange={handleChange}
               endContent={isEdit ? <EditIcon /> : null}
             />
           </div>
+
           {!isEdit ? (
             <Button
               color="primary"

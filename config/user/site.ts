@@ -10,9 +10,12 @@ export const siteConfig = {
       label: "Courses",
       href: "/courses",
       children: [
-        { label: "Frontend", href: "/courses/frontend" },
-        { label: "Backend", href: "/courses/backend" },
-        { label: "Fullstack", href: "/courses/fullstack" },
+        { label: "Frontend", href: "/courses/?id=FrontEnd" },
+        { label: "Backend", href: "/courses/?id=BackEnd" },
+        { label: "Fullstack", href: "/courses/?id=FullStack" },
+        { label: "Design", href: "/courses/?id=Design" },
+        { label: "Mobile", href: "/courses/?id=Mobile" },
+        { label: "Thinking", href: "/courses/?id=TuDuy" },
       ],
     },
 

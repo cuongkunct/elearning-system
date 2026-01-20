@@ -26,11 +26,10 @@ import {
   DropdownItem,
   Avatar,
 } from "@heroui/react";
-import { logout } from "@/store/user/auth/auth.slice";
+import { logout, setLoginData } from "@/store/user/auth/auth.slice";
 import { useDispatch, useSelector } from "react-redux";
-import Cookies from "js-cookie";
-import { UserLoginResponse } from "@/types/user/auth/login.type";
 import { RootState } from "@/store";
+import Cookies from "js-cookie";
 
 export const Navbar = () => {
   const rout = useRouter();
@@ -40,6 +39,15 @@ export const Navbar = () => {
   const data = useSelector((state: RootState) => state.auth);
 
   const { loginData } = data;
+
+  useEffect(() => {
+    const userData = Cookies.get("userData");
+    if (userData) {
+      const parsed = JSON.parse(userData);
+      dispatch(setLoginData(parsed));
+    }
+  }, [dispatch]);
+
   useEffect(() => {
     if (pathname !== "/search") {
       setSearchKey("");
@@ -58,7 +66,10 @@ export const Navbar = () => {
   };
 
   const searchInput = (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit}
+      className="flex items-center justify-center gap-2 px-2"
+    >
       <Input
         aria-label="Search"
         className="w-[400px]"
@@ -71,10 +82,17 @@ export const Navbar = () => {
         labelPlacement="outside"
         placeholder="Search 200 + courses..."
         type="search"
-        endContent={
-          <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
-        }
       />
+
+      <Button
+        isIconOnly
+        aria-label="Take a photo"
+        color="primary"
+        variant="faded"
+        type="submit"
+      >
+        <SearchIcon />
+      </Button>
     </form>
   );
 
@@ -94,7 +112,6 @@ export const Navbar = () => {
             if (item.children) {
               return (
                 <li key={item.label} className="relative group">
-                  {/* CLICK → /courses */}
                   <NextLink
                     href={item.href}
                     className={clsx(
@@ -107,21 +124,43 @@ export const Navbar = () => {
                   >
                     {item.label}
                   </NextLink>
+                  <div
+                    className="
+                                absolute left-0 top-full pt-2
+                                w-max min-w-[320px]
 
-                  {/* HOVER → submenu */}
-                  <div className="absolute left-0 top-full mt-2 w-44 rounded-xl bg-gray-900 shadow-lg border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                    <ul className="py-2">
-                      {item.children.map((child) => (
-                        <li key={child.href}>
-                          <NextLink
-                            href={child.href}
-                            className="block px-4 py-2 text-sm text-white hover:bg-white/10"
-                          >
-                            {child.label}
-                          </NextLink>
-                        </li>
-                      ))}
-                    </ul>
+                                invisible opacity-0 translate-y-1
+                                group-hover:visible group-hover:opacity-100 group-hover:translate-y-0
+
+                                transition-all duration-200 ease-out
+                                z-50
+                            "
+                  >
+                    <div
+                      className="
+                            rounded-md border shadow-lg
+                            bg-white border-gray-200 text-gray-800
+                            dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100
+                          "
+                    >
+                      <ul className="grid grid-cols-2 gap-1 p-2">
+                        {item.children.map((child) => (
+                          <li key={child.href}>
+                            <NextLink
+                              href={child.href}
+                              className="
+                                block rounded px-3 py-2 text-sm
+                                hover:bg-gray-100 hover:text-gray-900
+                                dark:hover:bg-gray-700 dark:hover:text-white
+                                transition-colors
+                              "
+                            >
+                              {child.label}
+                            </NextLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </li>
               );
@@ -147,7 +186,6 @@ export const Navbar = () => {
           })}
         </ul>
       </NavbarContent>
-
 
       <NavbarContent
         className="hidden sm:flex basis-1/5 sm:basis-full"
