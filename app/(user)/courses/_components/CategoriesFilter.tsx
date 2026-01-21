@@ -9,6 +9,7 @@ import {
   Button,
   useDisclosure,
 } from "@heroui/react";
+
 import { FilterIcon, ResetFilter } from "@/components/icons";
 import { Category } from "@/types/user/category/category.type";
 type Props = {
@@ -23,6 +24,7 @@ export default function CategoriesFilter({ categories }: Props) {
 
   const handleSelectCategory = (maDanhMuc: string) => {
     const params = new URLSearchParams(searchParams.toString());
+
     if (selectedCategory === maDanhMuc) {
       params.delete("id");
     } else {
@@ -35,12 +37,13 @@ export default function CategoriesFilter({ categories }: Props) {
   const renderCategory = () => {
     return categories.map((category: Category) => {
       const isActive = selectedCategory === category.maDanhMuc;
+
       return (
         <Button
           key={category.maDanhMuc}
-          onPress={() => handleSelectCategory(category.maDanhMuc)}
-          color={isActive ? "primary" : "default"}
           className="hidden sm:hidden md:hidden lg:block xl:block"
+          color={isActive ? "primary" : "default"}
+          onPress={() => handleSelectCategory(category.maDanhMuc)}
         >
           {category.tenDanhMuc}
         </Button>
@@ -51,17 +54,19 @@ export default function CategoriesFilter({ categories }: Props) {
   const renderCategoryMobile = () => {
     return categories.map((category: Category) => {
       const isActive = selectedCategory === category.maDanhMuc;
+
       return (
         <Button
           key={category.maDanhMuc}
-          onPress={() => handleSelectCategory(category.maDanhMuc)}
           color={isActive ? "primary" : "default"}
+          onPress={() => handleSelectCategory(category.maDanhMuc)}
         >
           {category.tenDanhMuc}
         </Button>
       );
     });
   };
+
   return (
     <>
       <div className="flex-[1.5] flex flex-col gap-3">
@@ -69,20 +74,21 @@ export default function CategoriesFilter({ categories }: Props) {
         <Button
           className="flex gap-2 lg:hidden"
           color="success"
-          onPress={onOpen}
           endContent={<FilterIcon />}
+          onPress={onOpen}
         >
           Filter by Category
         </Button>
         <Button
+          color="danger"
+          endContent={<ResetFilter />}
           onPress={() => {
             const params = new URLSearchParams(searchParams.toString());
+
             params.delete("id");
             params.delete("page");
             router.push(`?${params.toString()}`, { scroll: false });
           }}
-          color="danger"
-          endContent={<ResetFilter />}
         >
           Reset Filter
         </Button>

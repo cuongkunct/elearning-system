@@ -13,9 +13,6 @@ import { Input } from "@heroui/input";
 import { link as linkStyles } from "@heroui/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
-import { siteConfig } from "@/config/user/site";
-import { ThemeSwitch } from "@/components/theme-switch";
-import { LogoIcon, SearchIcon } from "@/components/icons";
 import { Button } from "@heroui/button";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -26,12 +23,14 @@ import {
   DropdownItem,
   Avatar,
 } from "@heroui/react";
-import { logout, setLoginData } from "@/store/user/auth/auth.slice";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store";
 import Cookies from "js-cookie";
 
-
+import { logout, setLoginData } from "@/store/user/auth/auth.slice";
+import { RootState } from "@/store";
+import { LogoIcon, SearchIcon } from "@/components/icons";
+import { ThemeSwitch } from "@/components/theme-switch";
+import { siteConfig } from "@/config/user/site";
 
 export const Navbar = () => {
   const rout = useRouter();
@@ -42,12 +41,12 @@ export const Navbar = () => {
   const { loginData } = data;
   const [menuOpen, setMenuOpen] = useState(false);
 
-
-
   useEffect(() => {
     const userData = Cookies.get("userData");
+
     if (userData) {
       const parsed = JSON.parse(userData);
+
       dispatch(setLoginData(parsed));
     }
   }, [dispatch]);
@@ -73,14 +72,12 @@ export const Navbar = () => {
 
   const searchInput = (
     <form
-      onSubmit={handleSubmit}
       className="flex items-center justify-center gap-2 px-2"
+      onSubmit={handleSubmit}
     >
       <Input
         aria-label="Search"
         className="w-[400px]"
-        onChange={(e) => setSearchKey(e.target.value)}
-        value={searchKey}
         classNames={{
           inputWrapper: "bg-default-100",
           input: "text-sm",
@@ -88,14 +85,16 @@ export const Navbar = () => {
         labelPlacement="outside"
         placeholder="Search 200 + courses..."
         type="search"
+        value={searchKey}
+        onChange={(e) => setSearchKey(e.target.value)}
       />
 
       <Button
         isIconOnly
         aria-label="Take a photo"
         color="primary"
-        variant="faded"
         type="submit"
+        variant="faded"
       >
         <SearchIcon />
       </Button>
@@ -104,9 +103,9 @@ export const Navbar = () => {
 
   return (
     <HeroUINavbar
+      isMenuOpen={menuOpen}
       maxWidth="xl"
       position="sticky"
-      isMenuOpen={menuOpen}
       onMenuOpenChange={setMenuOpen}
     >
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -123,7 +122,6 @@ export const Navbar = () => {
               return (
                 <li key={item.label} className="relative group">
                   <NextLink
-                    href={item.href}
                     className={clsx(
                       linkStyles({ color: "foreground" }),
                       "px-2 py-1 flex items-center gap-1",
@@ -131,6 +129,7 @@ export const Navbar = () => {
                         ? "text-primary border-b border-primary font-medium"
                         : "",
                     )}
+                    href={item.href}
                   >
                     {item.label}
                   </NextLink>
@@ -157,13 +156,13 @@ export const Navbar = () => {
                         {item.children.map((child) => (
                           <li key={child.href}>
                             <NextLink
-                              href={child.href}
                               className="
                                 block rounded px-3 py-2 text-sm
                                 hover:bg-gray-100 hover:text-gray-900
                                 dark:hover:bg-gray-700 dark:hover:text-white
                                 transition-colors
                               "
+                              href={child.href}
                             >
                               {child.label}
                             </NextLink>
@@ -175,10 +174,10 @@ export const Navbar = () => {
                 </li>
               );
             }
+
             return (
               <NavbarItem key={item.href}>
                 <NextLink
-                  href={item.href}
                   className={clsx(
                     linkStyles({ color: "foreground" }),
                     "p-2",
@@ -186,6 +185,7 @@ export const Navbar = () => {
                       ? "text-primary border-b border-primary font-medium"
                       : "",
                   )}
+                  href={item.href}
                 >
                   {item.label}
                 </NextLink>
@@ -241,7 +241,12 @@ export const Navbar = () => {
                     {loginDataMemo?.content?.hoTen}
                   </p>
                 </DropdownItem>
-                <DropdownItem key="my_courses" onClick={() => rout.push("/my-courses")}>My Course</DropdownItem>
+                <DropdownItem
+                  key="my_courses"
+                  onClick={() => rout.push("/my-courses")}
+                >
+                  My Course
+                </DropdownItem>
                 <DropdownItem key="help_and_feedback">
                   Help & Feedback
                 </DropdownItem>
@@ -281,7 +286,6 @@ export const Navbar = () => {
           ))}
         </div>
       </NavbarMenu>
-
     </HeroUINavbar>
   );
 };

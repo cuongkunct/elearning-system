@@ -22,11 +22,11 @@ export default function SafeImage({
 
   return (
     <Image
-      src={imgSrc}
       alt={alt}
-      width={width}
-      height={height}
       className={className}
+      height={height}
+      src={imgSrc}
+      width={width}
       onError={() => setImgSrc("/no-image.png")}
     />
   );

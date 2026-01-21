@@ -6,6 +6,7 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import Image from "next/image";
 
 const reviews = [
   {
@@ -71,10 +72,10 @@ export default function StudentReviewSlider() {
         <h2 className="text-2xl font-bold mb-10">What Our Students Say</h2>
 
         <Swiper
-          modules={[Navigation, Pagination, Autoplay]}
-          spaceBetween={24}
-          slidesPerView={1}
           autoplay={{ delay: 4000 }}
+          modules={[Navigation, Pagination, Autoplay]}
+          slidesPerView={1}
+          spaceBetween={24}
           pagination={{ clickable: false }}
           // navigation
           breakpoints={{
@@ -93,21 +94,15 @@ export default function StudentReviewSlider() {
             <SwiperSlide key={item.id}>
               <div className="dark:bg-gray-700 light:bg-white shadow-sm p-6 h-full flex flex-col gap-4 roun">
                 <div className="w-full h-50 rounded-md  overflow-hidden">
-                  <img
-                    src={item.image}
+                  <Image
                     alt={item.name}
                     className="w-full h-full object-cover"
+                    src={item.image}
                   />
                 </div>
-                <span className="text-sm  font-medium ">
-                  {item.source}
-                </span>
-                <h3 className="font-semibold text-lg ">
-                  {item.title}
-                </h3>
-                <p className=" text-sm leading-relaxed ">
-                  {item.content}
-                </p>
+                <span className="text-sm  font-medium ">{item.source}</span>
+                <h3 className="font-semibold text-lg ">{item.title}</h3>
+                <p className=" text-sm leading-relaxed ">{item.content}</p>
                 <div className="mt-auto pt-4 border-t text-sm font-medium ">
                   {item.name}
                 </div>

@@ -1,11 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import { Form, Input, Button, addToast } from "@heroui/react";
-import { loginUser } from "@/store/user/auth/auth.slice";
 import { useDispatch } from "react-redux";
-import { DispatchType } from "@/store";
 import { useRouter } from "next/navigation";
+
 import NotificationModal from "../../../components/user/shared/NotificationModal";
+
+import { DispatchType } from "@/store";
+import { loginUser } from "@/store/user/auth/auth.slice";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
 
 export default function Login() {
@@ -15,6 +17,7 @@ export default function Login() {
   const [err, setErr] = useState<string | null>(null);
   const [isVisible, setIsVisible] = React.useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+
   return (
     <Form
       className="
@@ -33,11 +36,12 @@ export default function Login() {
         let data: any = JSON.parse(
           JSON.stringify(Object.fromEntries(new FormData(e.currentTarget))),
         );
+
         console.log("User dtaa:", data);
         try {
           const res = await dispatch(loginUser(data)).unwrap();
-          if (res.statusCode === 200) {
 
+          if (res.statusCode === 200) {
             addToast({
               title: "Login Successful",
               description: "You have login successfully.",
@@ -80,16 +84,16 @@ export default function Login() {
             )}
           </button>
         }
-        name="matKhau"
         label="Password"
         labelPlacement="outside"
+        name="matKhau"
         placeholder="Enter your password"
         type={isVisible ? "text" : "password"}
       />
       <NotificationModal
-        title={err ?? "Registration Failed"}
         color={err ? "danger" : "success"}
         isOpen={open}
+        title={err ?? "Registration Failed"}
         onClose={() => setOpen(false)}
       />
       <div className="flex gap-2">

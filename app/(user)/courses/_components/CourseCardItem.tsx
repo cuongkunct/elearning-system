@@ -2,15 +2,17 @@
 
 import { useState } from "react";
 import { Card, CardBody, CardFooter } from "@heroui/react";
+import Link from "next/link";
+
+import ButtonJoinCourse from "./BottonJoinCourse";
+import SafeImage from "./SafeImage";
+
 import { Course } from "@/types/user/course/course.type";
 import {
   cancelCourseByMaKhoaHoc,
   joinCourseByMaKhoaHoc,
 } from "@/services/user/courses/course.service";
 import NotificationModal from "@/components/user/shared/NotificationModal";
-import ButtonJoinCourse from "./BottonJoinCourse";
-import Link from "next/link";
-import SafeImage from "./SafeImage";
 
 export default function CourseCardItem({
   course,
@@ -32,6 +34,7 @@ export default function CourseCardItem({
     try {
       setLoading(true);
       const res = await joinCourseByMaKhoaHoc(course.maKhoaHoc);
+
       if (res === "Ghi danh thành công!") {
         onJoinSuccess(course);
         setTitle("Join course successfully");
@@ -70,11 +73,11 @@ export default function CourseCardItem({
       <Link href={`/course/${course.maKhoaHoc}`}>
         <CardBody className="p-0 overflow-hidden shrink-0 flex items-center justify-center h-[180px]">
           <SafeImage
-            src={course.hinhAnh}
             alt={course.tenKhoaHoc}
-            width={500}
-            height={500}
             className="w-full h-full object-cover aspect-square rounded-md"
+            height={500}
+            src={course.hinhAnh}
+            width={500}
           />
         </CardBody>
         <CardFooter className="flex flex-col items-start gap-2 w-full">
@@ -95,9 +98,9 @@ export default function CourseCardItem({
         onJoin={isJoined ? handleCancelCourse : handleJoinCourse}
       />
       <NotificationModal
-        title={title || ""}
         color={err ? "danger" : "success"}
         isOpen={open}
+        title={title || ""}
         onClose={() => setOpen(false)}
       />
     </Card>

@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { fetchUserProfile } from "@/services/user/userAccount/user.service";
 import type { Course } from "@/types/user/course/course.type";
-import SkeletonCard from "@/components/user/shared/SkeletonCard";
+
+import { useEffect, useState } from "react";
+
 import CourseCard from "../courses/_components/CourseList";
+
+import { fetchUserProfile } from "@/services/user/userAccount/user.service";
+import SkeletonCard from "@/components/user/shared/SkeletonCard";
 
 export default function MyCoursePage() {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -16,6 +19,7 @@ export default function MyCoursePage() {
       try {
         setLoading(true);
         const response = await fetchUserProfile();
+
         if (!response?.chiTietKhoaHocGhiDanh) return;
         setCourses(response.chiTietKhoaHocGhiDanh);
         setLoading(false);
@@ -23,6 +27,7 @@ export default function MyCoursePage() {
         setError("Something went wrong. Please try again later.");
       }
     };
+
     loadProfile();
   }, []);
 
@@ -48,6 +53,7 @@ export default function MyCoursePage() {
       </div>
     );
   }
+
   return (
     <section className="max-w-6xl mx-auto px-6">
       <h2 className="text-3xl font-bold mb-6">🎓 My joined course</h2>

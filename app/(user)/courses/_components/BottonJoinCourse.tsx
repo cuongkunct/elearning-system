@@ -10,10 +10,10 @@ type Props = {
 export default function ButtonJoinCourse({ isJoined, loading, onJoin }: Props) {
   return (
     <Button
+      className="m-4"
       color={isJoined ? "success" : "default"}
       isLoading={loading}
       onPress={onJoin}
-      className="m-4"
     >
       {isJoined ? "Cancel the course" : "Join now"}
     </Button>
