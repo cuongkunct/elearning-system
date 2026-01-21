@@ -16,19 +16,13 @@ import {
 import { Course } from "@/types/user/course/course.type";
 import { ArrowIcon } from "@/components/icons";
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
-
 /* ================= SEO ================= */
 export async function generateMetadata({
   params,
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const { id } = params; // ✅ do this
+  const { id } = params;
   const course = await getCourseDetail(id);
 
   if (!course) {
@@ -52,7 +46,11 @@ export async function generateMetadata({
   };
 }
 
-export default async function CourseDetailPage({ params }: Props) {
+export default async function CourseDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const { id } = params;
   const course = await getCourseDetail(id);
 
