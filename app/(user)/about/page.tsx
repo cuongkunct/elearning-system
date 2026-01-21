@@ -52,15 +52,17 @@ export default function AboutPage() {
     <div className="w-full min-h-screen">
       <section className="relative w-full h-64 md:h-96 lg:h-[500px]">
         <Image
+          fill
+          priority
           alt="Blog background"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-          src="blog-banner.png"
+          className="object-cover object-center"
+          src="/blog-banner.png"
         />
         <div className="absolute inset-0 bg-gray-900/50" />
         <div className="relative z-10 flex h-full items-center">
-          <div className="mx-auto max-w-7xl px-8">
+          <div className="mx-auto max-w-7xl px-8 text-center md:text-left">
             <h1 className="text-5xl font-bold mb-4 text-white">Blog TOT</h1>
-            <p className="max-w-xl text-lg  mb-8 text-white">
+            <p className="max-w-xl text-lg mb-8 text-white">
               Sharing knowledge, learning experiences, and skill development
               tailored for individuals and businesses.
             </p>
@@ -70,6 +72,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
       <div className="py-5 px-4 font-sans text-slate-800 dark:text-slate-100 transition-colors duration-300">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -361,8 +364,10 @@ export default function AboutPage() {
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <Image
                   alt="Programming Hero"
-                  className="w-full h-[400px] object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  height={500}
                   src="/banner1.png"
+                  width={500}
                 />
                 <div className="absolute inset-0 bg-blue-900/20 mix-blend-multiply" />
               </div>

@@ -27,5 +27,3 @@ export type CoursePaginationResponse = {
   totalCount: number;
   items: Course[];
 };
-
-

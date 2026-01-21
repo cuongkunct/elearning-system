@@ -1,9 +1,9 @@
+import Cookies from "js-cookie";
+
 import {
   Course,
   CoursePaginationResponse,
 } from "@/types/user/course/course.type";
-import { axiosClient } from "../axios.client";
-import Cookies from "js-cookie";
 import axiosInstance from "@/services/axiosInstance";
 const BACKEND_URL = process.env.NEXT_BACKEND_URL;
 const TOKEN_CYBERSOFT = process.env.NEXT_TOKEN_CYBERSOFT;
@@ -16,6 +16,7 @@ export async function getCoursesPagination(
   const url = new URL(
     `${BACKEND_URL}QuanLyKhoaHoc/LayDanhSachKhoaHoc_PhanTrang`,
   );
+
   url.searchParams.set("page", String(page));
   url.searchParams.set("pageSize", "10");
   url.searchParams.set("MaNhom", "GP01");
@@ -29,6 +30,7 @@ export async function getCoursesPagination(
   });
 
   if (!res.ok) throw new Error("Fetch courses failed");
+
   return res.json();
 }
 /* service to get all courses */
@@ -42,6 +44,7 @@ export async function getAllCourses(): Promise<Course[]> {
   );
 
   if (!res.ok) throw new Error("Fetch courses failed");
+
   return res.json();
 }
 /* service to get course detail by course maKhoaHoc */
@@ -55,9 +58,11 @@ export async function getCourseDetail(maKhoaHoc: string) {
       },
     },
   );
+
   if (!res.ok) {
     throw new Error("Failed to fetch course detail");
   }
+
   return res.json();
 }
 
@@ -66,6 +71,7 @@ export async function getRelatedCourses(maDanhMuc?: string) {
   const url = new URL(
     `${BACKEND_URL}QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?MaNhom=GP01`,
   );
+
   if (maDanhMuc) {
     url.searchParams.set("maDanhMuc", maDanhMuc);
   }
@@ -75,14 +81,17 @@ export async function getRelatedCourses(maDanhMuc?: string) {
     },
     next: { revalidate: 60 },
   });
+
   if (!res.ok) {
     throw new Error("Failed to fetch related courses");
   }
+
   return res.json();
 }
 
 export async function joinCourseByMaKhoaHoc(maKhoaHoc: string) {
   const account = Cookies.get("userData");
+
   if (!account) {
     throw new Error("Unauthorized");
   }
@@ -92,17 +101,20 @@ export async function joinCourseByMaKhoaHoc(maKhoaHoc: string) {
     {
       maKhoaHoc,
       taiKhoan: userData.taiKhoan,
-    }, {
-    headers: {
-      Authorization: `Bearer ${userData.accessToken}`,
     },
-  }
+    {
+      headers: {
+        Authorization: `Bearer ${userData.accessToken}`,
+      },
+    },
   );
+
   return res.data;
 }
 
 export async function cancelCourseByMaKhoaHoc(maKhoaHoc: string) {
   const account = Cookies.get("userData");
+
   if (!account) {
     throw new Error("Unauthorized");
   }
@@ -112,12 +124,13 @@ export async function cancelCourseByMaKhoaHoc(maKhoaHoc: string) {
     {
       maKhoaHoc,
       taiKhoan: userData.taiKhoan,
-    }, {
-    headers: {
-      Authorization: `Bearer ${userData.accessToken}`,
     },
-  }
+    {
+      headers: {
+        Authorization: `Bearer ${userData.accessToken}`,
+      },
+    },
   );
+
   return res.data;
 }
-

@@ -4,14 +4,14 @@ export type UserLogin = {
 };
 
 export type UserLoginResponse = {
-  statusCode: number,
-  content : {
-            "taiKhoan": string,
-            "email": string,
-            "soDT": string,
-            "maNhom": string,
-            "maLoaiNguoiDung": string,
-            "hoTen": string,
-            "accessToken": string
-            }
+  statusCode: number;
+  content: {
+    taiKhoan: string;
+    email: string;
+    soDT: string;
+    maNhom: string;
+    maLoaiNguoiDung: string;
+    hoTen: string;
+    accessToken: string;
+  };
 };

@@ -40,7 +40,6 @@ export default function Register() {
             registerUser(JSON.parse(JSON.stringify(data))),
           ).unwrap();
 
-          console.log("Register successful:", res);
           if (res.statusCode === 200) {
             setOpen(true);
             setErr("Register successful");

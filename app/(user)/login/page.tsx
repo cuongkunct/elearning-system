@@ -37,7 +37,6 @@ export default function Login() {
           JSON.stringify(Object.fromEntries(new FormData(e.currentTarget))),
         );
 
-        console.log("User dtaa:", data);
         try {
           const res = await dispatch(loginUser(data)).unwrap();
 
