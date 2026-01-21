@@ -10,7 +10,7 @@ type Props = {
 
 export default function JoinCourseCard({ course }: Props) {
   return (
-    <Card isPressable shadow="sm" onPress={() => console.log("item pressed")}>
+    <Card shadow="sm" onPress={() => console.log("item pressed")}>
       <CardBody className="overflow-visible p-0">
         <Image
           src={course.hinhAnh}
@@ -20,8 +20,8 @@ export default function JoinCourseCard({ course }: Props) {
           className="rounded-lg object-cover"
         />
       </CardBody>
-      <CardFooter className="text-small justify-between">
-        <div className="text-sm text-gray-600 space-y-2">
+      <CardFooter className="text-sm flex justify-start">
+        <div className="text-sm  space-y-2 text-left">
           <p>
             <strong>Teacher:</strong> Anh Cường Dev
           </p>
@@ -33,11 +33,10 @@ export default function JoinCourseCard({ course }: Props) {
           </p>
         </div>
       </CardFooter>
-      <div className="p-4">
-        <Button color="primary" fullWidth={true}>
-          Join now
-        </Button>
-      </div>
+
+      <Button color="primary" className="m-4">
+        Join now
+      </Button>
     </Card>
   );
 }

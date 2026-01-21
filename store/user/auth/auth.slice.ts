@@ -8,7 +8,6 @@ import {
 } from "@/types/user/auth/register.type";
 import { UserLogin, UserLoginResponse } from "@/types/user/auth/login.type";
 
-// 1 - Đăng ký
 export const registerUser = createAsyncThunk<
   UserRegisterResponse,
   UserRegister,
@@ -57,28 +56,28 @@ interface SliceState {
   registerData: UserRegisterResponse | null;
   registerLoading: boolean;
   registerError:
-  | {
-    statusCode: number;
-    content: string;
-  }
-  | undefined;
+    | {
+        statusCode: number;
+        content: string;
+      }
+    | undefined;
 
   loginData: UserLoginResponse | null;
   loginLoading: boolean;
   loginError:
-  | {
-    statusCode: number;
-    content: string;
-  }
-  | undefined;
+    | {
+        statusCode: number;
+        content: string;
+      }
+    | undefined;
 }
 
 const initialState: SliceState = {
   registerData: null,
   registerLoading: false,
   registerError: undefined,
-  // Login 
-  loginData: Cookies.get("userData") ? JSON.parse(Cookies.get("userData") || "") : null,
+  // Login
+  loginData: null,
   loginLoading: false,
   loginError: undefined,
 };
@@ -90,6 +89,9 @@ const authSlice = createSlice({
     logout: (state) => {
       state.loginData = null;
       Cookies.remove("userData");
+    },
+    setLoginData: (state, action) => {
+      state.loginData = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -130,5 +132,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setLoginData } = authSlice.actions;
 export default authSlice.reducer;

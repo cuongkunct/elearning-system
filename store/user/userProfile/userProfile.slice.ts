@@ -5,73 +5,89 @@ import {
   updateUserProfileRequest,
   updateUserProfileResponse,
 } from "@/types/user/userProfile/userProfile.type";
+import axios from "axios";
 
-// 1 - Đăng ký
 export const fetchGetUserProfile = createAsyncThunk<
   ProfileResponse,
-  void,
+  { accessToken: string },
   { rejectValue: { statusCode: number; content: string } }
->("getProfileInfoThunk", async (_, { rejectWithValue }) => {
+>("getProfileInfoThunk", async ({ accessToken }, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(
-      "QuanLyNguoiDung/ThongTinTaiKhoan"
+      "QuanLyNguoiDung/ThongTinTaiKhoan",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          TokenCybersoft: process.env.NEXT_PUBLIC_TOKEN_CYBERSOFT,
+        },
+      },
     );
+
     return {
       statusCode: response.status,
       content: response.data,
-    } as ProfileResponse;
+    };
   } catch (error: any) {
     return rejectWithValue({
       statusCode: error.response?.status || 500,
-      content: error?.message || "An error occurred",
+      content: error.message,
     });
   }
 });
 
 export const fetchUpdateUserProfile = createAsyncThunk<
   updateUserProfileResponse,
-  updateUserProfileRequest,
+  {
+    data: updateUserProfileRequest;
+    accessToken: string;
+  },
   { rejectValue: { statusCode: number; content: string } }
 >(
   "updateProfileInfoThunk",
-  async (updateUserProfileRequest, { rejectWithValue }) => {
+  async ({ data, accessToken }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put(
+      const response = await axios.put(
         "QuanLyNguoiDung/CapNhatThongTinNguoiDung",
-        updateUserProfileRequest
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            TokenCybersoft: process.env.NEXT_PUBLIC_TOKEN_CYBERSOFT,
+          },
+        },
       );
+
       return {
         statusCode: response.status,
         content: response.data,
       } as updateUserProfileResponse;
     } catch (error: any) {
-      console.log(error);
       return rejectWithValue({
         statusCode: error.response?.status || 500,
         content: error?.message || "An error occurred",
       });
     }
-  }
+  },
 );
-
 interface SliceState {
   userProfile: ProfileResponse | null;
   userProfileLoading: boolean;
   userProfileError:
-  | {
-    statusCode: number;
-    content: string;
-  }
-  | undefined;
+    | {
+        statusCode: number;
+        content: string;
+      }
+    | undefined;
 
   updateUserProfile: updateUserProfileResponse | null;
   updateUserProfileLoading: boolean;
   updateUserProfileError:
-  | {
-    statusCode: number;
-    content: string;
-  }
-  | undefined;
+    | {
+        statusCode: number;
+        content: string;
+      }
+    | undefined;
 }
 
 const initialState: SliceState = {

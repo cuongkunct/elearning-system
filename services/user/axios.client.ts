@@ -1,20 +1,18 @@
-import axios, { AxiosInstance, AxiosError, AxiosResponse } from "axios";
+"use client";
 
-const axiosClient: AxiosInstance = axios.create({
-  baseURL: "https://elearningnew.cybersoft.edu.vn/api/",
-  timeout: 10000,
-  headers: {
-    "Content-Type": "application/json",
-    TokenCybersoft: process.env.NEXT_TOKEN_CYBERSOFT,
-  },
-  withCredentials: true, //Tự động gửi cookie trên client
+import axios from "axios";
+import Cookies from "js-cookie";
+
+export const axiosClient = axios.create();
+
+axiosClient.interceptors.request.use((config) => {
+  const userData = Cookies.get("userData");
+
+  if (userData) {
+    const { accessToken } = JSON.parse(userData).content;
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+
+  config.headers.TokenCybersoft = process.env.NEXT_TOKEN_CYBERSOFT;
+  return config;
 });
-
-axiosClient.interceptors.response.use(
-  (response: AxiosResponse) => response,
-  (error: AxiosError) => {
-    return Promise.reject(error.response?.data || error.message);
-  },
-);
-
-export default axiosClient;

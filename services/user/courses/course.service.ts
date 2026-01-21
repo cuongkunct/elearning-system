@@ -8,10 +8,10 @@ const TOKEN_CYBERSOFT = process.env.NEXT_TOKEN_CYBERSOFT;
 /* service to get courses with pagination */
 export async function getCoursesPagination(
   page: number,
-  searchKey?: string
+  searchKey?: string,
 ): Promise<CoursePaginationResponse> {
   const url = new URL(
-    `${BACKEND_URL}QuanLyKhoaHoc/LayDanhSachKhoaHoc_PhanTrang`
+    `${BACKEND_URL}QuanLyKhoaHoc/LayDanhSachKhoaHoc_PhanTrang`,
   );
   url.searchParams.set("page", String(page));
   url.searchParams.set("pageSize", "10");
@@ -35,7 +35,7 @@ export async function getAllCourses(): Promise<Course[]> {
     {
       headers: { TokenCybersoft: TOKEN_CYBERSOFT! },
       next: { revalidate: 60 }, // ISR – 60s cập nhật
-    }
+    },
   );
 
   if (!res.ok) throw new Error("Fetch courses failed");
@@ -50,7 +50,7 @@ export async function getCourseDetail(maKhoaHoc: string) {
       next: {
         revalidate: 60, // ISR – 60s cập nhật
       },
-    }
+    },
   );
   if (!res.ok) {
     throw new Error("Failed to fetch course detail");
@@ -61,7 +61,7 @@ export async function getCourseDetail(maKhoaHoc: string) {
 /* service to get related courses by maDanhMuc */
 export async function getRelatedCourses(maDanhMuc?: string) {
   const url = new URL(
-    `${BACKEND_URL}QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?MaNhom=GP01`
+    `${BACKEND_URL}QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?MaNhom=GP01`,
   );
   if (maDanhMuc) {
     url.searchParams.set("maDanhMuc", maDanhMuc);
@@ -74,6 +74,26 @@ export async function getRelatedCourses(maDanhMuc?: string) {
   });
   if (!res.ok) {
     throw new Error("Failed to fetch related courses");
+  }
+  return res.json();
+}
+
+export async function joinCourseByMaKhoaHoc({
+  maKhoaHoc,
+  taiKhoan,
+}: {
+  maKhoaHoc: string;
+  taiKhoan: string;
+}) {
+  const res = await fetch(`${BACKEND_URL}QuanLyKhoaHoc/GhiDanhKhoaHoc`, {
+    body: JSON.stringify({ maKhoaHoc, taiKhoan }),
+    headers: { TokenCybersoft: TOKEN_CYBERSOFT! },
+    next: {
+      revalidate: 60, // ISR – 60s cập nhật
+    },
+  });
+  if (!res.ok) {
+    throw new Error("Failed to fetch course detail");
   }
   return res.json();
 }
