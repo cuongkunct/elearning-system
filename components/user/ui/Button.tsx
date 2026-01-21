@@ -7,6 +7,6 @@ type Props = {
 };
 
 const Button: React.FC<Props> = ({ children, onClick }) => {
-  return <HeroButton onClick={onClick}>{children}</HeroButton>;
+  return <HeroButton onClick={onClick} color="primary">{children}</HeroButton>;
 };
 export default Button;

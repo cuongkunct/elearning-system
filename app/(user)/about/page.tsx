@@ -50,7 +50,7 @@ export default function AboutPage() {
         <img
           src="blog-banner.png"
           alt="Blog background"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-gray-900/50" />
         <div className="relative z-10 flex h-full items-center">

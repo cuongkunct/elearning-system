@@ -4,12 +4,12 @@ import {
   getRelatedCourses,
   getCoursesPagination,
 } from "@/services/user/courses/course.service";
-import CourseCard from "../../../components/user/shared/CourseCard";
 import CourseListPagination from "./_components/CourseListPagination";
 import CategoriesIntro from "./_components/CategoriesIntro";
 import SortButtons from "./_components/SortButtons";
 import { Course } from "@/types/user/course/course.type";
 import { Metadata } from "next";
+import CourseCard from "./_components/CourseList";
 
 export const metadata: Metadata = {
   title: "Online Courses",
@@ -28,7 +28,6 @@ export default async function CategoriesPage({
   searchParams,
 }: CategoriesPageProps) {
   const { id, page, sort } = (await searchParams) ?? {};
-
   const currentPage = Number(page) || 1;
   const categories = await getListCategory();
   let courseList: {
@@ -51,8 +50,6 @@ export default async function CategoriesPage({
       items: res,
     };
   }
-
-  // sort
   if (sort === "viewed") {
     courseList.items.sort((a, b) => b.luotXem - a.luotXem);
   } else if (sort === "joined") {
@@ -62,7 +59,6 @@ export default async function CategoriesPage({
   return (
     <div>
       <div className="lg:flex w-full gap-4">
-        {/* CATEGORY FILTER */}
         <aside className="">
           {categories?.length > 0 && (
             <CategoriesFilter categories={categories} />

@@ -37,6 +37,7 @@ export default function Login() {
         try {
           const res = await dispatch(loginUser(data)).unwrap();
           if (res.statusCode === 200) {
+
             addToast({
               title: "Login Successful",
               description: "You have login successfully.",
