@@ -1,7 +1,7 @@
 import CourseListPagination from "../courses/_components/CourseListPagination";
 import { getCoursesPagination } from "@/services/user/courses/course.service";
-import CourseCard from "../../../components/user/shared/CourseCard";
 import SortButtons from "../courses/_components/SortButtons";
+import CourseCard from "../courses/_components/CourseList";
 
 export default async function Search(props: any) {
   const { key, page, sort } = await props.searchParams;
@@ -20,7 +20,6 @@ export default async function Search(props: any) {
         <p className="text-2xl font-semibold flex items-center justify-start mr-4">
           Search Results
         </p>
-        {/* <SearchInput /> */}
         <div className="flex justify-end">
           <SortButtons />
         </div>

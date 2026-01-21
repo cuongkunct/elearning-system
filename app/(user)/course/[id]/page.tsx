@@ -4,15 +4,15 @@ import {
 } from "@/services/user/courses/course.service";
 import { Metadata } from "next";
 import { Course } from "@/types/user/course/course.type";
-import CourseCard from "../../../../components/user/shared/CourseCard";
 import {
   categorySeoMap,
   courseIntroductionByCategory,
 } from "../../../../components/user/sections/SeoDescription";
-import JoinCourseCard from "../../courses/_components/JoinCourseCard";
+import CourseCardItem from "../../courses/_components/CourseCardItem";
 import { ArrowIcon } from "@/components/icons";
 import Button from "../../../../components/user/ui/Button";
 import Link from "next/link";
+import CourseCard from "../../courses/_components/CourseList";
 type Props = {
   params: {
     id: string;
@@ -105,7 +105,7 @@ export default async function CourseDetailPage({ params }: Props) {
             <h2 className="text-2xl font-semibold">Course introduction</h2>
             <p className=" leading-relaxed">{intro}</p>
           </div>
-          <JoinCourseCard course={course} />
+          <CourseCardItem course={course} />
         </section>
       </div>
       {filteredCourses.length > 0 && (

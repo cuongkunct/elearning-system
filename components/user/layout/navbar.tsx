@@ -31,14 +31,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import Cookies from "js-cookie";
 
+
+
 export const Navbar = () => {
   const rout = useRouter();
   const dispatch = useDispatch();
   const pathname = usePathname();
   const [searchKey, setSearchKey] = useState<string>("");
   const data = useSelector((state: RootState) => state.auth);
-
   const { loginData } = data;
+  const [menuOpen, setMenuOpen] = useState(false);
+
+
 
   useEffect(() => {
     const userData = Cookies.get("userData");
@@ -53,13 +57,15 @@ export const Navbar = () => {
       setSearchKey("");
     }
   }, [pathname]);
-
   const loginDataMemo = useMemo(() => loginData, [loginData]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!searchKey.trim()) return;
     rout.push(`/search?key=${searchKey}`);
+    setMenuOpen(false);
   };
+
   const handleLogout = () => {
     dispatch(logout());
     rout.push("/login");
@@ -97,7 +103,12 @@ export const Navbar = () => {
   );
 
   return (
-    <HeroUINavbar maxWidth="xl" position="sticky">
+    <HeroUINavbar
+      maxWidth="xl"
+      position="sticky"
+      isMenuOpen={menuOpen}
+      onMenuOpenChange={setMenuOpen}
+    >
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex items-center gap-1" href="/">
@@ -108,7 +119,6 @@ export const Navbar = () => {
 
         <ul className="hidden lg:flex gap-4 ml-2 items-center">
           {siteConfig.navItems.map((item) => {
-            // 👉 COURSES có submenu
             if (item.children) {
               return (
                 <li key={item.label} className="relative group">
@@ -165,8 +175,6 @@ export const Navbar = () => {
                 </li>
               );
             }
-
-            // 👉 Menu thường
             return (
               <NavbarItem key={item.href}>
                 <NextLink
@@ -233,7 +241,7 @@ export const Navbar = () => {
                     {loginDataMemo?.content?.hoTen}
                   </p>
                 </DropdownItem>
-                <DropdownItem key="my_courses">Registered Course</DropdownItem>
+                <DropdownItem key="my_courses" onClick={() => rout.push("/my-courses")}>My Course</DropdownItem>
                 <DropdownItem key="help_and_feedback">
                   Help & Feedback
                 </DropdownItem>
@@ -259,24 +267,21 @@ export const Navbar = () => {
         {searchInput}
         <div className="mx-4 mt-2 flex flex-col gap-2">
           {siteConfig.navMenuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                color={
-                  index === 2
-                    ? "primary"
-                    : index === siteConfig.navMenuItems.length - 1
-                      ? "danger"
-                      : "foreground"
-                }
-                href="#"
-                size="lg"
+            <NavbarMenuItem key={item.label}>
+              <button
+                className={`w-full text-left px-4 py-2 rounded`}
+                onClick={() => {
+                  rout.push(item.href);
+                  setMenuOpen(false);
+                }}
               >
                 {item.label}
-              </Link>
+              </button>
             </NavbarMenuItem>
           ))}
         </div>
       </NavbarMenu>
+
     </HeroUINavbar>
   );
 };

@@ -4,7 +4,8 @@ import clsx from "clsx";
 import { Providers } from "../providers";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/user/layout/navbar";
-import Footer from "../../components/user/layout/Footer";
+import Footer from "@/components/user/layout/Footer";
+
 
 export const metadata: Metadata = {
   title: {

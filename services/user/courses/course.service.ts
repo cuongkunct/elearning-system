@@ -2,6 +2,9 @@ import {
   Course,
   CoursePaginationResponse,
 } from "@/types/user/course/course.type";
+import { axiosClient } from "../axios.client";
+import Cookies from "js-cookie";
+import axiosInstance from "@/services/axiosInstance";
 const BACKEND_URL = process.env.NEXT_BACKEND_URL;
 const TOKEN_CYBERSOFT = process.env.NEXT_TOKEN_CYBERSOFT;
 
@@ -70,7 +73,7 @@ export async function getRelatedCourses(maDanhMuc?: string) {
     headers: {
       TokenCybersoft: TOKEN_CYBERSOFT || "",
     },
-    next: { revalidate: 60 }, // ISR – 60s cập nhật cache lại dữ liệu một lần,
+    next: { revalidate: 60 },
   });
   if (!res.ok) {
     throw new Error("Failed to fetch related courses");
@@ -78,22 +81,43 @@ export async function getRelatedCourses(maDanhMuc?: string) {
   return res.json();
 }
 
-export async function joinCourseByMaKhoaHoc({
-  maKhoaHoc,
-  taiKhoan,
-}: {
-  maKhoaHoc: string;
-  taiKhoan: string;
-}) {
-  const res = await fetch(`${BACKEND_URL}QuanLyKhoaHoc/GhiDanhKhoaHoc`, {
-    body: JSON.stringify({ maKhoaHoc, taiKhoan }),
-    headers: { TokenCybersoft: TOKEN_CYBERSOFT! },
-    next: {
-      revalidate: 60, // ISR – 60s cập nhật
-    },
-  });
-  if (!res.ok) {
-    throw new Error("Failed to fetch course detail");
+export async function joinCourseByMaKhoaHoc(maKhoaHoc: string) {
+  const account = Cookies.get("userData");
+  if (!account) {
+    throw new Error("Unauthorized");
   }
-  return res.json();
+  const userData = JSON.parse(account).content;
+  const res = await axiosInstance.post(
+    `QuanLyKhoaHoc/GhiDanhKhoaHoc`,
+    {
+      maKhoaHoc,
+      taiKhoan: userData.taiKhoan,
+    }, {
+    headers: {
+      Authorization: `Bearer ${userData.accessToken}`,
+    },
+  }
+  );
+  return res.data;
 }
+
+export async function cancelCourseByMaKhoaHoc(maKhoaHoc: string) {
+  const account = Cookies.get("userData");
+  if (!account) {
+    throw new Error("Unauthorized");
+  }
+  const userData = JSON.parse(account).content;
+  const res = await axiosInstance.post(
+    `QuanLyKhoaHoc/HuyGhiDanh`,
+    {
+      maKhoaHoc,
+      taiKhoan: userData.taiKhoan,
+    }, {
+    headers: {
+      Authorization: `Bearer ${userData.accessToken}`,
+    },
+  }
+  );
+  return res.data;
+}
+

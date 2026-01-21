@@ -1,7 +1,6 @@
 import SlideShow from "@/components/user/SlideShow";
 import { title } from "@/components/primitives";
 import PartnerList from "./_components/PartnerList";
-import CourseCard from "../../components/user/shared/CourseCard";
 import { CategoryWithCount } from "@/types/user/category/category.type";
 import {
   getCourseAndCategory,
@@ -13,6 +12,10 @@ import StudentReviewSlider from "../../components/user/sections/StudentReviewSli
 import BusinessList from "./_components/Business";
 import Button from "../../components/user/ui/Button";
 import { ArrowIcon } from "@/components/icons";
+import CourseCard from "./courses/_components/CourseList";
+
+
+
 export default async function Home() {
   const { courses, categories } = await getCourseAndCategory();
   const categoryWithCount = mergeCategoryWithCourseCount(courses, categories);
@@ -147,7 +150,6 @@ export default async function Home() {
         </div>
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
           <div className="relative flex justify-center">
-            {/* Image 1 */}
             <div className="relative z-10 rounded-2xl shadow-xl overflow-hidden">
               <Image
                 src="/thumb_biz.png"
@@ -163,12 +165,10 @@ export default async function Home() {
               TOT For Leading Business – A platform for creating high-performing
               learning organizations pursuing high performance
             </p>
-
             <p className="mt-6  max-w-xl">
               Help your organization achieve breakthrough growth and conquer
               your ambitious goals through team training and development.
             </p>
-
             <button className="mt-8 inline-flex items-center justify-center rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-4 transition">
               Explore TOT for Business
             </button>
@@ -179,7 +179,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
       <section className="py-4">
         <StudentReviewSlider />
       </section>
