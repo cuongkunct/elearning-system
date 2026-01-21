@@ -1,9 +1,10 @@
 "use client";
 
 import NextLink from "next/link";
-import { siteConfig } from "@/config/admin/site";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
+
+import { siteConfig } from "@/config/admin/site";
 
 export function AdminSidebar() {
   const pathname = usePathname();
@@ -16,12 +17,13 @@ export function AdminSidebar() {
     return clsx(
       "w-full rounded-xl px-3 py-3 text-sm transition-colors",
       "bg-[#F9F9F9] hover:bg-default-100",
-      active && "bg-default-100 font-medium"
+      active && "bg-default-100 font-medium",
     );
   };
 
   const renderNavItem = (item: { href: string; label: string }) => {
     const active = isActive(item.href);
+
     return (
       <NextLink
         key={item.href}
@@ -41,8 +43,8 @@ export function AdminSidebar() {
       </nav>
 
       <button
-        type="button"
         className="mt-auto w-full rounded-xl px-3 py-2 text-sm border border-default-200 text-danger-600 hover:bg-danger-50"
+        type="button"
       >
         Logout
       </button>

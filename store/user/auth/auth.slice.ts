@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "@/services/axiosInstance";
 import Cookies from "js-cookie";
 
+import axiosInstance from "@/services/axiosInstance";
 import {
   UserRegister,
   UserRegisterResponse,
@@ -18,6 +18,7 @@ export const registerUser = createAsyncThunk<
       `QuanLyNguoiDung/DangKy`,
       userData,
     );
+
     return {
       statusCode: response.status,
       content: response.data,
@@ -40,6 +41,7 @@ export const loginUser = createAsyncThunk<
       `QuanLyNguoiDung/DangNhap`,
       userData,
     );
+
     return {
       statusCode: response.status,
       content: response.data,

@@ -10,7 +10,6 @@ type Props = {
 };
 
 export default function CourseListPagination({
-  items,
   currentPage,
   totalPages,
 }: Props) {

@@ -3,11 +3,9 @@
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
-
 import "swiper/css";
 import "swiper/css/pagination";
 import Image from "next/image";
-
 export default function SlideShow() {
   // data/slides.ts
   const slides = [
@@ -53,8 +51,12 @@ export default function SlideShow() {
           <SwiperSlide key={slide.id}>
             <Link className="block w-full h-full" href={slide.link}>
               <div className="relative w-full h-full group">
-                <Image alt={slide.alt} src={slide.image} />
-                {/* overlay nhẹ cho chữ sau này */}
+                <Image
+                  alt={slide.alt}
+                  height={300}
+                  src={`/${slide.image}`}
+                  width={800}
+                />
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition" />
               </div>
             </Link>

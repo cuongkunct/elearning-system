@@ -1,7 +1,6 @@
-
 import { configureStore } from "@reduxjs/toolkit";
-import authSlice from "./user/auth/auth.slice";
 
+import authSlice from "./user/auth/auth.slice";
 
 //Store setup admin/user
 const store = configureStore({

@@ -8,18 +8,15 @@ import {
   NavbarItem,
   NavbarMenuItem,
 } from "@heroui/navbar";
-
 import { Link } from "@heroui/link";
 import { Input } from "@heroui/input";
-import { link as linkStyles } from "@heroui/theme";
 import NextLink from "next/link";
-import clsx from "clsx";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 import { siteConfig } from "@/config/admin/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { SearchIcon, Logo } from "@/components/icons";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { SearchIcon } from "@/components/icons";
 
 export const Navbar = () => {
   const pathname = usePathname();
@@ -46,6 +43,7 @@ export const Navbar = () => {
   };
 
   const activeItem = getActiveItem();
+
   console.log("activeItem", activeItem);
   // pageTitle: tiêu đề sẽ hiển thị trên Navbar
   // Nếu tìm được item đang active → lấy title của nó
@@ -53,14 +51,14 @@ export const Navbar = () => {
   const pageTitle = activeItem?.title ?? "Admin page";
 
   return (
-    <HeroUINavbar maxWidth="full" position="sticky" className="bg-[#F9F9F9]">
+    <HeroUINavbar className="bg-[#F9F9F9]" maxWidth="full" position="sticky">
       {/* ===== Desktop ===== */}
       <NavbarContent justify="start">
         <div className="mx-auto w-full max-w-7xl flex items-center gap-6 px-6">
           {/* Logo */}
           <NavbarBrand className="gap-3 max-w-fit">
             <NextLink className="flex items-center gap-2" href="/admin">
-              <Image src="/logo.png" alt="logo" width={80} height={80} />
+              <Image alt="logo" height={80} src="/logo.png" width={80} />
             </NextLink>
           </NavbarBrand>
 

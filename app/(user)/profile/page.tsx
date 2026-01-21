@@ -1,13 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Avatar, Card } from "@heroui/react";
+import { addToast } from "@heroui/react";
 
 import { EditIcon } from "@/components/icons";
 import {
   fetchUserProfile,
   fetchUpdateUserProfile,
 } from "@/services/user/userAccount/user.service";
-
 export default function ProfilePage() {
   const [isEdit, setIsEdit] = useState(false);
   const [userInfo, setUserInfo] = useState<any>(null);
@@ -32,8 +32,12 @@ export default function ProfilePage() {
       };
 
       getUserProfile();
-    } catch (error) {
-      console.error("Error fetching user profile:", error);
+    } catch (err: any) {
+      addToast({
+        title: "Error fetching user profile",
+        description: err,
+        color: "danger",
+      });
     }
   }, []);
 

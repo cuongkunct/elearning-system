@@ -23,8 +23,8 @@ export default function MyCoursePage() {
         if (!response?.chiTietKhoaHocGhiDanh) return;
         setCourses(response.chiTietKhoaHocGhiDanh);
         setLoading(false);
-      } catch (err) {
-        setError("Something went wrong. Please try again later.");
+      } catch (err: any) {
+        setError(err);
       }
     };
 

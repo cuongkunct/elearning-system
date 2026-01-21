@@ -1,6 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { addToast } from "@heroui/react";
 
 import { Course } from "@/types/user/course/course.type";
 import CourseCardItem from "@/app/(user)/courses/_components/CourseCardItem";
@@ -12,7 +13,6 @@ type CourseCardProps = {
 
 export default function CourseCard({ courses }: CourseCardProps) {
   const [joinedCourse, setJoinedCourse] = useState<Course[]>([]);
-  const [error, setError] = useState<string | null>(null);
 
   const handleJoinSuccess = (course: Course) => {
     setJoinedCourse((prev) => [...prev, course]);
@@ -33,8 +33,12 @@ export default function CourseCard({ courses }: CourseCardProps) {
 
         if (!response?.chiTietKhoaHocGhiDanh) return;
         setJoinedCourse(response.chiTietKhoaHocGhiDanh);
-      } catch (err) {
-        setError("Something went wrong. Please try again later.");
+      } catch (err: any) {
+        addToast({
+          title: "Error fetching user profile",
+          description: err,
+          color: "danger",
+        });
       }
     };
 

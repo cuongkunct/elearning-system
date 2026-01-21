@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Navbar as HeroUINavbar,
   NavbarContent,
@@ -11,11 +12,7 @@ import {
 import { Link } from "@heroui/link";
 import { Input } from "@heroui/input";
 import { link as linkStyles } from "@heroui/theme";
-import NextLink from "next/link";
-import clsx from "clsx";
 import { Button } from "@heroui/button";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -23,15 +20,18 @@ import {
   DropdownItem,
   Avatar,
 } from "@heroui/react";
-import { useDispatch, useSelector } from "react-redux";
+import clsx from "clsx";
 import Cookies from "js-cookie";
+import NextLink from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { logout, setLoginData } from "@/store/user/auth/auth.slice";
-import { RootState } from "@/store";
 import { LogoIcon, SearchIcon } from "@/components/icons";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { siteConfig } from "@/config/user/site";
-
+import { RootState } from "@/store";
+import { logout, setLoginData } from "@/store/user/auth/auth.slice";
 export const Navbar = () => {
   const rout = useRouter();
   const dispatch = useDispatch();

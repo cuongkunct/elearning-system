@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
-import { Link } from "@heroui/link";
 import clsx from "clsx";
 
 import { Providers } from "../providers";
@@ -8,7 +7,6 @@ import { Providers } from "../providers";
 import { siteConfig } from "@/config/admin/site";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/admin/navbar";
-import Footer from "../../components/user/layout/Footer";
 import { AdminSidebar } from "@/components/admin/sidebar";
 
 export const metadata: Metadata = {
@@ -35,12 +33,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html suppressHydrationWarning={true} lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <head />
       <body
         className={clsx(
           "min-h-screen text-foreground bg-[#F9F9F9] font-sans antialiased",
-          fontSans.variable
+          fontSans.variable,
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>

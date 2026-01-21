@@ -93,7 +93,7 @@ export const HeartFilledIcon = ({
   </svg>
 );
 
-export const SearchIcon = (props: IconSvgProps) => (
+export const SearchIcon = (_props: IconSvgProps) => (
   <svg
     aria-hidden="true"
     fill="none"
@@ -102,7 +102,7 @@ export const SearchIcon = (props: IconSvgProps) => (
     role="presentation"
     viewBox="0 0 24 24"
     width="1em"
-    {...props}
+    {..._props}
   >
     <path
       d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
@@ -121,7 +121,7 @@ export const SearchIcon = (props: IconSvgProps) => (
   </svg>
 );
 
-export const FilterIcon = (props: IconSvgProps) => (
+export const FilterIcon = (_props: IconSvgProps) => (
   <svg
     className="size-6"
     fill="none"
@@ -138,7 +138,7 @@ export const FilterIcon = (props: IconSvgProps) => (
   </svg>
 );
 
-export const ResetFilter = (props: IconSvgProps) => (
+export const ResetFilter = (_props: IconSvgProps) => (
   <svg
     className="size-6"
     fill="none"
@@ -155,7 +155,7 @@ export const ResetFilter = (props: IconSvgProps) => (
   </svg>
 );
 
-export const UserIcon = (props: IconSvgProps) => (
+export const UserIcon = (_props: IconSvgProps) => (
   <svg
     className="size-5"
     fill="currentColor"
@@ -170,7 +170,7 @@ export const UserIcon = (props: IconSvgProps) => (
   </svg>
 );
 
-export const EyeIcon = (props: IconSvgProps) => (
+export const EyeIcon = (_props: IconSvgProps) => (
   <svg
     className="size-5"
     fill="currentColor"
@@ -186,7 +186,7 @@ export const EyeIcon = (props: IconSvgProps) => (
   </svg>
 );
 
-export const PaletteIcon = (props: IconSvgProps) => (
+export const PaletteIcon = (_props: IconSvgProps) => (
   <svg
     className="size-6"
     fill="none"
@@ -203,7 +203,7 @@ export const PaletteIcon = (props: IconSvgProps) => (
   </svg>
 );
 
-export const CodeIcon = (props: IconSvgProps) => (
+export const CodeIcon = (_props: IconSvgProps) => (
   <svg
     className="size-6"
     fill="none"
@@ -220,7 +220,7 @@ export const CodeIcon = (props: IconSvgProps) => (
   </svg>
 );
 
-export const MobileIcon = (props: IconSvgProps) => (
+export const MobileIcon = (_props: IconSvgProps) => (
   <svg
     className="size-6"
     fill="none"
@@ -237,7 +237,7 @@ export const MobileIcon = (props: IconSvgProps) => (
   </svg>
 );
 
-export const FrontEndIcon = (props: IconSvgProps) => (
+export const FrontEndIcon = (_props: IconSvgProps) => (
   <svg
     className="size-6"
     fill="none"
@@ -259,7 +259,7 @@ export const FrontEndIcon = (props: IconSvgProps) => (
   </svg>
 );
 
-export const FullStaskIcon = (props: IconSvgProps) => (
+export const FullStaskIcon = (_props: IconSvgProps) => (
   <svg
     className="size-6"
     fill="none"
@@ -281,7 +281,7 @@ export const FullStaskIcon = (props: IconSvgProps) => (
   </svg>
 );
 
-export const ThinkingIcon = (props: IconSvgProps) => (
+export const ThinkingIcon = (_props: IconSvgProps) => (
   <svg
     className="size-6"
     fill="none"
@@ -298,7 +298,7 @@ export const ThinkingIcon = (props: IconSvgProps) => (
   </svg>
 );
 
-export const EditIcon = (props: IconSvgProps) => (
+export const EditIcon = (_props: IconSvgProps) => (
   <svg
     className="size-5"
     fill="currentColor"
@@ -309,7 +309,7 @@ export const EditIcon = (props: IconSvgProps) => (
   </svg>
 );
 
-export const ArrowIcon = (props: IconSvgProps) => (
+export const ArrowIcon = (_props: IconSvgProps) => (
   <svg
     className="size-6"
     fill="none"
@@ -326,7 +326,7 @@ export const ArrowIcon = (props: IconSvgProps) => (
   </svg>
 );
 
-export const LogoIcon = (props: IconSvgProps) => (
+export const LogoIcon = (_props: IconSvgProps) => (
   <svg
     className="size-12"
     fill="currentColor"
@@ -339,7 +339,7 @@ export const LogoIcon = (props: IconSvgProps) => (
   </svg>
 );
 
-export const EyeSlashFilledIcon = (props: IconSvgProps) => {
+export const EyeSlashFilledIcon = (_props: IconSvgProps) => {
   return (
     <svg
       aria-hidden="true"
@@ -349,7 +349,7 @@ export const EyeSlashFilledIcon = (props: IconSvgProps) => {
       role="presentation"
       viewBox="0 0 24 24"
       width="1em"
-      {...props}
+      {..._props}
     >
       <path
         d="M21.2714 9.17834C20.9814 8.71834 20.6714 8.28834 20.3514 7.88834C19.9814 7.41834 19.2814 7.37834 18.8614 7.79834L15.8614 10.7983C16.0814 11.4583 16.1214 12.2183 15.9214 13.0083C15.5714 14.4183 14.4314 15.5583 13.0214 15.9083C12.2314 16.1083 11.4714 16.0683 10.8114 15.8483C10.8114 15.8483 9.38141 17.2783 8.35141 18.3083C7.85141 18.8083 8.01141 19.6883 8.68141 19.9483C9.75141 20.3583 10.8614 20.5683 12.0014 20.5683C13.7814 20.5683 15.5114 20.0483 17.0914 19.0783C18.7014 18.0783 20.1514 16.6083 21.3214 14.7383C22.2714 13.2283 22.2214 10.6883 21.2714 9.17834Z"
@@ -375,7 +375,7 @@ export const EyeSlashFilledIcon = (props: IconSvgProps) => {
   );
 };
 
-export const EyeFilledIcon = (props: IconSvgProps) => {
+export const EyeFilledIcon = (_props: IconSvgProps) => {
   return (
     <svg
       aria-hidden="true"
@@ -385,7 +385,7 @@ export const EyeFilledIcon = (props: IconSvgProps) => {
       role="presentation"
       viewBox="0 0 24 24"
       width="1em"
-      {...props}
+      {..._props}
     >
       <path
         d="M21.25 9.14969C18.94 5.51969 15.56 3.42969 12 3.42969C10.22 3.42969 8.49 3.94969 6.91 4.91969C5.33 5.89969 3.91 7.32969 2.75 9.14969C1.75 10.7197 1.75 13.2697 2.75 14.8397C5.06 18.4797 8.44 20.5597 12 20.5597C13.78 20.5597 15.51 20.0397 17.09 19.0697C18.67 18.0897 20.09 16.6597 21.25 14.8397C22.25 13.2797 22.25 10.7197 21.25 9.14969ZM12 16.0397C9.76 16.0397 7.96 14.2297 7.96 11.9997C7.96 9.76969 9.76 7.95969 12 7.95969C14.24 7.95969 16.04 9.76969 16.04 11.9997C16.04 14.2297 14.24 16.0397 12 16.0397Z"

@@ -2,7 +2,6 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -70,7 +69,6 @@ export default function StudentReviewSlider() {
     <section className="py-16 ">
       <div className="max-w-6xl mx-auto px-6">
         <h2 className="text-2xl font-bold mb-10">What Our Students Say</h2>
-
         <Swiper
           autoplay={{ delay: 4000 }}
           modules={[Navigation, Pagination, Autoplay]}
@@ -97,7 +95,9 @@ export default function StudentReviewSlider() {
                   <Image
                     alt={item.name}
                     className="w-full h-full object-cover"
+                    height={200}
                     src={item.image}
+                    width={400}
                   />
                 </div>
                 <span className="text-sm  font-medium ">{item.source}</span>
