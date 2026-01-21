@@ -26,7 +26,7 @@ export default async function Search(props: any) {
         </div>
       </div>
       <p className="text-lg font-medium mb-4">
-        {courses?.items?.length} search results for "{key}"
+        {courses?.items?.length} search results for &quot;{key}&quot;
       </p>
       <CourseCard courses={courses.items} />
       <div className="flex justify-center items-center py-8">

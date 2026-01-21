@@ -344,7 +344,7 @@ export default function AboutPage() {
               <p className="text-[13px] leading-relaxed text-gray-600 dark:text-gray-400">
                 Put yourself in the shoes of partners and customers. Listen
                 actively to deliver experiences that exceed expectations. We
-                never say "No," we find a way to say "Yes."
+                never say No, we find a way to say Yes.
               </p>
             </div>
           </div>
