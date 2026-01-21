@@ -16,13 +16,9 @@ import {
 } from "@/services/user/courses/course.service";
 import { Course } from "@/types/user/course/course.type";
 import { ArrowIcon } from "@/components/icons";
-
-type Props = {
-  params: {
-    id: string;
-  };
+type Params = {
+  id: string;
 };
-
 /* ================= SEO ================= */
 export async function generateMetadata({
   params,
@@ -54,7 +50,7 @@ export async function generateMetadata({
 }
 
 const CourseDetailPage = async ({ params }: { params: Promise<Params> }) => {
-  const { id } = await params; // ✅
+  const { id } = await params;
   const course = await getCourseDetail(id);
 
   if (!course) {
