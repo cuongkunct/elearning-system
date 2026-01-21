@@ -1,8 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Avatar, Card } from "@heroui/react";
+
 import { EditIcon } from "@/components/icons";
-import { fetchUserProfile, fetchUpdateUserProfile } from "@/services/user/userAccount/user.service";
+import {
+  fetchUserProfile,
+  fetchUpdateUserProfile,
+} from "@/services/user/userAccount/user.service";
 
 export default function ProfilePage() {
   const [isEdit, setIsEdit] = useState(false);
@@ -21,10 +25,12 @@ export default function ProfilePage() {
     try {
       const getUserProfile = async () => {
         const response = await fetchUserProfile();
+
         if (response) {
           setUserInfo(response);
         }
-      }
+      };
+
       getUserProfile();
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -54,8 +60,10 @@ export default function ProfilePage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const res = await fetchUpdateUserProfile({ data: formData });
+
     if (res) {
       const response = await fetchUserProfile();
+
       if (response) {
         setUserInfo(response);
         setIsEdit(false);
@@ -68,7 +76,7 @@ export default function ProfilePage() {
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         <Card className="md:col-span-1 p-6 rounded-2xl shadow-xl">
           <div className="flex flex-col items-center gap-4">
-            <Avatar name={userInfo?.hoTen} className="w-24 h-24" />
+            <Avatar className="w-24 h-24" name={userInfo?.hoTen} />
             <div className="text-center">
               <p className="font-semibold">{userInfo?.hoTen}</p>
               <p className="text-sm text-gray-500">{userInfo?.email}</p>
@@ -97,54 +105,54 @@ export default function ProfilePage() {
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Input
+              isReadOnly
               label="Username"
               name="taiKhoan"
               value={formData.taiKhoan}
-              isReadOnly
             />
             <Input
+              endContent={isEdit ? <EditIcon /> : null}
+              isReadOnly={!isEdit}
               label="Password"
               name="matKhau"
               value={formData.matKhau}
-              isReadOnly={!isEdit}
               onChange={handleChange}
-              endContent={isEdit ? <EditIcon /> : null}
             />
             <Input
+              isReadOnly
               label="Group"
               name="maNhom"
               value={formData.maNhom}
-              isReadOnly
             />
             <Input
+              isReadOnly
               label="User type"
               name="maLoaiNguoiDung"
               value={formData.maLoaiNguoiDung}
-              isReadOnly
             />
             <Input
+              endContent={isEdit ? <EditIcon /> : null}
+              isReadOnly={!isEdit}
               label="Full name"
               name="hoTen"
               value={formData.hoTen}
-              isReadOnly={!isEdit}
               onChange={handleChange}
-              endContent={isEdit ? <EditIcon /> : null}
             />
             <Input
+              endContent={isEdit ? <EditIcon /> : null}
+              isReadOnly={!isEdit}
               label="Email"
               name="email"
               value={formData.email}
-              isReadOnly={!isEdit}
               onChange={handleChange}
-              endContent={isEdit ? <EditIcon /> : null}
             />
             <Input
+              endContent={isEdit ? <EditIcon /> : null}
+              isReadOnly={!isEdit}
               label="Phone"
               name="soDT"
               value={formData.soDT}
-              isReadOnly={!isEdit}
               onChange={handleChange}
-              endContent={isEdit ? <EditIcon /> : null}
             />
           </div>
           {!isEdit ? (

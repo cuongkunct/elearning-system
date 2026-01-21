@@ -1,12 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import { Form, Input, Button, useDisclosure } from "@heroui/react";
-import { useDispatch, useSelector } from "react-redux";
-import { DispatchType, RootState } from "@/store";
-import { registerUser } from "@/store/user/auth/auth.slice";
+import { Form, Input, Button } from "@heroui/react";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
+import { addToast } from "@heroui/react";
+
 import NotificationModal from "../../../components/user/shared/NotificationModal";
-import { addToast, ToastProvider } from "@heroui/react";
+
+import { DispatchType } from "@/store";
+import { registerUser } from "@/store/user/auth/auth.slice";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
 export default function Register() {
   const router = useRouter();
@@ -15,6 +17,7 @@ export default function Register() {
   const [err, setErr] = useState<string | null>(null);
   const [isVisible, setIsVisible] = React.useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+
   return (
     <Form
       className="
@@ -31,10 +34,12 @@ export default function Register() {
       onSubmit={async (e) => {
         e.preventDefault();
         const data = Object.fromEntries(new FormData(e.currentTarget));
+
         try {
           const res = await dispatch(
             registerUser(JSON.parse(JSON.stringify(data))),
           ).unwrap();
+
           console.log("Register successful:", res);
           if (res.statusCode === 200) {
             setOpen(true);
@@ -81,9 +86,9 @@ export default function Register() {
               )}
             </button>
           }
-          name="matKhau"
           label="Password"
           labelPlacement="outside"
+          name="matKhau"
           placeholder="Enter your password"
           type={isVisible ? "text" : "password"}
         />
@@ -110,10 +115,10 @@ export default function Register() {
           isRequired
           label="Group Code"
           labelPlacement="outside"
-          value={"GP01"}
           name="maNhom"
           placeholder="Enter your group code"
           type="text"
+          value={"GP01"}
         />
 
         <Input
@@ -126,9 +131,9 @@ export default function Register() {
         />
       </div>
       <NotificationModal
-        title={err ?? "Registration Failed"}
         color={err ? "danger" : "success"}
         isOpen={open}
+        title={err ?? "Registration Failed"}
         onClose={() => setOpen(false)}
       />
       {/* ===== Actions ===== */}

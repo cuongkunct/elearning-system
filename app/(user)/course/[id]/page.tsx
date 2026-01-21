@@ -1,18 +1,21 @@
-import {
-  getCourseDetail,
-  getRelatedCourses,
-} from "@/services/user/courses/course.service";
 import { Metadata } from "next";
-import { Course } from "@/types/user/course/course.type";
+import Link from "next/link";
+
 import {
   categorySeoMap,
   courseIntroductionByCategory,
 } from "../../../../components/user/sections/SeoDescription";
 import CourseCardItem from "../../courses/_components/CourseCardItem";
-import { ArrowIcon } from "@/components/icons";
 import Button from "../../../../components/user/ui/Button";
-import Link from "next/link";
 import CourseCard from "../../courses/_components/CourseList";
+
+import {
+  getCourseDetail,
+  getRelatedCourses,
+} from "@/services/user/courses/course.service";
+import { Course } from "@/types/user/course/course.type";
+import { ArrowIcon } from "@/components/icons";
+
 type Props = {
   params: {
     id: string;
@@ -52,6 +55,7 @@ export async function generateMetadata({
 export default async function CourseDetailPage({ params }: Props) {
   const { id } = params;
   const course = await getCourseDetail(id);
+
   if (!course) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -78,6 +82,7 @@ export default async function CourseDetailPage({ params }: Props) {
   const intro =
     courseIntroductionByCategory[course.danhMucKhoaHoc.maDanhMucKhoahoc] ||
     course.moTa;
+
   return (
     <>
       <div className="min-h-screen dark:bg-gray-900">

@@ -19,6 +19,7 @@ export default function CourseListPagination({
 
   const onChangePage = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
+
     params.set("page", String(page));
     router.push(`?${params.toString()}`);
   };
@@ -26,9 +27,9 @@ export default function CourseListPagination({
   return (
     <>
       <Pagination
+        showControls
         page={currentPage}
         total={totalPages}
-        showControls
         onChange={onChangePage}
       />
     </>

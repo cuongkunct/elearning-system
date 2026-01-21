@@ -8,6 +8,7 @@ const business = [
   { id: 5, logo: "/business/vietinbank.png", name: "Business 5" },
   { id: 6, logo: "/business/vpbank.png", name: "Business 6" },
 ];
+
 export default function BusinessList() {
   return (
     <section className="w-full py-8">
@@ -19,11 +20,11 @@ export default function BusinessList() {
               className="flex items-center justify-center grayscale  hover:grayscale-0  transition"
             >
               <Image
-                src={business.logo}
                 alt={business.name}
-                width={100}
-                height={60}
                 className="object-contain"
+                height={60}
+                src={business.logo}
+                width={100}
               />
             </div>
           ))}

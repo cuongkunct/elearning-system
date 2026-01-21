@@ -1,15 +1,17 @@
-import { getListCategory } from "@/services/user/category/category.service";
+import { Metadata } from "next";
+
 import CategoriesFilter from "./_components/CategoriesFilter";
+import CourseListPagination from "./_components/CourseListPagination";
+import CategoriesIntro from "./_components/CategoriesIntro";
+import SortButtons from "./_components/SortButtons";
+import CourseCard from "./_components/CourseList";
+
+import { Course } from "@/types/user/course/course.type";
 import {
   getRelatedCourses,
   getCoursesPagination,
 } from "@/services/user/courses/course.service";
-import CourseListPagination from "./_components/CourseListPagination";
-import CategoriesIntro from "./_components/CategoriesIntro";
-import SortButtons from "./_components/SortButtons";
-import { Course } from "@/types/user/course/course.type";
-import { Metadata } from "next";
-import CourseCard from "./_components/CourseList";
+import { getListCategory } from "@/services/user/category/category.service";
 
 export const metadata: Metadata = {
   title: "Online Courses",
@@ -36,8 +38,10 @@ export default async function CategoriesPage({
     totalPages?: number;
   };
   let showPagination = false;
+
   if (!id) {
     const res = await getCoursesPagination(currentPage);
+
     courseList = {
       items: res.items,
       currentPage: res.currentPage,
@@ -46,6 +50,7 @@ export default async function CategoriesPage({
     showPagination = true;
   } else {
     const res = await getRelatedCourses(id);
+
     courseList = {
       items: res,
     };
@@ -78,8 +83,8 @@ export default async function CategoriesPage({
               <CourseCard courses={courseList.items} />
               <div className="flex items-center justify-center p-4">
                 <CourseListPagination
-                  items={courseList.items}
                   currentPage={courseList.currentPage}
+                  items={courseList.items}
                   totalPages={courseList.totalPages}
                 />
               </div>

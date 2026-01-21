@@ -1,4 +1,9 @@
 "use client";
+import { Button } from "@heroui/react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+
 import {
   CodeIcon,
   FrontEndIcon,
@@ -7,8 +12,6 @@ import {
   PaletteIcon,
   ThinkingIcon,
 } from "@/components/icons";
-import { Button } from "@heroui/react";
-import { useRouter } from "next/navigation";
 
 export default function AboutPage() {
   const router = useRouter();
@@ -44,13 +47,14 @@ export default function AboutPage() {
       icon: <ThinkingIcon size={32} />,
     },
   ];
+
   return (
     <div className="w-full min-h-screen">
       <section className="relative w-full h-64 md:h-96 lg:h-[500px]">
-        <img
-          src="blog-banner.png"
+        <Image
           alt="Blog background"
           className="absolute inset-0 w-full h-full object-cover object-center"
+          src="blog-banner.png"
         />
         <div className="absolute inset-0 bg-gray-900/50" />
         <div className="relative z-10 flex h-full items-center">
@@ -60,7 +64,7 @@ export default function AboutPage() {
               Sharing knowledge, learning experiences, and skill development
               tailored for individuals and businesses.
             </p>
-            <Button onPress={() => router.push("/courses")} color="primary">
+            <Button color="primary" onPress={() => router.push("/courses")}>
               Join Now
             </Button>
           </div>
@@ -73,15 +77,15 @@ export default function AboutPage() {
             <div className="p-8 rounded-xl border border-gray-200 shadow-md flex flex-col items-center text-center dark:bg-gray-900 dark:border-gray-700 dark:shadow-[0_4px_20px_rgba(255,255,255,0.1)]">
               <div className="mb-4 text-blue-600 dark:text-blue-400">
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="48"
-                  height="48"
-                  viewBox="0 0 24 24"
                   fill="none"
+                  height="48"
                   stroke="currentColor"
-                  strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  viewBox="0 0 24 24"
+                  width="48"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <circle cx="12" cy="12" r="10" />
                   <circle cx="12" cy="12" r="6" />
@@ -99,15 +103,15 @@ export default function AboutPage() {
             <div className="p-8 rounded-xl border border-gray-200 shadow-md flex flex-col items-center dark:bg-gray-900 dark:border-gray-700 dark:shadow-[0_4px_20px_rgba(255,255,255,0.1)]">
               <div className="mb-4 text-blue-600 dark:text-blue-400">
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="48"
-                  height="48"
-                  viewBox="0 0 24 24"
                   fill="none"
+                  height="48"
                   stroke="currentColor"
-                  strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  viewBox="0 0 24 24"
+                  width="48"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="M6 3h12l4 6-10 13L2 9Z" />
                   <path d="M11 3 8 9l4 13 4-13-3-6" />
@@ -126,8 +130,8 @@ export default function AboutPage() {
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2 text-blue-500">•</span> All members of
-                  the Company strive their best to serve the ultimate "boss":
-                  the common goals and mutual interests.
+                  the Company strive their best to serve the ultimate boss the
+                  common goals and mutual interests.
                 </li>
               </ul>
             </div>
@@ -137,15 +141,15 @@ export default function AboutPage() {
           <div className="p-8 rounded-xl border border-gray-200 shadow-md mb-20 flex flex-col items-center dark:bg-gray-900 dark:border-gray-700 dark:shadow-[0_4px_25px_rgba(255,255,255,0.08)]">
             <div className="mb-4 text-blue-600 dark:text-blue-400">
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="48"
-                height="48"
-                viewBox="0 0 24 24"
                 fill="none"
+                height="48"
                 stroke="currentColor"
-                strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+                width="48"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
                 <circle cx="12" cy="12" r="3" />
@@ -159,7 +163,7 @@ export default function AboutPage() {
               </li>
               <li className="flex items-start">
                 <span className="mr-2 text-blue-500">•</span> Trusted and loved
-                by customers and partners for the "Wow" experience.
+                by customers and partners for the Wow experience.
               </li>
               <li className="flex items-start">
                 <span className="mr-2 text-blue-500">•</span> Becoming a
@@ -183,15 +187,15 @@ export default function AboutPage() {
             <div className="text-center shadow-md p-6 rounded-lg border border-gray-200 dark:bg-gray-900 dark:border-gray-700 dark:shadow-[0_4px_15px_rgba(255,255,255,0.05)] transition-transform hover:scale-105">
               <div className="flex justify-center mb-4 text-blue-600 dark:text-blue-400">
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="40"
-                  height="40"
-                  viewBox="0 0 24 24"
                   fill="none"
+                  height="40"
                   stroke="currentColor"
-                  strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  viewBox="0 0 24 24"
+                  width="40"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="M3 7V5a2 2 0 0 1 2-2h2" />
                   <path d="M17 3h2a2 2 0 0 1 2 2v2" />
@@ -211,15 +215,15 @@ export default function AboutPage() {
             <div className="text-center shadow-md p-6 rounded-lg border border-gray-200 dark:bg-gray-900 dark:border-gray-700 dark:shadow-[0_4px_15px_rgba(255,255,255,0.05)] transition-transform hover:scale-105">
               <div className="flex justify-center mb-4 text-blue-600 dark:text-blue-400">
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="40"
-                  height="40"
-                  viewBox="0 0 24 24"
                   fill="none"
+                  height="40"
                   stroke="currentColor"
-                  strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  viewBox="0 0 24 24"
+                  width="40"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="m18 15 3-3-3-3" />
                   <path d="m6 9-3 3 3 3" />
@@ -242,15 +246,15 @@ export default function AboutPage() {
             <div className="text-center shadow-md p-6 rounded-lg border border-gray-200 dark:bg-gray-900 dark:border-gray-700 dark:shadow-[0_4px_15px_rgba(255,255,255,0.05)] transition-transform hover:scale-105">
               <div className="flex justify-center mb-4 text-blue-600 dark:text-blue-400">
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="40"
-                  height="40"
-                  viewBox="0 0 24 24"
                   fill="none"
+                  height="40"
                   stroke="currentColor"
-                  strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  viewBox="0 0 24 24"
+                  width="40"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="M16 5h6v6h-6z" />
                   <path d="M2 5h6v6H2z" />
@@ -269,15 +273,15 @@ export default function AboutPage() {
             <div className="text-center shadow-md p-6 rounded-lg border border-gray-200 dark:bg-gray-900 dark:border-gray-700 dark:shadow-[0_4px_15px_rgba(255,255,255,0.05)] transition-transform hover:scale-105">
               <div className="flex justify-center mb-4 text-blue-600 dark:text-blue-400">
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="40"
-                  height="40"
-                  viewBox="0 0 24 24"
                   fill="none"
+                  height="40"
                   stroke="currentColor"
-                  strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  viewBox="0 0 24 24"
+                  width="40"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                   <path d="M8 9h8" />
@@ -295,15 +299,15 @@ export default function AboutPage() {
             <div className="text-center shadow-md p-6 rounded-lg border border-gray-200 dark:bg-gray-900 dark:border-gray-700 dark:shadow-[0_4px_15px_rgba(255,255,255,0.05)] transition-transform hover:scale-105">
               <div className="flex justify-center mb-4 text-blue-600 dark:text-blue-400">
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="40"
-                  height="40"
-                  viewBox="0 0 24 24"
                   fill="none"
+                  height="40"
                   stroke="currentColor"
-                  strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  viewBox="0 0 24 24"
+                  width="40"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <circle cx="12" cy="12" r="10" />
                   <path d="M12 2a7 7 0 1 0 10 10" />
@@ -320,15 +324,15 @@ export default function AboutPage() {
             <div className="text-center shadow-md p-6 rounded-lg border border-gray-200 dark:bg-gray-900 dark:border-gray-700 dark:shadow-[0_4px_15px_rgba(255,255,255,0.05)] transition-transform hover:scale-105">
               <div className="flex justify-center mb-4 text-blue-600 dark:text-blue-400">
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="40"
-                  height="40"
-                  viewBox="0 0 24 24"
                   fill="none"
+                  height="40"
                   stroke="currentColor"
-                  strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  viewBox="0 0 24 24"
+                  width="40"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
                   <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2" />
@@ -353,36 +357,29 @@ export default function AboutPage() {
           </h2>
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="w-full lg:w-5/12 relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000" />
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800"
+                <Image
                   alt="Programming Hero"
                   className="w-full h-[400px] object-cover transition-transform duration-500 group-hover:scale-105"
+                  src="/banner1.png"
                 />
-                <div className="absolute inset-0 bg-blue-900/20 mix-blend-multiply"></div>
+                <div className="absolute inset-0 bg-blue-900/20 mix-blend-multiply" />
               </div>
             </div>
             <div className="w-full lg:w-7/12 grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6">
               {categories.map((item) => (
-                <div
+                <Link
                   key={item.maDanhMuc}
-                  onClick={() => router.push(`/courses?id=${item.maDanhMuc}`)}
-                  className="flex flex-col items-center justify-center p-6 rounded-xl transition-all duration-300 cursor-pointer
-                           bg-white text-slate-800 border border-transparent
-                           shadow-[0_8px_30px_rgb(0,0,0,0.12)] 
-                           hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)]
-                           dark:bg-slate-800 dark:text-white dark:border-slate-700
-                           dark:shadow-[0_4px_20px_rgba(255,255,255,0.05)]
-                           dark:hover:shadow-[0_0_25px_rgba(56,189,248,0.3)] group"
+                  className="flex flex-col items-center justify-center p-6 rounded-xl transition-all duration-300
+                            bg-white text-slate-800 shadow-md hover:-translate-y-2 ..."
+                  href={`/courses?id=${item.maDanhMuc}`}
                 >
-                  <div className="mb-4 text-blue-500 dark:text-cyan-400 group-hover:scale-110 transition-transform duration-300">
-                    {item.icon}
-                  </div>
-                  <span className="text-sm md:text-base font-bold text-center leading-tight">
+                  <div className="mb-4">{item.icon}</div>
+                  <span className="text-sm font-bold text-center">
                     {item.tenDanhMuc}
                   </span>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

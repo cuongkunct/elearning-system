@@ -1,11 +1,12 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
+
 import { Providers } from "../providers";
+
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/user/layout/navbar";
 import Footer from "@/components/user/layout/Footer";
-
 
 export const metadata: Metadata = {
   title: {
@@ -87,12 +88,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html suppressHydrationWarning={true} lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <head />
       <body
         className={clsx(
           "min-h-screen text-foreground bg-background font-sans antialiased ",
-          fontSans.variable
+          fontSans.variable,
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>

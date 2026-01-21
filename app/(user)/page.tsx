@@ -1,20 +1,21 @@
+import Link from "next/link";
+import Image from "next/image";
+
+import StudentReviewSlider from "../../components/user/sections/StudentReviewSlider";
+import Button from "../../components/user/ui/Button";
+
+import PartnerList from "./_components/PartnerList";
+import BusinessList from "./_components/Business";
+import CourseCard from "./courses/_components/CourseList";
+
 import SlideShow from "@/components/user/SlideShow";
 import { title } from "@/components/primitives";
-import PartnerList from "./_components/PartnerList";
 import { CategoryWithCount } from "@/types/user/category/category.type";
 import {
   getCourseAndCategory,
   mergeCategoryWithCourseCount,
 } from "@/services/user/category/category.service";
-import Link from "next/link";
-import Image from "next/image";
-import StudentReviewSlider from "../../components/user/sections/StudentReviewSlider";
-import BusinessList from "./_components/Business";
-import Button from "../../components/user/ui/Button";
 import { ArrowIcon } from "@/components/icons";
-import CourseCard from "./courses/_components/CourseList";
-
-
 
 export default async function Home() {
   const { courses, categories } = await getCourseAndCategory();
@@ -29,7 +30,7 @@ export default async function Home() {
 
   const renderCategory = () => {
     return categoryWithCount.map((category: CategoryWithCount) => (
-      <Link href={`/courses?id=${category.maDanhMuc}`} key={category.maDanhMuc}>
+      <Link key={category.maDanhMuc} href={`/courses?id=${category.maDanhMuc}`}>
         <div
           key={category.maDanhMuc}
           className="
@@ -47,17 +48,17 @@ export default async function Home() {
             <div className="flex items-center gap-1 text-sm text-gray-500 ml-auto">
               <p className="font-normal">{category.soLuong}</p>
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
                 className="size-3"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.5}
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
+                  d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"
                 />
               </svg>
             </div>
@@ -139,11 +140,11 @@ export default async function Home() {
           <div className="relative flex justify-center pt-12 pb-4">
             <div className="relative z-10 rounded-2xl shadow-xl overflow-hidden">
               <Image
-                src="/thumb_gv.png"
                 alt="Học online"
-                width={420}
-                height={280}
                 className="object-cover"
+                height={280}
+                src="/thumb_gv.png"
+                width={420}
               />
             </div>
           </div>
@@ -152,11 +153,11 @@ export default async function Home() {
           <div className="relative flex justify-center">
             <div className="relative z-10 rounded-2xl shadow-xl overflow-hidden">
               <Image
-                src="/thumb_biz.png"
                 alt="Học online"
-                width={420}
-                height={280}
                 className="object-cover"
+                height={280}
+                src="/thumb_biz.png"
+                width={420}
               />
             </div>
           </div>

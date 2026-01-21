@@ -1,8 +1,9 @@
 "use client";
-import { Course } from "@/types/user/course/course.type";
 import { usePathname } from "next/navigation";
-import CourseCardItem from "@/app/(user)/courses/_components/CourseCardItem";
 import { useEffect, useMemo, useState } from "react";
+
+import { Course } from "@/types/user/course/course.type";
+import CourseCardItem from "@/app/(user)/courses/_components/CourseCardItem";
 import { fetchUserProfile } from "@/services/user/userAccount/user.service";
 
 type CourseCardProps = {
@@ -29,18 +30,21 @@ export default function CourseCard({ courses }: CourseCardProps) {
     const loadProfile = async () => {
       try {
         const response = await fetchUserProfile();
+
         if (!response?.chiTietKhoaHocGhiDanh) return;
         setJoinedCourse(response.chiTietKhoaHocGhiDanh);
       } catch (err) {
         setError("Something went wrong. Please try again later.");
       }
     };
+
     loadProfile();
   }, []);
 
   const pathname = usePathname();
   const isCategoryPage = pathname.includes("/courses");
   const isSearchPage = pathname.includes("/search");
+
   return (
     <div
       className={
@@ -62,8 +66,8 @@ export default function CourseCard({ courses }: CourseCardProps) {
           key={item.maKhoaHoc}
           course={item}
           isJoined={joinedCourseSet.has(item.maKhoaHoc)}
-          onJoinSuccess={handleJoinSuccess}
           onCancelSuccess={handleCancelSuccess}
+          onJoinSuccess={handleJoinSuccess}
         />
       ))}
     </div>

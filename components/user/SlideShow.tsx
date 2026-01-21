@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/pagination";
+import Image from "next/image";
 
 export default function SlideShow() {
   // data/slides.ts
@@ -40,20 +40,20 @@ export default function SlideShow() {
   return (
     <div className="w-full rounded-2xl overflow-hidden">
       <Swiper
-        modules={[Pagination, Autoplay]}
-        pagination={{ clickable: true }}
+        loop
         autoplay={{
           delay: 4000,
           disableOnInteraction: false,
         }}
-        loop
         className="w-full h-[420px]"
+        modules={[Pagination, Autoplay]}
+        pagination={{ clickable: true }}
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
-            <Link href={slide.link} className="block w-full h-full">
+            <Link className="block w-full h-full" href={slide.link}>
               <div className="relative w-full h-full group">
-                <img src={slide.image} alt={slide.alt} />
+                <Image alt={slide.alt} src={slide.image} />
                 {/* overlay nhẹ cho chữ sau này */}
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition" />
               </div>

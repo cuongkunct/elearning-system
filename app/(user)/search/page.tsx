@@ -1,7 +1,8 @@
 import CourseListPagination from "../courses/_components/CourseListPagination";
-import { getCoursesPagination } from "@/services/user/courses/course.service";
 import SortButtons from "../courses/_components/SortButtons";
 import CourseCard from "../courses/_components/CourseList";
+
+import { getCoursesPagination } from "@/services/user/courses/course.service";
 
 export default async function Search(props: any) {
   const { key, page, sort } = await props.searchParams;
@@ -30,8 +31,8 @@ export default async function Search(props: any) {
       <CourseCard courses={courses.items} />
       <div className="flex justify-center items-center py-8">
         <CourseListPagination
-          items={courses.items}
           currentPage={courses.currentPage}
+          items={courses.items}
           totalPages={courses.totalPages}
         />
       </div>

@@ -10,6 +10,7 @@ const partners = [
   { id: 7, logo: "/partners/partner7.png", name: "Partner 7" },
   { id: 8, logo: "/partners/partner8.png", name: "Partner 8" },
 ];
+
 export default function PartnerList() {
   return (
     <section className="w-full py-8">
@@ -21,11 +22,11 @@ export default function PartnerList() {
               className="flex items-center justify-center hover:scale-150 transition-all duration-500"
             >
               <Image
-                src={partner.logo}
                 alt={partner.name}
-                width={100}
-                height={60}
                 className="object-contain"
+                height={60}
+                src={partner.logo}
+                width={100}
               />
             </div>
           ))}
