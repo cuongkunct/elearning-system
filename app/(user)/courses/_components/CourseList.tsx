@@ -13,13 +13,17 @@ export default function CourseCard({ courses }: CourseCardProps) {
   const [joinedCourse, setJoinedCourse] = useState<Course[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  console.log(" joinedCourse", joinedCourse);
-  console.log("courses", courses);
+  const handleJoinSuccess = (course: Course) => {
+    setJoinedCourse((prev) => [...prev, course]);
+  };
+
+  const handleCancelSuccess = (maKhoaHoc: string) => {
+    setJoinedCourse((prev) => prev.filter((c) => c.maKhoaHoc !== maKhoaHoc));
+  };
 
   const joinedCourseSet = useMemo(() => {
     return new Set(joinedCourse.map((c) => c.maKhoaHoc));
   }, [joinedCourse]);
-
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -33,8 +37,6 @@ export default function CourseCard({ courses }: CourseCardProps) {
     };
     loadProfile();
   }, []);
-
-
 
   const pathname = usePathname();
   const isCategoryPage = pathname.includes("/courses");
@@ -56,7 +58,13 @@ export default function CourseCard({ courses }: CourseCardProps) {
       }
     >
       {courses.map((item: Course) => (
-        <CourseCardItem key={item.maKhoaHoc} course={item} isJoined={joinedCourseSet.has(item.maKhoaHoc)} />
+        <CourseCardItem
+          key={item.maKhoaHoc}
+          course={item}
+          isJoined={joinedCourseSet.has(item.maKhoaHoc)}
+          onJoinSuccess={handleJoinSuccess}
+          onCancelSuccess={handleCancelSuccess}
+        />
       ))}
     </div>
   );

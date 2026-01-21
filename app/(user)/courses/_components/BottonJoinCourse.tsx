@@ -7,14 +7,10 @@ type Props = {
   onJoin: () => void;
 };
 
-export default function ButtonJoinCourse({
-  isJoined,
-  loading,
-  onJoin,
-}: Props) {
+export default function ButtonJoinCourse({ isJoined, loading, onJoin }: Props) {
   return (
     <Button
-      color={isJoined ? "danger" : "primary"}
+      color={isJoined ? "success" : "default"}
       isLoading={loading}
       onPress={onJoin}
       className="m-4"
