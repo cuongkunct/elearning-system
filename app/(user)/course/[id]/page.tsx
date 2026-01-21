@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { Params } from "next/dist/server/request/params";
 
 import {
   categorySeoMap,
@@ -16,13 +17,19 @@ import {
 import { Course } from "@/types/user/course/course.type";
 import { ArrowIcon } from "@/components/icons";
 
+type Props = {
+  params: {
+    id: string;
+  };
+};
+
 /* ================= SEO ================= */
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<Params>;
 }): Promise<Metadata> {
-  const { id } = params;
+  const { id } = await params;
   const course = await getCourseDetail(id);
 
   if (!course) {
@@ -46,12 +53,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function CourseDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params;
+const CourseDetailPage = async ({ params }: { params: Promise<Params> }) => {
+  const { id } = await params; // ✅
   const course = await getCourseDetail(id);
 
   if (!course) {
@@ -126,4 +129,6 @@ export default async function CourseDetailPage({
       )}
     </>
   );
-}
+};
+
+export default CourseDetailPage;
