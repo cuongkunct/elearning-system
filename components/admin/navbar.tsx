@@ -43,38 +43,20 @@ export const Navbar = () => {
   };
 
   const activeItem = getActiveItem();
-
-  console.log("activeItem", activeItem);
-  // pageTitle: tiêu đề sẽ hiển thị trên Navbar
-  // Nếu tìm được item đang active → lấy title của nó
-  // Nếu KHÔNG tìm được (activeItem = undefined) → dùng "Admin page" làm mặc định
   const pageTitle = activeItem?.title ?? "Admin page";
 
   return (
     <HeroUINavbar className="bg-[#F9F9F9]" maxWidth="full" position="sticky">
-      {/* ===== Desktop ===== */}
       <NavbarContent justify="start">
         <div className="mx-auto w-full max-w-7xl flex items-center gap-6 px-6">
-          {/* Logo */}
           <NavbarBrand className="gap-3 max-w-fit">
             <NextLink className="flex items-center gap-2" href="/admin">
               <Image alt="logo" height={80} src="/logo.png" width={80} />
             </NextLink>
           </NavbarBrand>
 
-          {/* Title */}
           <h1 className="text-4xl font-semibold pl-[133px]">{pageTitle}</h1>
         </div>
-
-        {/* <NavbarBrand className="gap-3 max-w-fit">
-          <NextLink className="flex items-center gap-2" href="/admin">
-            <Image src="/logo.png" alt="logo" width={80} height={80} />
-          </NextLink>
-        </NavbarBrand>
-
-        <div className="flex items-center h-16 px-4">
-          <h1 className="text-4xl font-semibold">{pageTitle}</h1>
-        </div> */}
       </NavbarContent>
 
       {/* Search */}
@@ -86,22 +68,17 @@ export const Navbar = () => {
         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
       </NavbarContent>
 
-      {/* Hiển thị trên mobile => Nut menu toggle */}
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-        {/* Search ở giữa */}
         <NavbarItem className="flex-1 px-3">
           <div className="mx-auto max-w-[280px]">{searchInput}</div>
         </NavbarItem>
 
-        {/* Cụm bên phải: ThemeSwitch + chỗ cho toggle */}
         <NavbarItem className="flex items-center gap-2">
           <ThemeSwitch />
           <NavbarMenuToggle />
         </NavbarItem>
       </NavbarContent>
 
-      {/* MOBILE MENU – BẮT BUỘC */}
-      {/* NavbarMenu hoạt động cùng với NavbarMenuToggle cho UI Mobile */}
       <NavbarMenu className="sm:hidden">
         <div className="px-4 py-3">
           {siteConfig.navMenuItems.map((item) => (
