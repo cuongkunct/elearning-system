@@ -16,23 +16,40 @@ import {
   mergeCategoryWithCourseCount,
 } from "@/services/user/category/category.service";
 import { ArrowIcon } from "@/components/icons";
+import { Course } from "@/types/user/course/course.type";
 
 export default async function Home() {
-  const { courses, categories } = await getCourseAndCategory();
-  const categoryWithCount = mergeCategoryWithCourseCount(courses, categories);
-  const topLearnedCategories = courses
-    .sort((a, b) => b.soLuongHocVien - a.soLuongHocVien)
+  let courses: Course[] = [];
+  let categoryWithCount: CategoryWithCount[] = [];
+
+  try {
+    const result = await getCourseAndCategory();
+    courses = result.courses;
+    categoryWithCount = mergeCategoryWithCourseCount(result.courses, result.categories);
+  } catch (error: any) {
+    console.error("Failed to load courses or categories:", error);
+    return (
+      <div className="p-8 text-red-500">
+        Failed to load courses: {error.message}
+      </div>
+    );
+  }
+
+  const topLearnedCategories = [...courses]
+    .filter((course): course is Course => !!course && typeof course.maKhoaHoc === "string")
+    .sort((a, b) => (b.soLuongHocVien || 0) - (a.soLuongHocVien || 0))
     .slice(0, 12);
 
-  const topViewedCategories = courses
-    .sort((a, b) => b.luotXem - a.luotXem)
+  const topViewedCategories = [...courses]
+    .filter((course): course is Course => !!course && typeof course.maKhoaHoc === "string")
+    .sort((a, b) => (b.luotXem || 0) - (a.luotXem || 0))
     .slice(0, 12);
+
 
   const renderCategory = () => {
     return categoryWithCount.map((category: CategoryWithCount) => (
       <Link key={category.maDanhMuc} href={`/courses?id=${category.maDanhMuc}`}>
         <div
-          key={category.maDanhMuc}
           className="
                     w-full p-2 flex items-center cursor-pointer rounded-md border
                     border-gray-300
@@ -93,6 +110,7 @@ export default async function Home() {
         <h1 className={`${title({ size: "sm" })} pt-12 pb-4`}>
           The most popular course
         </h1>
+        {topLearnedCategories && <CourseCard courses={topLearnedCategories} />}
         <CourseCard courses={topLearnedCategories} />
         <div className="flex justify-center items-center mt-8">
           <Link href="/courses">
@@ -106,7 +124,8 @@ export default async function Home() {
         <h1 className={`${title({ size: "sm" })} pt-12 pb-4`}>
           The most viewed course
         </h1>
-        <CourseCard courses={topViewedCategories} />
+        {topViewedCategories &&
+          <CourseCard courses={topViewedCategories} />}
         <div className="flex justify-center items-center mt-8">
           <Link href="/courses">
             <Button>

@@ -13,6 +13,7 @@ import {
   joinCourseByMaKhoaHoc,
 } from "@/services/user/courses/course.service";
 import NotificationModal from "@/components/user/shared/NotificationModal";
+import Cookies from "js-cookie";
 
 export default function CourseCardItem({
   course,
@@ -31,6 +32,14 @@ export default function CourseCardItem({
   const [loading, setLoading] = useState(false);
 
   const handleJoinCourse = async () => {
+    const userData = Cookies.get("userData"); // kiểm tra login
+    if (!userData) {
+      setTitle("Please login first");
+      setErr("You need to login to join the course.");
+      setOpen(true);
+      return;
+    }
+
     try {
       setLoading(true);
       const res = await joinCourseByMaKhoaHoc(course.maKhoaHoc);
@@ -50,6 +59,13 @@ export default function CourseCardItem({
   };
 
   const handleCancelCourse = async () => {
+    const userData = Cookies.get("userData");
+    if (!userData) {
+      setTitle("Please login first");
+      setErr("You need to login to cancel the course.");
+      setOpen(true);
+      return;
+    }
     try {
       setLoading(true);
       const res = await cancelCourseByMaKhoaHoc(course.maKhoaHoc);

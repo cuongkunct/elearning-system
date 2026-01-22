@@ -11,27 +11,38 @@ const BACKEND_URL = process.env.NEXT_BACKEND_URL;
 const TOKEN_CYBERSOFT = process.env.NEXT_TOKEN_CYBERSOFT;
 
 export async function getListCategory(): Promise<Category[]> {
-  const res = await fetch(`${BACKEND_URL}QuanLyKhoaHoc/LayDanhMucKhoaHoc`, {
-    headers: {
-      TokenCybersoft: TOKEN_CYBERSOFT!,
-    },
-  });
+  try {
+    const res = await fetch(`${BACKEND_URL}QuanLyKhoaHoc/LayDanhMucKhoaHoc`, {
+      headers: {
+        TokenCybersoft: TOKEN_CYBERSOFT!,
+      },
+    });
 
-  if (!res.ok) throw new Error("Fetch courses failed");
+    if (!res.ok) throw new Error(`Fetch categories failed: ${res.statusText}`);
 
-  return res.json();
+    const data: Category[] = await res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
 }
 
-export async function getCourseAndCategory() {
-  const [courses, categories] = await Promise.all([
-    getAllCourses(),
-    getListCategory(),
-  ]);
 
-  return {
-    courses,
-    categories,
-  };
+export async function getCourseAndCategory() {
+  try {
+    const [courses, categories] = await Promise.all([
+      getAllCourses(),
+      getListCategory(),
+    ]);
+
+    if (!Array.isArray(courses)) throw new Error("Courses is not an array");
+    if (!Array.isArray(categories)) throw new Error("Categories is not an array");
+
+    return { courses, categories };
+  } catch (error) {
+    console.error("Failed to fetch courses or categories", error);
+    return { courses: [], categories: [] }; // trả về empty array để React không crash
+  }
 }
 
 export function mergeCategoryWithCourseCount(

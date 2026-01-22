@@ -6,6 +6,7 @@ import { addToast } from "@heroui/react";
 import { Course } from "@/types/user/course/course.type";
 import CourseCardItem from "@/app/(user)/courses/_components/CourseCardItem";
 import { fetchUserProfile } from "@/services/user/userAccount/user.service";
+import Cookies from "js-cookie";
 
 type CourseCardProps = {
   courses: Course[];
@@ -28,20 +29,22 @@ export default function CourseCard({ courses }: CourseCardProps) {
 
   useEffect(() => {
     const loadProfile = async () => {
+      const account = Cookies.get("userData");
+      if (!account) {
+        return;
+      }
       try {
-        const response = await fetchUserProfile();
-
+        const response = await fetchUserProfile(); // fetchUserProfile đã tự lấy token
         if (!response?.chiTietKhoaHocGhiDanh) return;
         setJoinedCourse(response.chiTietKhoaHocGhiDanh);
       } catch (err: any) {
         addToast({
           title: "Error fetching user profile",
-          description: err,
+          description: err instanceof Error ? err.message : String(err),
           color: "danger",
         });
       }
     };
-
     loadProfile();
   }, []);
 
@@ -61,15 +64,19 @@ export default function CourseCard({ courses }: CourseCardProps) {
           `
       }
     >
-      {courses.map((item: Course) => (
-        <CourseCardItem
-          key={item.maKhoaHoc}
-          course={item}
-          isJoined={joinedCourseSet.has(item.maKhoaHoc)}
-          onCancelSuccess={handleCancelSuccess}
-          onJoinSuccess={handleJoinSuccess}
-        />
-      ))}
+      {courses && (
+        courses.map((item: Course) =>
+          item ? (
+            <CourseCardItem
+              key={item.maKhoaHoc}
+              course={item}
+              isJoined={joinedCourseSet.has(item.maKhoaHoc)}
+              onCancelSuccess={handleCancelSuccess}
+              onJoinSuccess={handleJoinSuccess}
+            />
+          ) : null
+        )
+      )}
     </div>
   );
 }
