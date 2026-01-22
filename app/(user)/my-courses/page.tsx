@@ -8,6 +8,7 @@ import CourseCard from "../courses/_components/CourseList";
 
 import { fetchUserProfile } from "@/services/user/userAccount/user.service";
 import SkeletonCard from "@/components/user/shared/SkeletonCard";
+import { LogoIcon } from "@/components/icons";
 
 export default function MyCoursePage() {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -56,7 +57,11 @@ export default function MyCoursePage() {
 
   return (
     <section className="max-w-6xl mx-auto px-6">
-      <h2 className="text-3xl font-bold mb-6">🎓 My joined course</h2>
+      <div className="flex items-center justify-start gap-4 my-4">
+        <LogoIcon />
+        <h2 className="text-3xl font-bold ">My joined course</h2>
+      </div>
+
       <CourseCard courses={courses} />
     </section>
   );
