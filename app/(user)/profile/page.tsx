@@ -8,9 +8,10 @@ import {
   fetchUserProfile,
   fetchUpdateUserProfile,
 } from "@/services/user/userAccount/user.service";
+import { EditUserProfile, UserProfileResponse } from "@/types/user/userProfile/userProfile.type";
 export default function ProfilePage() {
   const [isEdit, setIsEdit] = useState(false);
-  const [userInfo, setUserInfo] = useState<any>(null);
+  const [userInfo, setUserInfo] = useState<UserProfileResponse>();
   const [formData, setFormData] = useState({
     taiKhoan: "",
     hoTen: "",
@@ -19,7 +20,7 @@ export default function ProfilePage() {
     matKhau: "",
     maNhom: "",
     maLoaiNguoiDung: "",
-  });
+  } as EditUserProfile);
 
   useEffect(() => {
     try {
@@ -63,7 +64,7 @@ export default function ProfilePage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await fetchUpdateUserProfile({ data: formData });
+    const res = await fetchUpdateUserProfile(formData);
 
     if (res) {
       const response = await fetchUserProfile();

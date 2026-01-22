@@ -84,7 +84,6 @@ export default async function CategoriesPage({
               <div className="flex items-center justify-center p-4">
                 <CourseListPagination
                   currentPage={courseList.currentPage}
-                  items={courseList.items}
                   totalPages={courseList.totalPages}
                 />
               </div>
