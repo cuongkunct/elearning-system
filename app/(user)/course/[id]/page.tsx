@@ -14,6 +14,7 @@ import {
 } from "@/services/user/courses/course.service";
 import { Course } from "@/types/user/course/course.type";
 import { ArrowIcon } from "@/components/icons";
+import CourseDetailJoinCard from "../_components/CourseDetailJoinCard";
 type PageProps = {
   params: Promise<{ id: string }>;
 };
@@ -105,7 +106,7 @@ const CourseDetailPage = async ({ params }: PageProps) => {
             <h2 className="text-2xl font-semibold">Course introduction</h2>
             <p className="leading-relaxed">{intro}</p>
           </div>
-          <CourseCardItem course={course} />
+          <CourseDetailJoinCard course={course} />
         </section>
       </div>
 
