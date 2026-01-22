@@ -8,7 +8,6 @@ export default async function Search(props: any) {
   const { key, page, sort } = await props.searchParams;
   const courses = await getCoursesPagination(page || 1, key);
 
-  // sort
   if (sort === "viewed") {
     courses.items.sort((a, b) => b.luotXem - a.luotXem);
   } else if (sort === "joined") {
@@ -32,7 +31,6 @@ export default async function Search(props: any) {
       <div className="flex justify-center items-center py-8">
         <CourseListPagination
           currentPage={courses.currentPage}
-          items={courses.items}
           totalPages={courses.totalPages}
         />
       </div>
