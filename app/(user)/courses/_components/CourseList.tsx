@@ -47,14 +47,10 @@ export default function CourseCard({ courses }: CourseCardProps) {
 
   const pathname = usePathname();
   const isCategoryPage = pathname.includes("/courses");
-  const isSearchPage = pathname.includes("/search");
 
   return (
     <div
-      className={
-        isSearchPage
-          ? "flex flex-col gap-4"
-          : `
+      className={`
             grid 
             grid-cols-1
             sm:grid-cols-2
