@@ -1,15 +1,16 @@
 import Cookies from "js-cookie";
 
 import axiosInstance from "@/services/axiosInstance";
+import { UserProfileResponse, EditUserProfile, UpdateUserProfileResponse } from "@/types/user/userProfile/userProfile.type";
 
-export async function fetchUserProfile() {
+export async function fetchUserProfile(): Promise<UserProfileResponse> {
   const account = Cookies.get("userData");
 
   if (!account) {
     throw new Error("Unauthorized");
   }
   const userData = JSON.parse(account).content;
-  const res = await axiosInstance.post(
+  const res = await axiosInstance.post<UserProfileResponse>(
     `QuanLyNguoiDung/ThongTinTaiKhoan`,
     {},
     {
@@ -22,14 +23,14 @@ export async function fetchUserProfile() {
   return res.data;
 }
 
-export async function fetchUpdateUserProfile({ data }: any) {
+export async function fetchUpdateUserProfile(data: EditUserProfile): Promise<UpdateUserProfileResponse> {
   const account = Cookies.get("userData");
 
   if (!account) {
     throw new Error("Unauthorized");
   }
   const userData = JSON.parse(account).content;
-  const res = await axiosInstance.put(
+  const res = await axiosInstance.put<UpdateUserProfileResponse>(
     `QuanLyNguoiDung/CapNhatThongTinNguoiDung`,
     data,
     {
