@@ -1,7 +1,5 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
-import { Params } from "next/dist/server/request/params";
-
 import {
   categorySeoMap,
   courseIntroductionByCategory,
@@ -16,16 +14,15 @@ import {
 } from "@/services/user/courses/course.service";
 import { Course } from "@/types/user/course/course.type";
 import { ArrowIcon } from "@/components/icons";
-type Params = {
-  id: string;
+type PageProps = {
+  params: Promise<{ id: string }>;
 };
-/* ================= SEO ================= */
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<Params>;
-}): Promise<Metadata> {
-  const { id } = await params;
+
+
+export async function generateMetadata(
+  { params }: PageProps
+): Promise<Metadata> {
+  const { id } = await params; // ✅ phải await
   const course = await getCourseDetail(id);
 
   if (!course) {
@@ -49,7 +46,7 @@ export async function generateMetadata({
   };
 }
 
-const CourseDetailPage = async ({ params }: { params: Promise<Params> }) => {
+const CourseDetailPage = async ({ params }: PageProps) => {
   const { id } = await params;
   const course = await getCourseDetail(id);
 
@@ -76,6 +73,7 @@ const CourseDetailPage = async ({ params }: { params: Promise<Params> }) => {
 
   const categoryDescription =
     categorySeoMap[course.danhMucKhoaHoc.maDanhMucKhoahoc] || course.moTa;
+
   const intro =
     courseIntroductionByCategory[course.danhMucKhoaHoc.maDanhMucKhoahoc] ||
     course.moTa;
@@ -105,11 +103,12 @@ const CourseDetailPage = async ({ params }: { params: Promise<Params> }) => {
         <section className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-3 gap-8">
           <div className="md:col-span-2 space-y-6">
             <h2 className="text-2xl font-semibold">Course introduction</h2>
-            <p className=" leading-relaxed">{intro}</p>
+            <p className="leading-relaxed">{intro}</p>
           </div>
           <CourseCardItem course={course} />
         </section>
       </div>
+
       {filteredCourses.length > 0 && (
         <section className="max-w-6xl mx-auto px-6 py-16">
           <h2 className="text-3xl font-bold mb-6">Related courses</h2>
