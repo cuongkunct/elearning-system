@@ -43,7 +43,9 @@ export default function CategoriesFilter({ categories }: Props) {
           key={category.maDanhMuc}
           className="hidden sm:hidden md:hidden lg:block xl:block"
           color={isActive ? "primary" : "default"}
-          onPress={() => handleSelectCategory(category.maDanhMuc)}
+          onPress={() => {
+            handleSelectCategory(category.maDanhMuc);
+          }}
         >
           {category.tenDanhMuc}
         </Button>
@@ -51,15 +53,19 @@ export default function CategoriesFilter({ categories }: Props) {
     });
   };
 
-  const renderCategoryMobile = () => {
+  const renderCategoryMobile = (onClose: () => void) => {
     return categories.map((category: Category) => {
       const isActive = selectedCategory === category.maDanhMuc;
 
       return (
         <Button
           key={category.maDanhMuc}
+          fullWidth
           color={isActive ? "primary" : "default"}
-          onPress={() => handleSelectCategory(category.maDanhMuc)}
+          onPress={() => {
+            handleSelectCategory(category.maDanhMuc);
+            onClose();
+          }}
         >
           {category.tenDanhMuc}
         </Button>
@@ -97,24 +103,19 @@ export default function CategoriesFilter({ categories }: Props) {
         </div>
         {renderCategory()}
       </div>
-      <Drawer
-        isKeyboardDismissDisabled={true}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      >
+      <Drawer isOpen={isOpen} onOpenChange={onOpenChange}>
         <DrawerContent>
           {(onClose) => (
             <>
               <DrawerHeader className="flex flex-col gap-1">
                 Filter by Category
               </DrawerHeader>
-              <DrawerBody>{renderCategoryMobile()}</DrawerBody>
+
+              <DrawerBody>{renderCategoryMobile(onClose)}</DrawerBody>
+
               <DrawerFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
                 </Button>
               </DrawerFooter>
             </>
