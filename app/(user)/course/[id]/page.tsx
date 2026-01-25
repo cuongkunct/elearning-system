@@ -1,28 +1,30 @@
 import type { Metadata } from "next";
+
 import Link from "next/link";
+import { Button } from "@heroui/button";
+import { BookAIcon } from "lucide-react";
+
 import {
   categorySeoMap,
   courseIntroductionByCategory,
 } from "../../../../components/user/sections/SeoDescription";
-import CourseCardItem from "../../courses/_components/CourseCardItem";
-import Button from "../../../../components/user/ui/Button";
 import CourseCard from "../../courses/_components/CourseList";
+import CourseDetailJoinCard from "../_components/CourseDetailJoinCard";
 
 import {
   getCourseDetail,
   getRelatedCourses,
 } from "@/services/user/courses/course.service";
 import { Course } from "@/types/user/course/course.type";
-import { ArrowIcon } from "@/components/icons";
-import CourseDetailJoinCard from "../_components/CourseDetailJoinCard";
+import { ArrowIcon, LogoIcon } from "@/components/icons";
+
 type PageProps = {
   params: Promise<{ id: string }>;
 };
 
-
-export async function generateMetadata(
-  { params }: PageProps
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { id } = await params; // ✅ phải await
   const course = await getCourseDetail(id);
 
@@ -82,15 +84,17 @@ const CourseDetailPage = async ({ params }: PageProps) => {
   return (
     <>
       <div className="min-h-screen dark:bg-gray-900">
-        <section className="bg-gradient-to-r from-blue-300 to-indigo-700 rounded-br-3xl rounded-tl-3xl">
-          <div className="max-w-6xl mx-auto px-6 py-16">
+        <section className="bg-gradient-to-r from-green-200 to-blue-500 rounded-br-3xl rounded-tl-3xl">
+          <div className="max-w-6xl mx-auto px-6 py-16 text-black">
             <p className="text-sm uppercase opacity-80">
               {course.danhMucKhoaHoc.tenDanhMucKhoaHoc}
             </p>
-            <h1 className="text-4xl md:text-5xl font-bold mt-2">
+            <h1 className="text-4xl md:text-5xl font-bold mt-2 flex items-center gap-2">
+              <LogoIcon />
               {course.tenKhoaHoc}
             </h1>
-            <p className="mt-4 max-w-2xl text-lg opacity-90">
+            <p className="mt-4 max-w-2xl text-lg opacity-90 flex items-center gap-2">
+              <BookAIcon />
               {categoryDescription}
             </p>
             <p className="mt-4 max-w-2xl text-lg opacity-90">{course.moTa}</p>
@@ -101,13 +105,7 @@ const CourseDetailPage = async ({ params }: PageProps) => {
           </div>
         </section>
 
-        <section className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-3 gap-8">
-          <div className="md:col-span-2 space-y-6">
-            <h2 className="text-2xl font-semibold">Course introduction</h2>
-            <p className="leading-relaxed">{intro}</p>
-          </div>
-          <CourseDetailJoinCard course={course} />
-        </section>
+        <CourseDetailJoinCard course={course} intro={intro} />
       </div>
 
       {filteredCourses.length > 0 && (

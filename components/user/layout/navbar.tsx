@@ -24,7 +24,7 @@ import clsx from "clsx";
 import Cookies from "js-cookie";
 import NextLink from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { LogoIcon, SearchIcon } from "@/components/icons";
@@ -37,8 +37,8 @@ export const Navbar = () => {
   const dispatch = useDispatch();
   const pathname = usePathname();
   const [searchKey, setSearchKey] = useState<string>("");
-  const data = useSelector((state: RootState) => state.auth);
-  const { loginData } = data;
+  const authState = useSelector((state: RootState) => state.auth.login);
+  const { data: loginData } = authState;
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -56,7 +56,6 @@ export const Navbar = () => {
       setSearchKey("");
     }
   }, [pathname]);
-  const loginDataMemo = useMemo(() => loginData, [loginData]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -203,23 +202,17 @@ export const Navbar = () => {
           <ThemeSwitch />
         </NavbarItem>
         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
-        <NavbarItem
-          className={loginDataMemo?.content?.accessToken ? "hidden" : ""}
-        >
+        <NavbarItem className={loginData?.content?.accessToken ? "hidden" : ""}>
           <Button as={Link} color="primary" href="/login" variant="flat">
             Login
           </Button>
         </NavbarItem>
-        <NavbarItem
-          className={loginDataMemo?.content?.accessToken ? "hidden" : ""}
-        >
+        <NavbarItem className={loginData?.content?.accessToken ? "hidden" : ""}>
           <Button as={Link} color="default" href="/register" variant="flat">
             Sign Up
           </Button>
         </NavbarItem>
-        <NavbarItem
-          className={loginDataMemo?.content?.accessToken ? "" : "hidden"}
-        >
+        <NavbarItem className={loginData?.content?.accessToken ? "" : "hidden"}>
           <div className="flex items-center gap-4">
             <Dropdown placement="bottom-end">
               <DropdownTrigger>
@@ -227,7 +220,7 @@ export const Navbar = () => {
                   isBordered
                   as="button"
                   className="transition-transform"
-                  name={loginDataMemo?.content?.hoTen}
+                  name={loginData?.content?.hoTen}
                 />
               </DropdownTrigger>
               <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -237,15 +230,7 @@ export const Navbar = () => {
                   onClick={() => rout.push("/profile")}
                 >
                   <p className="font-semibold">My Profile</p>
-                  <p className="font-semibold">
-                    {loginDataMemo?.content?.hoTen}
-                  </p>
-                </DropdownItem>
-                <DropdownItem
-                  key="my_courses"
-                  onClick={() => rout.push("/my-courses")}
-                >
-                  My Course
+                  <p className="font-semibold">{loginData?.content?.hoTen}</p>
                 </DropdownItem>
                 <DropdownItem key="help_and_feedback">
                   Help & Feedback
@@ -271,7 +256,7 @@ export const Navbar = () => {
       <NavbarMenu>
         {searchInput}
         <div className="mx-4 mt-2 flex flex-col gap-2">
-          {siteConfig.navMenuItems.map((item, index) => (
+          {siteConfig.navMenuItems.map((item) => (
             <NavbarMenuItem key={item.label}>
               <button
                 className={`w-full text-left px-4 py-2 rounded`}
@@ -284,6 +269,19 @@ export const Navbar = () => {
               </button>
             </NavbarMenuItem>
           ))}
+          <NavbarMenuItem>
+            <Button
+              as={Link}
+              color="primary"
+              variant="flat"
+              onPress={() => {
+                handleLogout();
+                setMenuOpen(false);
+              }}
+            >
+              Logout
+            </Button>
+          </NavbarMenuItem>
         </div>
       </NavbarMenu>
     </HeroUINavbar>

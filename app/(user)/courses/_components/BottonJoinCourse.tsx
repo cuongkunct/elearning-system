@@ -10,7 +10,7 @@ type Props = {
 export default function ButtonJoinCourse({ isJoined, loading, onJoin }: Props) {
   return (
     <Button
-      className="m-4"
+      className="m-4 w-full"
       color={isJoined ? "success" : "default"}
       isLoading={loading}
       onPress={onJoin}

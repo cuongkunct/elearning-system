@@ -24,10 +24,13 @@ export default async function Home() {
 
   try {
     const result = await getCourseAndCategory();
+
     courses = result.courses;
-    categoryWithCount = mergeCategoryWithCourseCount(result.courses, result.categories);
+    categoryWithCount = mergeCategoryWithCourseCount(
+      result.courses,
+      result.categories,
+    );
   } catch (error: any) {
-    console.error("Failed to load courses or categories:", error);
     return (
       <div className="p-8 text-red-500">
         Failed to load courses: {error.message}
@@ -36,15 +39,20 @@ export default async function Home() {
   }
 
   const topLearnedCategories = [...courses]
-    .filter((course): course is Course => !!course && typeof course.maKhoaHoc === "string")
+    .filter(
+      (course): course is Course =>
+        !!course && typeof course.maKhoaHoc === "string",
+    )
     .sort((a, b) => (b.soLuongHocVien || 0) - (a.soLuongHocVien || 0))
     .slice(0, 12);
 
   const topViewedCategories = [...courses]
-    .filter((course): course is Course => !!course && typeof course.maKhoaHoc === "string")
+    .filter(
+      (course): course is Course =>
+        !!course && typeof course.maKhoaHoc === "string",
+    )
     .sort((a, b) => (b.luotXem || 0) - (a.luotXem || 0))
     .slice(0, 12);
-
 
   const renderCategory = () => {
     return categoryWithCount.map((category: CategoryWithCount) => (
@@ -124,8 +132,7 @@ export default async function Home() {
         <h1 className={`${title({ size: "sm" })} pt-12 pb-4`}>
           The most viewed course
         </h1>
-        {topViewedCategories &&
-          <CourseCard courses={topViewedCategories} />}
+        {topViewedCategories && <CourseCard courses={topViewedCategories} />}
         <div className="flex justify-center items-center mt-8">
           <Link href="/courses">
             <Button>

@@ -1,26 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Avatar, Card } from "@heroui/react";
+import { Avatar, Button, Card } from "@heroui/react";
 import { addToast } from "@heroui/react";
 
-import { EditIcon } from "@/components/icons";
-import {
-  fetchUserProfile,
-  fetchUpdateUserProfile,
-} from "@/services/user/userAccount/user.service";
-import { EditUserProfile, UserProfileResponse } from "@/types/user/userProfile/userProfile.type";
+import Profile from "./_components/Profile";
+import MyCoursePage from "./_components/MyCourses";
+
+import { fetchUserProfile } from "@/services/user/userAccount/user.service";
+import { UserProfileResponse } from "@/types/user/userProfile/userProfile.type";
+import SkeletonItem from "@/components/user/shared/SkeletonCardItem";
 export default function ProfilePage() {
-  const [isEdit, setIsEdit] = useState(false);
   const [userInfo, setUserInfo] = useState<UserProfileResponse>();
-  const [formData, setFormData] = useState({
-    taiKhoan: "",
-    hoTen: "",
-    email: "",
-    soDT: "",
-    matKhau: "",
-    maNhom: "",
-    maLoaiNguoiDung: "",
-  } as EditUserProfile);
+  const [prfSwich, setPrfSwitch] = useState("profile");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     try {
@@ -42,44 +34,41 @@ export default function ProfilePage() {
     }
   }, []);
 
-  useEffect(() => {
-    if (!userInfo) return;
-    setFormData({
-      taiKhoan: userInfo.taiKhoan || "",
-      hoTen: userInfo.hoTen || "",
-      email: userInfo.email || "",
-      soDT: userInfo.soDT || "",
-      matKhau: userInfo.matKhau || "",
-      maNhom: userInfo.maNhom || "",
-      maLoaiNguoiDung: userInfo.maLoaiNguoiDung || "",
-    });
-  }, [userInfo]);
+  const handleUpdateProfile = () => {
+    try {
+      setLoading(true);
+      const getUserProfile = async () => {
+        const response = await fetchUserProfile();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+        if (response) {
+          setUserInfo(response);
+          setLoading(false);
+        }
+      };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const res = await fetchUpdateUserProfile(formData);
-
-    if (res) {
-      const response = await fetchUserProfile();
-
-      if (response) {
-        setUserInfo(response);
-        setIsEdit(false);
-      }
+      getUserProfile();
+    } catch (err: any) {
+      setLoading(false);
+      addToast({
+        title: "Error fetching user profile",
+        description: err,
+        color: "danger",
+      });
     }
   };
 
+  if (!userInfo || loading) {
+    return (
+      <div>
+        <SkeletonItem />
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-        <Card className="md:col-span-1 p-6 rounded-2xl shadow-xl">
+    <div className="flex flex-col md:flex-row lg:flex-row ">
+      <div className="flex flex-1/5 flex-col">
+        <Card className="md:col-span-1 min-h-full p-6 rounded-2xl shadow-xl">
           <div className="flex flex-col items-center gap-4">
             <Avatar className="w-24 h-24" name={userInfo?.hoTen} />
             <div className="text-center">
@@ -101,84 +90,34 @@ export default function ProfilePage() {
             </div>
           </div>
         </Card>
-        <Form
-          className="md:col-span-4 flex flex-col gap-8 rounded-2xl p-10 shadow-xl"
-          onSubmit={handleSubmit}
-        >
-          <h1 className="text-2xl font-semibold uppercase">
-            Profile Information
-          </h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Input
-              isReadOnly
-              label="Username"
-              name="taiKhoan"
-              value={formData.taiKhoan}
-            />
-            <Input
-              endContent={isEdit ? <EditIcon /> : null}
-              isReadOnly={!isEdit}
-              label="Password"
-              name="matKhau"
-              value={formData.matKhau}
-              onChange={handleChange}
-            />
-            <Input
-              isReadOnly
-              label="Group"
-              name="maNhom"
-              value={formData.maNhom}
-            />
-            <Input
-              isReadOnly
-              label="User type"
-              name="maLoaiNguoiDung"
-              value={formData.maLoaiNguoiDung}
-            />
-            <Input
-              endContent={isEdit ? <EditIcon /> : null}
-              isReadOnly={!isEdit}
-              label="Full name"
-              name="hoTen"
-              value={formData.hoTen}
-              onChange={handleChange}
-            />
-            <Input
-              endContent={isEdit ? <EditIcon /> : null}
-              isReadOnly={!isEdit}
-              label="Email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-            <Input
-              endContent={isEdit ? <EditIcon /> : null}
-              isReadOnly={!isEdit}
-              label="Phone"
-              name="soDT"
-              value={formData.soDT}
-              onChange={handleChange}
-            />
-          </div>
-          {!isEdit ? (
+      </div>
+      <div className="flex flex-4/5 mt-2 ">
+        <div className="pl-4 w-full flex flex-col justify-center items-center md:items-start lg:items-start">
+          <div>
             <Button
-              color="primary"
-              variant="flat"
-              onPress={() => setIsEdit(true)}
+              color={`${prfSwich === "profile" ? "secondary" : "primary"}`}
+              radius="none"
+              variant={`${prfSwich === "profile" ? "solid" : "bordered"}`}
+              onPress={() => setPrfSwitch("profile")}
             >
-              Edit
+              My Profile
             </Button>
+            <Button
+              color={`${prfSwich === "profile" ? "primary" : "secondary"}`}
+              radius="none"
+              variant={`${prfSwich === "profile" ? "bordered" : "solid"}`}
+              onPress={() => setPrfSwitch("courses")}
+            >
+              My Courses
+            </Button>
+          </div>
+
+          {prfSwich === "profile" ? (
+            <Profile userData={userInfo} onUpdate={handleUpdateProfile} />
           ) : (
-            <div className="flex gap-2">
-              <Button variant="flat" onPress={() => setIsEdit(false)}>
-                Cancel
-              </Button>
-              <Button color="success" type="submit">
-                Save
-              </Button>
-            </div>
+            <MyCoursePage userData={userInfo} onCancel={handleUpdateProfile} />
           )}
-        </Form>
+        </div>
       </div>
     </div>
   );
