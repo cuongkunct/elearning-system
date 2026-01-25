@@ -34,9 +34,6 @@ export const siteConfig = {
     },
 
     { label: "About Us", href: "/about" },
-    {
-      label: "Logout",
-      href: "/logout",
-    },
+    { label: "Profile", href: "/profile" },
   ],
 };

@@ -3,12 +3,15 @@ import React, { useState } from "react";
 import { Form, Input, Button, addToast } from "@heroui/react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 import NotificationModal from "../../../components/user/shared/NotificationModal";
 
 import { DispatchType } from "@/store";
 import { loginUser } from "@/store/user/auth/auth.slice";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
+import { LoginFormData, loginSchema } from "@/schemas/login.schema";
 
 export default function Login() {
   const router = useRouter();
@@ -17,6 +20,32 @@ export default function Login() {
   const [err, setErr] = useState<string | null>(null);
   const [isVisible, setIsVisible] = React.useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      const res = await dispatch(loginUser(data)).unwrap();
+
+      if (res.statusCode === 200) {
+        addToast({
+          title: "Login Successful",
+          description: "You have login successfully.",
+          color: "success",
+        });
+
+        router.push("/");
+      }
+    } catch (err: any) {
+      setOpen(true);
+      setErr(err.content);
+    }
+  };
 
   return (
     <Form
@@ -31,28 +60,7 @@ export default function Login() {
         shadow-2xl
         border border-gray-200
       "
-      onSubmit={async (e) => {
-        e.preventDefault();
-        let data: any = JSON.parse(
-          JSON.stringify(Object.fromEntries(new FormData(e.currentTarget))),
-        );
-
-        try {
-          const res = await dispatch(loginUser(data)).unwrap();
-
-          if (res.statusCode === 200) {
-            addToast({
-              title: "Login Successful",
-              description: "You have login successfully.",
-              color: "success",
-            });
-            router.push("/");
-          }
-        } catch (err: any) {
-          setOpen(true);
-          setErr(err.content);
-        }
-      }}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <h1 className="text-2xl font-semibold text-center  uppercase">
         Login Account
@@ -60,10 +68,11 @@ export default function Login() {
 
       <Input
         isRequired
-        errorMessage="Please enter a valid username"
         label="Username"
         labelPlacement="outside"
-        name="taiKhoan"
+        {...register("taiKhoan")}
+        errorMessage={errors.taiKhoan?.message}
+        isInvalid={!!errors.taiKhoan}
         placeholder="Enter your username"
         type="text"
       />
@@ -85,18 +94,20 @@ export default function Login() {
         }
         label="Password"
         labelPlacement="outside"
-        name="matKhau"
+        {...register("matKhau")}
+        errorMessage={errors.matKhau?.message}
+        isInvalid={!!errors.matKhau}
         placeholder="Enter your password"
         type={isVisible ? "text" : "password"}
       />
       <NotificationModal
         color={err ? "danger" : "success"}
         isOpen={open}
-        title={err ?? "Registration Failed"}
+        title={err ?? "Login successful"}
         onClose={() => setOpen(false)}
       />
       <div className="flex gap-2">
-        <Button color="primary" type="submit">
+        <Button color="primary" isLoading={isSubmitting} type="submit">
           Submit
         </Button>
         <Button type="reset" variant="flat">

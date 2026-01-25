@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 
 import axiosInstance from "@/services/axiosInstance";
@@ -7,119 +7,103 @@ import {
   UserRegisterResponse,
 } from "@/types/user/auth/register.type";
 import { UserLogin, UserLoginResponse } from "@/types/user/auth/login.type";
+import { handleAxiosError } from "@/services/handleAxiosError";
+import { ApiError } from "@/services/api.type";
 
 export const registerUser = createAsyncThunk<
   UserRegisterResponse,
   UserRegister,
-  { rejectValue: { statusCode: number; content: string } }
->("createUserThunk", async (userData, { rejectWithValue }) => {
+  { rejectValue: ApiError }
+>("auth/register", async (userData, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(
-      `QuanLyNguoiDung/DangKy`,
-      userData,
-    );
+    const res = await axiosInstance.post("QuanLyNguoiDung/DangKy", userData);
 
     return {
-      statusCode: response.status,
-      content: response.data,
+      statusCode: res.status,
+      content: res.data,
     };
-  } catch (error: any) {
-    return rejectWithValue({
-      statusCode: error.response?.status || 500,
-      content: error || "An error occurred",
-    });
+  } catch (error) {
+    console.log(" error", error);
+
+    return rejectWithValue(handleAxiosError(error));
   }
 });
 
 export const loginUser = createAsyncThunk<
   UserLoginResponse,
   UserLogin,
-  { rejectValue: { statusCode: number; content: string } }
->("loginUserThunk", async (userData, { rejectWithValue }) => {
+  { rejectValue: ApiError }
+>("auth/login", async (userData, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(
-      `QuanLyNguoiDung/DangNhap`,
-      userData,
-    );
+    const res = await axiosInstance.post("QuanLyNguoiDung/DangNhap", userData);
 
     return {
-      statusCode: response.status,
-      content: response.data,
+      statusCode: res.status,
+      content: res.data,
     };
-  } catch (error: any) {
-    return rejectWithValue({
-      statusCode: error.response?.status || 500,
-      content: error || "Login failed",
-    });
+  } catch (error) {
+    return rejectWithValue(handleAxiosError(error));
   }
 });
 
-interface SliceState {
-  registerData: UserRegisterResponse | null;
-  registerLoading: boolean;
-  registerError:
-    | {
-        statusCode: number;
-        content: string;
-      }
-    | undefined;
+type AuthState = {
+  register: {
+    data: UserRegisterResponse | null;
+    loading: boolean;
+    error?: ApiError;
+  };
+  login: {
+    data: UserLoginResponse | null;
+    loading: boolean;
+    error?: ApiError;
+  };
+};
 
-  loginData: UserLoginResponse | null;
-  loginLoading: boolean;
-  loginError:
-    | {
-        statusCode: number;
-        content: string;
-      }
-    | undefined;
-}
-
-const initialState: SliceState = {
-  registerData: null,
-  registerLoading: false,
-  registerError: undefined,
-  // Login
-  loginData: null,
-  loginLoading: false,
-  loginError: undefined,
+const initialState: AuthState = {
+  register: {
+    data: null,
+    loading: false,
+  },
+  login: {
+    data: null,
+    loading: false,
+  },
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout: (state) => {
-      state.loginData = null;
+    logout(state) {
+      state.login.data = null;
       Cookies.remove("userData");
     },
-    setLoginData: (state, action) => {
-      state.loginData = action.payload;
+    setLoginData(state, action: PayloadAction<UserLoginResponse>) {
+      state.login.data = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
-        state.registerLoading = true;
-        state.registerError = {
-          statusCode: 500,
-          content: "",
-        };
+        state.register.loading = true;
+        state.register.error = undefined;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.registerLoading = false;
-        state.registerData = action.payload;
+        state.register.loading = false;
+        state.register.data = action.payload;
       })
       .addCase(registerUser.rejected, (state, action) => {
-        state.registerLoading = false;
-        state.registerError = action.payload;
+        state.register.loading = false;
+        state.register.error = action.payload;
       })
       .addCase(loginUser.pending, (state) => {
-        state.loginLoading = true;
-        state.loginError = undefined;
+        state.login.loading = true;
+        state.login.error = undefined;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.loginLoading = false;
-        state.loginData = action.payload;
+        state.login.loading = false;
+        state.login.data = action.payload;
+
         Cookies.set("userData", JSON.stringify(action.payload), {
           expires: 7,
           sameSite: "lax",
@@ -128,8 +112,8 @@ const authSlice = createSlice({
         });
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.loginLoading = false;
-        state.loginError = action.payload;
+        state.login.loading = false;
+        state.login.error = action.payload;
       });
   },
 });

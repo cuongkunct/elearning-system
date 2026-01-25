@@ -3,13 +3,16 @@ import React, { useState } from "react";
 import { Form, Input, Button } from "@heroui/react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { addToast } from "@heroui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 import NotificationModal from "../../../components/user/shared/NotificationModal";
 
 import { DispatchType } from "@/store";
-import { registerUser } from "@/store/user/auth/auth.slice";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
+import { RegisterFormData, registerSchema } from "@/schemas/register.schema";
+import { registerUser } from "@/store/user/auth/auth.slice";
+
 export default function Register() {
   const router = useRouter();
   const dispatch = useDispatch<DispatchType>();
@@ -18,56 +21,60 @@ export default function Register() {
   const [isVisible, setIsVisible] = React.useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      maNhom: "GP01",
+    },
+  });
+
+  const onSubmit = async (data: RegisterFormData) => {
+    try {
+      const res = await dispatch(registerUser(data)).unwrap();
+
+      if (res.statusCode === 200) {
+        setErr(null);
+        setOpen(true);
+      }
+    } catch (err: any) {
+      console.log("Vào đây làm gì ");
+      setErr(err.content || "Register failed");
+      setOpen(true);
+    }
+  };
+
   return (
     <Form
       className="
-            w-[600px]
-        mx-auto
-    flex flex-col gap-8
-    justify-center
-    items-center
-    rounded-2xl
-    p-10
-    shadow-2xl
-    border border-gray-200
-  "
-      onSubmit={async (e) => {
-        e.preventDefault();
-        const data = Object.fromEntries(new FormData(e.currentTarget));
-
-        try {
-          const res = await dispatch(
-            registerUser(JSON.parse(JSON.stringify(data))),
-          ).unwrap();
-
-          if (res.statusCode === 200) {
-            setOpen(true);
-            setErr("Register successful");
-            addToast({
-              title: "Registration Successful",
-              description: "You have registered successfully.",
-              color: "success",
-            });
-            router.push("/login");
-          }
-        } catch (err: any) {
-          setOpen(true);
-          setErr(err.content);
-        }
-      }}
+          w-[700px]
+          flex flex-col gap-4
+          justify-center
+          items-center
+          rounded-2xl
+          py-10
+          shadow-2xl
+          border border-gray-200
+          "
+      onSubmit={handleSubmit(onSubmit)}
     >
       <h1 className="text-2xl font-semibold text-center  uppercase">
         Register Account
       </h1>
       {/* ===== Grid 2 columns ===== */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full px-8">
         <Input
           isRequired
           label="Username"
           labelPlacement="outside"
-          name="taiKhoan"
           placeholder="Enter your username"
           type="text"
+          {...register("taiKhoan")}
+          errorMessage={errors.taiKhoan?.message}
+          isInvalid={!!errors.taiKhoan}
         />
 
         <Input
@@ -87,7 +94,10 @@ export default function Register() {
           }
           label="Password"
           labelPlacement="outside"
-          name="matKhau"
+          {...register("matKhau")}
+          className="w-full"
+          errorMessage={errors.matKhau?.message}
+          isInvalid={!!errors.matKhau}
           placeholder="Enter your password"
           type={isVisible ? "text" : "password"}
         />
@@ -96,7 +106,9 @@ export default function Register() {
           isRequired
           label="Full Name"
           labelPlacement="outside"
-          name="hoTen"
+          {...register("hoTen")}
+          errorMessage={errors.hoTen?.message}
+          isInvalid={!!errors.hoTen}
           placeholder="Enter your full name"
           type="text"
         />
@@ -105,16 +117,18 @@ export default function Register() {
           isRequired
           label="Phone Number"
           labelPlacement="outside"
-          name="soDT"
+          {...register("soDT")}
+          errorMessage={errors.soDT?.message}
+          isInvalid={!!errors.soDT}
           placeholder="Enter your phone number"
           type="tel"
         />
 
         <Input
+          disabled
           isRequired
           label="Group Code"
           labelPlacement="outside"
-          name="maNhom"
           placeholder="Enter your group code"
           type="text"
           value={"GP01"}
@@ -124,7 +138,9 @@ export default function Register() {
           isRequired
           label="Email"
           labelPlacement="outside"
-          name="email"
+          {...register("email")}
+          errorMessage={errors.email?.message}
+          isInvalid={!!errors.email}
           placeholder="Enter your email"
           type="email"
         />
@@ -132,15 +148,18 @@ export default function Register() {
       <NotificationModal
         color={err ? "danger" : "success"}
         isOpen={open}
-        title={err ?? "Registration Failed"}
-        onClose={() => setOpen(false)}
+        title={err ?? "Register successfully"}
+        onClose={() => {
+          setOpen(false);
+          router.push("/login");
+        }}
       />
       {/* ===== Actions ===== */}
       <div className="flex justify-end gap-3">
         <Button type="reset" variant="flat">
           Reset
         </Button>
-        <Button color="primary" type="submit">
+        <Button color="primary" isLoading={isSubmitting} type="submit">
           Submit
         </Button>
       </div>
