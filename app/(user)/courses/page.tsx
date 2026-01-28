@@ -41,7 +41,6 @@ export default async function CategoriesPage({
 
   if (!id) {
     const res = await getCoursesPagination(currentPage);
-
     courseList = {
       items: res.items,
       currentPage: res.currentPage,
@@ -50,7 +49,6 @@ export default async function CategoriesPage({
     showPagination = true;
   } else {
     const res = await getRelatedCourses(id);
-
     courseList = {
       items: res,
     };

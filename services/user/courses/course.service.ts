@@ -5,8 +5,8 @@ import {
   CoursePaginationResponse,
 } from "@/types/user/course/course.type";
 import axiosInstance from "@/services/axiosInstance";
-const BACKEND_URL = process.env.NEXT_BACKEND_URL;
-const TOKEN_CYBERSOFT = process.env.NEXT_TOKEN_CYBERSOFT;
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const TOKEN_CYBERSOFT = process.env.NEXT_PUBLIC_TOKEN_CYBERSOFT;
 
 /* service to get courses with pagination */
 export async function getCoursesPagination(

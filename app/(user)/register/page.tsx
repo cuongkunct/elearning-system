@@ -41,7 +41,6 @@ export default function Register() {
         setOpen(true);
       }
     } catch (err: any) {
-      console.log("Vào đây làm gì ");
       setErr(err.content || "Register failed");
       setOpen(true);
     }
@@ -64,7 +63,6 @@ export default function Register() {
       <h1 className="text-2xl font-semibold text-center  uppercase">
         Register Account
       </h1>
-      {/* ===== Grid 2 columns ===== */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full px-8">
         <Input
           isRequired
@@ -150,11 +148,14 @@ export default function Register() {
         isOpen={open}
         title={err ?? "Register successfully"}
         onClose={() => {
-          setOpen(false);
-          router.push("/login");
+          if (err) {
+            setOpen(false);
+          } else {
+            setOpen(false)
+            router.push("/login");
+          }
         }}
       />
-      {/* ===== Actions ===== */}
       <div className="flex justify-end gap-3">
         <Button type="reset" variant="flat">
           Reset

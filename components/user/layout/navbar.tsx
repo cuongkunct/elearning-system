@@ -32,14 +32,32 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import { siteConfig } from "@/config/user/site";
 import { RootState } from "@/store";
 import { logout, setLoginData } from "@/store/user/auth/auth.slice";
+import { getListCategory } from "@/services/user/category/category.service";
+import { Category } from "@/types/user/category/category.type";
+
 export const Navbar = () => {
   const rout = useRouter();
   const dispatch = useDispatch();
   const pathname = usePathname();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [error, setError] = useState<string>("");
   const [searchKey, setSearchKey] = useState<string>("");
   const authState = useSelector((state: RootState) => state.auth.login);
   const { data: loginData } = authState;
   const [menuOpen, setMenuOpen] = useState(false);
+  console.log(" categories", categories);
+  useEffect(() => {
+
+    async function fetchCategories() {
+      try {
+        const data = await getListCategory();
+        setCategories(data);
+      } catch (err: any) {
+        setError(err.message || "Failed to load categories");
+      }
+    }
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     const userData = Cookies.get("userData");
@@ -117,7 +135,8 @@ export const Navbar = () => {
 
         <ul className="hidden lg:flex gap-4 ml-2 items-center">
           {siteConfig.navItems.map((item) => {
-            if (item.children) {
+            if (item.label === "Courses") {
+              // Courses menu => dynamic từ categories
               return (
                 <li key={item.label} className="relative group">
                   <NextLink
@@ -126,41 +145,53 @@ export const Navbar = () => {
                       "px-2 py-1 flex items-center gap-1",
                       pathname.startsWith("/courses")
                         ? "text-primary border-b border-primary font-medium"
-                        : "",
+                        : ""
                     )}
                     href={item.href}
                   >
                     {item.label}
                   </NextLink>
-                  <div
-                    className="
-                                absolute left-0 top-full pt-2
-                                w-max min-w-[320px]
 
-                                invisible opacity-0 translate-y-1
-                                group-hover:visible group-hover:opacity-100 group-hover:translate-y-0
+                  <div className="absolute left-0 top-full pt-2 w-max min-w-[320px] invisible opacity-0 translate-y-1 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 ease-out z-50">
+                    <div className="rounded-md border shadow-lg bg-white border-gray-200 text-gray-800 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100">
+                      <ul className="grid grid-cols-2 gap-1 p-2">
+                        {categories.map((cat) => (
+                          <li key={cat.maDanhMuc}>
+                            <NextLink
+                              className="block rounded px-3 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
+                              href={`/courses/?id=${cat.maDanhMuc}`}
+                            >
+                              {cat.tenDanhMuc}
+                            </NextLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+              );
+            }
 
-                                transition-all duration-200 ease-out
-                                z-50
-                            "
+            if (item.children) {
+              return (
+                <li key={item.label} className="relative group">
+                  <NextLink
+                    className={clsx(
+                      linkStyles({ color: "foreground" }),
+                      "px-2 py-1 flex items-center gap-1",
+                      pathname === item.href ? "text-primary border-b border-primary font-medium" : ""
+                    )}
+                    href={item.href}
                   >
-                    <div
-                      className="
-                            rounded-md border shadow-lg
-                            bg-white border-gray-200 text-gray-800
-                            dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100
-                          "
-                    >
+                    {item.label}
+                  </NextLink>
+                  <div className="absolute left-0 top-full pt-2 w-max min-w-[320px] invisible opacity-0 translate-y-1 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 ease-out z-50">
+                    <div className="rounded-md border shadow-lg bg-white border-gray-200 text-gray-800 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100">
                       <ul className="grid grid-cols-2 gap-1 p-2">
                         {item.children.map((child) => (
                           <li key={child.href}>
                             <NextLink
-                              className="
-                                block rounded px-3 py-2 text-sm
-                                hover:bg-gray-100 hover:text-gray-900
-                                dark:hover:bg-gray-700 dark:hover:text-white
-                                transition-colors
-                              "
+                              className="block rounded px-3 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
                               href={child.href}
                             >
                               {child.label}

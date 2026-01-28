@@ -119,7 +119,6 @@ export default async function Home() {
           The most popular course
         </h1>
         {topLearnedCategories && <CourseCard courses={topLearnedCategories} />}
-        <CourseCard courses={topLearnedCategories} />
         <div className="flex justify-center items-center mt-8">
           <Link href="/courses">
             <Button>

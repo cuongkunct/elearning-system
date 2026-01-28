@@ -6,9 +6,8 @@ import {
 } from "@/types/user/category/category.type";
 import { Course } from "@/types/user/course/course.type";
 
-// 2 - Lấy danh mục khóa học
-const BACKEND_URL = process.env.NEXT_BACKEND_URL;
-const TOKEN_CYBERSOFT = process.env.NEXT_TOKEN_CYBERSOFT;
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const TOKEN_CYBERSOFT = process.env.NEXT_PUBLIC_TOKEN_CYBERSOFT;
 
 export async function getListCategory(): Promise<Category[]> {
   try {
