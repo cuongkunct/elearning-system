@@ -1,0 +1,36 @@
+{
+  "pages": {
+    "/(user)/page": [
+      "static/chunks/node_modules_next_dist_b47712da._.js",
+      "static/chunks/app_error_tsx_059b41a8._.js",
+      "static/chunks/app_error_tsx_f8182b1e._.js",
+      "static/chunks/node_modules_next_dist_client_components_builtin_global-error_f8182b1e.js",
+      "static/chunks/[root-of-the-server]__d6b68bc9._.css",
+      "static/chunks/node_modules_43cebcdf._.js",
+      "static/chunks/_45a384af._.js",
+      "static/chunks/node_modules_framer-motion_dist_es_64d08116._.js",
+      "static/chunks/node_modules_@react-aria_overlays_dist_0eb9357c._.js",
+      "static/chunks/node_modules_axios_lib_99e19c7d._.js",
+      "static/chunks/node_modules_@heroui_theme_dist_6e71eec5._.js",
+      "static/chunks/node_modules_tailwind-merge_dist_bundle-mjs_mjs_56b6fd65._.js",
+      "static/chunks/node_modules_@react-aria_interactions_dist_4c065d78._.js",
+      "static/chunks/node_modules_@heroui_1c6a10c4._.js",
+      "static/chunks/node_modules_@react-aria_3ac8da82._.js",
+      "static/chunks/node_modules_f5f7a346._.js",
+      "static/chunks/app_(user)_layout_tsx_f8182b1e._.js",
+      "static/chunks/node_modules_e5ad54de._.js",
+      "static/chunks/_91d92973._.js",
+      "static/chunks/node_modules_swiper_1cc27f2c._.css",
+      "static/chunks/app_(user)_page_tsx_30b56897._.js",
+      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_4e3b0bdd._.js",
+      "static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js",
+      "static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js",
+      "static/chunks/node_modules_next_dist_compiled_5150ccfd._.js",
+      "static/chunks/node_modules_next_dist_client_cf1d9188._.js",
+      "static/chunks/node_modules_next_dist_b0daae9a._.js",
+      "static/chunks/4e2c9_@swc_helpers_cjs_2b52ba32._.js",
+      "static/chunks/_a0ff3932._.js",
+      "static/chunks/turbopack-_3fb52da9._.js"
+    ]
+  }
+}

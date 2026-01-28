@@ -1,0 +1,89 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axiosInstance from "@/services/axiosInstance";
+import {
+  ProfileRequest,
+  ProfileResponse,
+} from "@/types/user/userProfile/userProfile.type";
+
+// 1 - Đăng ký
+export const fetchGetUserProfile = createAsyncThunk<
+  ProfileResponse,
+  ProfileRequest,
+  { rejectValue: { statusCode: number; content: string } }
+>("getProfileInfoThunk", async (taikhoan, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.post(
+      `QuanLyNguoiDung/ThongTinTaiKhoan`,
+      taikhoan
+    );
+    return {
+      statusCode: response.status,
+      content: response.data,
+    };
+  } catch (error: any) {
+    return rejectWithValue({
+      statusCode: error.response?.status || 500,
+      content: error || "An error occurred",
+    });
+  }
+});
+
+interface SliceState {}
+
+const initialState: SliceState = {
+  registerData: null,
+  registerLoading: false,
+  registerError: undefined,
+  // Login
+  loginData:
+    typeof window !== "undefined" && localStorage.getItem("userData")
+      ? JSON.parse(localStorage.getItem("userData") as string)
+      : null,
+  loginLoading: false,
+  loginError: undefined,
+};
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {
+    logout: (state) => {
+      state.loginData = null;
+      localStorage.removeItem("userData");
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(registerUser.pending, (state) => {
+        state.registerLoading = true;
+        state.registerError = {
+          statusCode: 500,
+          content: "",
+        };
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.registerLoading = false;
+        state.registerData = action.payload;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.registerLoading = false;
+        state.registerError = action.payload;
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.loginLoading = true;
+        state.loginError = undefined;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loginLoading = false;
+        state.loginData = action.payload;
+        localStorage.setItem("userData", JSON.stringify(action.payload));
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loginLoading = false;
+        state.loginError = action.payload;
+      });
+  },
+});
+
+export const { logout } = authSlice.actions;
+export default authSlice.reducer;

@@ -1,0 +1,12 @@
+.env.local
+.env
+
+# dependencies
+node_modules/
+
+# next
+.next/
+
+# env
+.env
+.env.local
