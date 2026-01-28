@@ -1,7 +1,11 @@
 import Cookies from "js-cookie";
 
 import axiosInstance from "@/services/axiosInstance";
-import { UserProfileResponse, EditUserProfile, UpdateUserProfileResponse } from "@/types/user/userProfile/userProfile.type";
+import {
+  UserProfileResponse,
+  EditUserProfile,
+  UpdateUserProfileResponse,
+} from "@/types/user/userProfile/userProfile.type";
 
 export async function fetchUserProfile(): Promise<UserProfileResponse> {
   const account = Cookies.get("userData");
@@ -23,7 +27,9 @@ export async function fetchUserProfile(): Promise<UserProfileResponse> {
   return res.data;
 }
 
-export async function fetchUpdateUserProfile(data: EditUserProfile): Promise<UpdateUserProfileResponse> {
+export async function fetchUpdateUserProfile(
+  data: EditUserProfile,
+): Promise<UpdateUserProfileResponse> {
   const account = Cookies.get("userData");
 
   if (!account) {
