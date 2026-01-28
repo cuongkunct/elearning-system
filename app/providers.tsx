@@ -1,15 +1,15 @@
 "use client";
 
 import type { ThemeProviderProps } from "next-themes";
-
 import * as React from "react";
-import { HeroUIProvider } from "@heroui/system";
-import { useRouter } from "next/navigation";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { Provider } from "react-redux";
-import { ToastProvider } from "@heroui/toast";
 
-import store from "../store/index";
+import { HeroUIProvider } from "@heroui/system";
+import { ToastProvider } from "@heroui/toast";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { useRouter } from "next/navigation";
+import { Provider } from "react-redux";
+
+import store from "../store";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -30,11 +30,10 @@ export function Providers({ children, themeProps }: ProvidersProps) {
   return (
     <Provider store={store}>
       <HeroUIProvider navigate={router.push}>
-        <ToastProvider
-          maxVisibleToasts={3}
-          placement="top-center" // You can customize the placement as needed
-        />
-        <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+        <NextThemesProvider {...themeProps}>
+          <ToastProvider maxVisibleToasts={3} placement="top-center" />
+          {children}
+        </NextThemesProvider>
       </HeroUIProvider>
     </Provider>
   );

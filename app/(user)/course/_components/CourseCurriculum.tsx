@@ -20,7 +20,7 @@ type Chapter = {
 const chapters: Chapter[] = [
   {
     id: 1,
-    title: "🚀 Chapter 1: Web Development Overview",
+    title: "Chapter 1: Web Development Overview",
     description:
       "Build a solid foundation before writing your first line of code",
     lessons: [
@@ -45,7 +45,7 @@ const chapters: Chapter[] = [
   },
   {
     id: 2,
-    title: "⚙️ Chapter 2: HTML & CSS Fundamentals",
+    title: "Chapter 2: HTML & CSS Fundamentals",
     description: "Build your very first web interface",
     lessons: [
       {
@@ -68,7 +68,7 @@ const chapters: Chapter[] = [
   },
   {
     id: 3,
-    title: "🔥 Chapter 3: JavaScript Fundamentals",
+    title: "Chapter 3: JavaScript Fundamentals",
     description: "Start thinking like a programmer",
     lessons: [
       {
@@ -90,7 +90,7 @@ const chapters: Chapter[] = [
   },
   {
     id: 4,
-    title: "🔥 Chapter 4: Advanced JavaScript Deep Dive",
+    title: "Chapter 4: Advanced JavaScript Deep Dive",
     description: "Master advanced concepts used in real-world projects",
     lessons: [
       {
@@ -112,7 +112,7 @@ const chapters: Chapter[] = [
   },
   {
     id: 5,
-    title: "🔥 Chapter 5: High-Paying Job Interview Preparation",
+    title: "Chapter 5: High-Paying Job Interview Preparation",
     description: "Crack technical interviews and land high-paying jobs",
     lessons: [
       {
@@ -136,54 +136,58 @@ const chapters: Chapter[] = [
 
 export default function CourseCurriculum() {
   return (
-    <Accordion className="w-full" selectionMode="multiple" variant="splitted">
-      {chapters.map((chapter) => (
-        <AccordionItem
-          key={chapter.id}
-          aria-label={chapter.title}
-          startContent={
-            <Avatar
-              isBordered
-              color="primary"
-              name={`C${chapter.id}`}
-              radius="lg"
-            />
-          }
-          title={
-            <div>
-              <p className="font-semibold text-lg">{chapter.title}</p>
-              <p className="text-sm text-gray-500">{chapter.description}</p>
-            </div>
-          }
-        >
-          <div className="space-y-3">
-            {chapter.lessons.map((lesson) => (
-              <div
-                key={lesson.id}
-                className="flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50 transition"
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  {lesson.isFree ? (
-                    <PlayCircle className="text-green-500 w-5 h-5 flex-shrink-0" />
-                  ) : (
-                    <Lock className="text-gray-400 w-5 h-5 flex-shrink-0" />
-                  )}
-
-                  <p className="truncate font-medium">{lesson.title}</p>
-
-                  {lesson.isFree && (
-                    <span className="text-xs text-green-600 border border-green-500 px-2 py-0.5 rounded">
-                      Free preview
-                    </span>
-                  )}
-                </div>
-
-                <span className="text-sm text-gray-500">{lesson.duration}</span>
+    <div className="mt-12 ">
+      <h2 className="text-2xl font-semibold text-center md:text-left py-4">Nội dung khóa học</h2>
+      <Accordion className="w-full" selectionMode="multiple" variant="splitted">
+        {chapters.map((chapter) => (
+          <AccordionItem
+            key={chapter.id}
+            aria-label={chapter.title}
+            startContent={
+              <Avatar
+                isBordered
+                color="primary"
+                name={`C${chapter.id}`}
+                radius="lg"
+              />
+            }
+            title={
+              <div className="truncate">
+                <p className="font-semibold text-sm truncate">{chapter.title}</p>
+                <p className="text-sm text-gray-500 truncate">{chapter.description}</p>
               </div>
-            ))}
-          </div>
-        </AccordionItem>
-      ))}
-    </Accordion>
+            }
+          >
+            <div className="space-y-2">
+              {chapter.lessons.map((lesson) => (
+                <div
+                  key={lesson.id}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg border hover:bg-gray-50 transition"
+                >
+                  <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                    {lesson.isFree ? (
+                      <PlayCircle className="text-green-500 w-5 h-5 flex-shrink-0" />
+                    ) : (
+                      <Lock className="text-gray-400 w-5 h-5 flex-shrink-0" />
+                    )}
+
+                    <p className="truncate font-medium">{lesson.title}</p>
+
+                    {lesson.isFree && (
+                      <span className="text-xs text-green-600 border border-green-500 px-2 py-0.5 rounded whitespace-nowrap">
+                        Free preview
+                      </span>
+                    )}
+                  </div>
+
+                  <span className="text-sm text-gray-500 mt-1 sm:mt-0">{lesson.duration}</span>
+                </div>
+              ))}
+            </div>
+          </AccordionItem>
+        ))}
+
+      </Accordion>
+    </div>
   );
 }

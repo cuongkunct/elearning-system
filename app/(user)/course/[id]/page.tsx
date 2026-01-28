@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-
+import { cache } from "react";
 import Link from "next/link";
 import { Button } from "@heroui/button";
-import { BookAIcon } from "lucide-react";
+
 
 import {
   categorySeoMap,
@@ -21,6 +21,8 @@ import { ArrowIcon, LogoIcon } from "@/components/icons";
 type PageProps = {
   params: Promise<{ id: string }>;
 };
+
+
 
 export async function generateMetadata({
   params,
@@ -85,7 +87,7 @@ const CourseDetailPage = async ({ params }: PageProps) => {
     <>
       <div className="min-h-screen dark:bg-gray-900">
         <section className="bg-gradient-to-r from-green-200 to-blue-500 rounded-br-3xl rounded-tl-3xl">
-          <div className="max-w-6xl mx-auto px-6 py-16 text-black">
+          <div className="max-w-6xl mx-auto px-6 py-16 ">
             <p className="text-sm uppercase opacity-80">
               {course.danhMucKhoaHoc.tenDanhMucKhoaHoc}
             </p>
@@ -94,7 +96,6 @@ const CourseDetailPage = async ({ params }: PageProps) => {
               {course.tenKhoaHoc}
             </h1>
             <p className="mt-4 max-w-2xl text-lg opacity-90 flex items-center gap-2">
-              <BookAIcon />
               {categoryDescription}
             </p>
             <p className="mt-4 max-w-2xl text-lg opacity-90">{course.moTa}</p>

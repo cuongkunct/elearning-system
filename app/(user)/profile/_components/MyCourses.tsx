@@ -73,7 +73,7 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
         <h2 className="text-3xl font-bold ">My joined course</h2>
       </div>
 
-      <div className="space-y-4 flex flex-col md:flex-row gap-4 justify-center items-center ">
+      <div className="space-y-4 flex flex-col gap-4 justify-center items-center ">
         {courseMemo.map((course: Course) => (
           <div
             key={course.maKhoaHoc}
