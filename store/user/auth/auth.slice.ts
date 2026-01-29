@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
+import Router from "next/router";
 
 import axiosInstance from "@/services/axiosInstance";
 import {
@@ -17,7 +18,6 @@ export const registerUser = createAsyncThunk<
 >("auth/register", async (userData, { rejectWithValue }) => {
   try {
     const res = await axiosInstance.post("QuanLyNguoiDung/DangKy", userData);
-
     return {
       statusCode: res.status,
       content: res.data,
@@ -36,7 +36,10 @@ export const loginUser = createAsyncThunk<
 >("auth/login", async (userData, { rejectWithValue }) => {
   try {
     const res = await axiosInstance.post("QuanLyNguoiDung/DangNhap", userData);
+    console.log("res", res);
+    if (res.data.maLoaiNguoiDung == "GV") {
 
+    }
     return {
       statusCode: res.status,
       content: res.data,

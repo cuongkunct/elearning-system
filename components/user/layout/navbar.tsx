@@ -24,7 +24,7 @@ import clsx from "clsx";
 import Cookies from "js-cookie";
 import NextLink from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { LogoIcon, SearchIcon } from "@/components/icons";
@@ -46,7 +46,6 @@ export const Navbar = () => {
   const { data: loginData } = authState;
   const [menuOpen, setMenuOpen] = useState(false);
 
-  console.log(" categories", categories);
   useEffect(() => {
     async function fetchCategories() {
       try {
@@ -59,6 +58,19 @@ export const Navbar = () => {
     }
     fetchCategories();
   }, []);
+
+  const categoriesMemo = useMemo(() => {
+    return categories.map((cat) => (
+      <li key={cat.maDanhMuc}>
+        <NextLink
+          className="block rounded px-3 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
+          href={`/courses/?id=${cat.maDanhMuc}`}
+        >
+          {cat.tenDanhMuc}
+        </NextLink>
+      </li>
+    ));
+  }, [categories]);
 
   useEffect(() => {
     const userData = Cookies.get("userData");
@@ -137,7 +149,6 @@ export const Navbar = () => {
         <ul className="hidden lg:flex gap-4 ml-2 items-center">
           {siteConfig.navItems.map((item) => {
             if (item.label === "Courses") {
-              // Courses menu => dynamic từ categories
               return (
                 <li key={item.label} className="relative group">
                   <NextLink
@@ -156,16 +167,7 @@ export const Navbar = () => {
                   <div className="absolute left-0 top-full pt-2 w-max min-w-[320px] invisible opacity-0 translate-y-1 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 ease-out z-50">
                     <div className="rounded-md border shadow-lg bg-white border-gray-200 text-gray-800 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100">
                       <ul className="grid grid-cols-2 gap-1 p-2">
-                        {categories.map((cat) => (
-                          <li key={cat.maDanhMuc}>
-                            <NextLink
-                              className="block rounded px-3 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
-                              href={`/courses/?id=${cat.maDanhMuc}`}
-                            >
-                              {cat.tenDanhMuc}
-                            </NextLink>
-                          </li>
-                        ))}
+                        {categoriesMemo}
                       </ul>
                     </div>
                   </div>
