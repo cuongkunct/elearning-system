@@ -39,7 +39,7 @@ export async function getAllCourses(): Promise<Course[]> {
     `${BACKEND_URL}QuanLyKhoaHoc/LayDanhSachKhoaHoc?MaNhom=GP01`,
     {
       headers: { TokenCybersoft: TOKEN_CYBERSOFT! },
-      next: { revalidate: 60 }, // ISR – 60s cập nhật
+      next: { revalidate: 60 },
     },
   );
 
@@ -47,7 +47,7 @@ export async function getAllCourses(): Promise<Course[]> {
 
   return res.json();
 }
-/* service to get course detail by course maKhoaHoc */
+
 export async function getCourseDetail(maKhoaHoc: string) {
   const res = await fetch(
     `${BACKEND_URL}QuanLyKhoaHoc/LayThongTinKhoaHoc?maKhoaHoc=${maKhoaHoc}`,
@@ -66,7 +66,6 @@ export async function getCourseDetail(maKhoaHoc: string) {
   return res.json();
 }
 
-/* service to get related courses by maDanhMuc */
 export async function getRelatedCourses(maDanhMuc?: string) {
   const url = new URL(
     `${BACKEND_URL}QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?MaNhom=GP01`,
@@ -97,7 +96,7 @@ export async function joinCourseByMaKhoaHoc(maKhoaHoc: string) {
   }
   const userData = JSON.parse(account).content;
   const res = await axiosInstance.post(
-    `QuanLyKhoaHoc/GhiDanhKhoaHoc`,
+    `QuanLyKhoaHoc/DangKyKhoaHoc`,
     {
       maKhoaHoc,
       taiKhoan: userData.taiKhoan,

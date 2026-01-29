@@ -45,12 +45,13 @@ export const Navbar = () => {
   const authState = useSelector((state: RootState) => state.auth.login);
   const { data: loginData } = authState;
   const [menuOpen, setMenuOpen] = useState(false);
+
   console.log(" categories", categories);
   useEffect(() => {
-
     async function fetchCategories() {
       try {
         const data = await getListCategory();
+
         setCategories(data);
       } catch (err: any) {
         setError(err.message || "Failed to load categories");
@@ -145,7 +146,7 @@ export const Navbar = () => {
                       "px-2 py-1 flex items-center gap-1",
                       pathname.startsWith("/courses")
                         ? "text-primary border-b border-primary font-medium"
-                        : ""
+                        : "",
                     )}
                     href={item.href}
                   >
@@ -179,7 +180,9 @@ export const Navbar = () => {
                     className={clsx(
                       linkStyles({ color: "foreground" }),
                       "px-2 py-1 flex items-center gap-1",
-                      pathname === item.href ? "text-primary border-b border-primary font-medium" : ""
+                      pathname === item.href
+                        ? "text-primary border-b border-primary font-medium"
+                        : "",
                     )}
                     href={item.href}
                   >

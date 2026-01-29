@@ -20,12 +20,12 @@ export async function getListCategory(): Promise<Category[]> {
     if (!res.ok) throw new Error(`Fetch categories failed: ${res.statusText}`);
 
     const data: Category[] = await res.json();
+
     return data;
   } catch (error) {
     throw error;
   }
 }
-
 
 export async function getCourseAndCategory() {
   try {
@@ -35,11 +35,13 @@ export async function getCourseAndCategory() {
     ]);
 
     if (!Array.isArray(courses)) throw new Error("Courses is not an array");
-    if (!Array.isArray(categories)) throw new Error("Categories is not an array");
+    if (!Array.isArray(categories))
+      throw new Error("Categories is not an array");
 
     return { courses, categories };
   } catch (error) {
     console.error("Failed to fetch courses or categories", error);
+
     return { courses: [], categories: [] }; // trả về empty array để React không crash
   }
 }
