@@ -1,28 +1,20 @@
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA5MCIsIkhldEhhblN0cmluZyI6IjI5LzA1LzIwMjYiLCJIZXRIYW5UaW1lIjoiMTc4MDAxMjgwMDAwMCIsIm5iZiI6MTc1MzAzMDgwMCwiZXhwIjoxNzgwMTYwNDAwfQ.KkGRtLpEsgoM4M_TapjOZIzvAwbay3QvXIwwN8XUqWk
-
 import axios, { type InternalAxiosRequestConfig } from "axios";
-import { error } from "console";
-import { access } from "fs";
-import { config } from "process";
+import { getAccessTokenFromCookie } from "./utils/authCookie";
 
-const TOKEN_CYBERSOFT =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA5MCIsIkhldEhhblN0cmluZyI6IjI5LzA1LzIwMjYiLCJIZXRIYW5UaW1lIjoiMTc4MDAxMjgwMDAwMCIsIm5iZiI6MTc1MzAzMDgwMCwiZXhwIjoxNzgwMTYwNDAwfQ.KkGRtLpEsgoM4M_TapjOZIzvAwbay3QvXIwwN8XUqWk";
+const TOKEN_CYBERSOFT = process.env.NEXT_PUBLIC_TOKEN_CYBERSOFT || "";
 
 export const api = axios.create({
-  baseURL: "https://elearningnew.cybersoft.edu.vn/api/",
+  baseURL: "https://elearningnew.cybersoft.edu.vn/api", // bỏ "/" cuối để tránh //...
 });
 
 api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig<any>) => {
-    config.headers["TokenCybersoft"] = TOKEN_CYBERSOFT;
+  (config: InternalAxiosRequestConfig) => {
+    if (TOKEN_CYBERSOFT) config.headers["TokenCybersoft"] = TOKEN_CYBERSOFT;
 
-    // Log request URL
-    // const requestURL = `${config.baseURL}${config.url}`;
-    // console.log("Request URL: ", requestURL);
+    const accessToken = getAccessTokenFromCookie();
+    if (accessToken) config.headers["Authorization"] = `Bearer ${accessToken}`;
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  },
+  (error) => Promise.reject(error),
 );
