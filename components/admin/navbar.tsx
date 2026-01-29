@@ -8,23 +8,27 @@ import {
   NavbarItem,
   NavbarMenuItem,
 } from "@heroui/navbar";
+
 import { Link } from "@heroui/link";
 import { Input } from "@heroui/input";
+import { link as linkStyles } from "@heroui/theme";
 import NextLink from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
+import clsx from "clsx";
 
 import { siteConfig } from "@/config/admin/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { SearchIcon } from "@/components/icons";
+import { SearchIcon, Logo } from "@/components/icons";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import type { NavbarProps, AdminAction } from "./../../types/admin/navbar.type";
 
-export const Navbar = () => {
+export const Navbar = ({ onActionClick }: NavbarProps) => {
   const pathname = usePathname();
   const searchInput = (
     <Input
       aria-label="Search"
       classNames={{
-        inputWrapper: "bg-default-100",
+        inputWrapper: "bg-default-200",
         input: "text-sm",
       }}
       labelPlacement="outside"
@@ -37,58 +41,73 @@ export const Navbar = () => {
   );
 
   const getActiveItem = () => {
-    return siteConfig.navItems.find((item) => {
-      return pathname === item.href;
-    });
+    const sortedItems = [...siteConfig.navItems].sort(
+      (a, b) => b.href.length - a.href.length,
+    );
+
+    return sortedItems.find((item) => pathname.startsWith(item.href));
   };
 
   const activeItem = getActiveItem();
-  const pageTitle = activeItem?.title ?? "Admin page";
+
+  // pageTitle: tiêu đề sẽ hiển thị trên Navbar
+  // Nếu tìm được item đang active → lấy title của nó
+  // Nếu KHÔNG tìm được (activeItem = undefined) → dùng "Admin page" làm mặc định
+  const pageTitle = activeItem?.label ?? "Admin page";
+
+  // ACTION
+  // action: { key, label } | undefined
+  const action = activeItem?.action as AdminAction | undefined;
+
+  const renderActionButton = () => {
+    if (!action) return null;
+
+    return (
+      <button
+        type="button"
+        className="inline-flex w-full justify-center items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition"
+        onClick={() => {
+          console.log("Navbar action:", action.key);
+          onActionClick?.(action.key);
+        }}
+      >
+        + {action.label}
+      </button>
+    );
+  };
+
+  const renderSearchButton = () => {
+    return <div className="w-full">{searchInput}</div>;
+  };
 
   return (
-    <HeroUINavbar className="bg-[#F9F9F9]" maxWidth="full" position="sticky">
-      <NavbarContent justify="start">
-        <div className="mx-auto w-full max-w-7xl flex items-center gap-6 px-6">
-          <NavbarBrand className="gap-3 max-w-fit">
-            <NextLink className="flex items-center gap-2" href="/admin">
-              <Image alt="logo" height={80} src="/logo.png" width={80} />
-            </NextLink>
-          </NavbarBrand>
+    <HeroUINavbar
+      maxWidth="full"
+      position="sticky"
+      className="bg-[#F9F9F9]"
+      classNames={{
+        wrapper: "px-0 max-w-none", // QUAN TRỌNG: bỏ px-6 mặc định
+      }}
+    >
+      <NavbarContent className="hidden sm:flex w-full p-0">
+        <div className="w-full grid grid-cols-[260px_1fr] h-[88px]">
+          <div className=" flex items-center">
+            <NavbarBrand className="gap-3 max-w-fit">
+              <NextLink className="flex items-center gap-2" href="/admin">
+                <Image src="/logo.png" alt="logo" width={80} height={80} />
+              </NextLink>
+            </NavbarBrand>
+          </div>
 
-          <h1 className="text-4xl font-semibold pl-[133px]">{pageTitle}</h1>
+          <div className=" px-6 flex items-center justify-between">
+            <h1 className="text-4xl font-semibold">{pageTitle}</h1>
+            <div className="w-[600px] flex justify-center">
+              {renderSearchButton()}
+            </div>
+            <div className="w-[120]">{renderActionButton()}</div>
+          </div>
         </div>
       </NavbarContent>
-
-      {/* Search */}
-      <NavbarContent justify="end">
-        <NavbarItem className="hidden sm:flex">
-          <ThemeSwitch />
-        </NavbarItem>
-
-        <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
-      </NavbarContent>
-
-      <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-        <NavbarItem className="flex-1 px-3">
-          <div className="mx-auto max-w-[280px]">{searchInput}</div>
-        </NavbarItem>
-
-        <NavbarItem className="flex items-center gap-2">
-          <ThemeSwitch />
-          <NavbarMenuToggle />
-        </NavbarItem>
-      </NavbarContent>
-
-      <NavbarMenu className="sm:hidden">
-        <div className="px-4 py-3">
-          {siteConfig.navMenuItems.map((item) => (
-            // Đây là item chuẩn cho menu mobile
-            <NavbarMenuItem key={item.href}>
-              <Link href={item.href}>{item.label}</Link>
-            </NavbarMenuItem>
-          ))}
-        </div>
-      </NavbarMenu>
     </HeroUINavbar>
   );
 };
