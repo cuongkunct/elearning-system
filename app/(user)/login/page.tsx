@@ -38,8 +38,11 @@ export default function Login() {
           description: "You have login successfully.",
           color: "success",
         });
-
-        router.push("/");
+        if (res.content.maLoaiNguoiDung === "GV") {
+          router.push("/admin");
+        } else {
+          router.push("/");
+        }
       }
     } catch (err: any) {
       setOpen(true);
