@@ -5,6 +5,14 @@ Mô tả: Nền tảng học trực tuyến với giao diện hiện đại, res
 
 Phân công công việc:
 
-Cường: Phát triển các trang user (khóa học, quản lý học tập ...).
+[Trần Cường]: Phát triển trang user (khóa học, quản lý học tập ...).
 
-Hành Thome: Phát triển các trang admin (quản lý khóa học, danh mục, báo cáo).
+[Hành Thome]: Phát triển trang admin (quản lý khóa học, danh mục, báo cáo).
+
+WireFrame: https://balsamiq.cloud/suu60vp/p9pupym/r5E19
+
+Githup: https://github.com/cuongkunct/elearning-system
+
+Deploy [Vervel]: https://elearning-system-seven.vercel.app/
+
+Link youtube: Doing
