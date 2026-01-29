@@ -17,10 +17,5 @@ export const registerSchema = z.object({
   maNhom: z.string(),
   email: z.string().email("Invalid email"),
 });
-// Chỗ này validate comfirm password
-//   .refine((data) => data.matKhau === data.matKhauXacNhan, {
-//     message: "Passwords do not match",
-//     path: ["matKhauXacNhan"],
-//   });
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
