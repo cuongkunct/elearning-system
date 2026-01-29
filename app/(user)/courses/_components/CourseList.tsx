@@ -13,6 +13,7 @@ export default function CourseCard({ courses }: CourseCardProps) {
   const isCategoryPage = pathname.includes("/courses");
   const isProfilePage = pathname.includes("/profile");
 
+
   return (
     <div
       className={`
@@ -22,13 +23,12 @@ export default function CourseCard({ courses }: CourseCardProps) {
     md:grid-cols-3
     gap-4
     w-full
-    ${
-      isProfilePage
-        ? "lg:grid-cols-3"
-        : isCategoryPage
+    ${isProfilePage
           ? "lg:grid-cols-3"
-          : "lg:grid-cols-4"
-    }
+          : isCategoryPage
+            ? "lg:grid-cols-3"
+            : "lg:grid-cols-4"
+        }
   `}
     >
       {courses &&

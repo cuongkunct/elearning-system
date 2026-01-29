@@ -1,5 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTransition } from "react";
 import {
   Drawer,
   DrawerContent,
@@ -19,19 +20,23 @@ type Props = {
 export default function CategoriesFilter({ categories }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const selectedCategory = searchParams.get("id") || "";
 
   const handleSelectCategory = (maDanhMuc: string) => {
-    const params = new URLSearchParams(searchParams.toString());
+    startTransition(() => {
+      const params = new URLSearchParams(searchParams.toString());
 
-    if (selectedCategory === maDanhMuc) {
-      params.delete("id");
-    } else {
-      params.set("id", maDanhMuc);
-    }
-    params.delete("page");
-    router.push(`?${params.toString()}`, { scroll: false });
+      if (selectedCategory === maDanhMuc) {
+        params.delete("id");
+      } else {
+        params.set("id", maDanhMuc);
+      }
+
+      params.delete("page");
+      router.push(`?${params.toString()}`, { scroll: false });
+    });
   };
 
   const renderCategory = () => {
@@ -41,6 +46,7 @@ export default function CategoriesFilter({ categories }: Props) {
       return (
         <Button
           key={category.maDanhMuc}
+          isLoading={isActive && isPending}
           className="hidden sm:hidden md:hidden lg:block xl:block"
           color={isActive ? "primary" : "default"}
           onPress={() => {
@@ -60,6 +66,7 @@ export default function CategoriesFilter({ categories }: Props) {
       return (
         <Button
           key={category.maDanhMuc}
+
           fullWidth
           color={isActive ? "primary" : "default"}
           onPress={() => {

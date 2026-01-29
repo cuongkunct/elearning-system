@@ -64,12 +64,12 @@ export default async function CategoriesPage({
   return (
     <div>
       <div className="lg:flex w-full gap-4">
-        <aside className="">
+        <div className="">
           {categories?.length > 0 && (
             <CategoriesFilter categories={categories} />
           )}
-        </aside>
-        <main className="flex-[7]">
+        </div>
+        <div className="flex-[7]">
           <SortButtons />
           <div className="flex justify-end mb-2">
             <p className="text-gray-700 text-sm font-semibold mb-2 mr-0">
@@ -93,7 +93,7 @@ export default async function CategoriesPage({
               <CourseCard courses={courseList?.items} />
             </>
           )}
-        </main>
+        </div>
       </div>
       {showPagination ? (
         <div className="py-18">

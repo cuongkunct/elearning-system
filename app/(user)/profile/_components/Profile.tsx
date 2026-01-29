@@ -8,7 +8,7 @@ import { User2Icon } from "lucide-react";
 
 import { fetchUpdateUserProfile } from "@/services/user/userAccount/user.service";
 import {
-  EditUserProfile,
+  EditUserProfileRequest,
   UserProfileResponse,
 } from "@/types/user/userProfile/userProfile.type";
 import { EditIcon } from "@/components/icons";
@@ -29,7 +29,7 @@ export default function Profile({ userData, onUpdate }: Props) {
     matKhau: "",
     maNhom: "",
     maLoaiNguoiDung: "",
-  } as EditUserProfile);
+  } as EditUserProfileRequest);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
       ...prev,
