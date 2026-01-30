@@ -25,9 +25,11 @@ export type AddUserForm = {
 
 type Props = {
   isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSubmit?: (payload: AddUserForm) => Promise<void> | void; // bước sau mới dùng
+  onOpenChange: (open: boolean) => void; // ✅ giữ boolean vì Modal gọi vậy
+  onSubmit: (payload: AddUserForm) => Promise<void> | void;
   defaultGroup?: string;
+  loading?: boolean;
+  error?: string | null;
 };
 
 export default function AddUserModal({
