@@ -29,6 +29,7 @@ function safeJsonParse(input: string): AnyObj | null {
  */
 export function getAccessTokenFromCookie(
   cookieNames: string[] = [
+    "userData",
     "user",
     "auth",
     "currentUser",

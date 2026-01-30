@@ -1,8 +1,5 @@
-// // components/UserTable.tsx
-
 import React from "react";
 import { TUser } from "./../../types/admin/user.type";
-
 import {
   Table,
   TableHeader,
@@ -10,18 +7,16 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Pagination,
-  Spinner,
-  getKeyValue,
 } from "@heroui/react";
-
 import { EditIcon, DeleteIcon } from "./icon";
 
 interface UserTableProps {
-  data: TUser[]; // Nhận data.items từ Redux
+  data: TUser[];
+  onEdit?: (user: TUser) => void; // ✅ ADDED
+  onDelete?: (user: TUser) => void; // ✅ ADDED
 }
 
-const UserTable: React.FC<UserTableProps> = ({ data }) => {
+const UserTable: React.FC<UserTableProps> = ({ data, onEdit, onDelete }) => {
   return (
     <Table
       aria-label="User data table"
@@ -57,6 +52,7 @@ const UserTable: React.FC<UserTableProps> = ({ data }) => {
               <div className="flex items-center justify-center gap-2">
                 <button
                   type="button"
+                  onClick={() => onEdit?.(user)} // ✅ ADDED
                   className="inline-flex items-center justify-center p-2 rounded-md text-default-400 hover:text-default-600 hover:bg-default-100 transition"
                   aria-label={`Edit ${user.taiKhoan}`}
                 >
@@ -65,6 +61,7 @@ const UserTable: React.FC<UserTableProps> = ({ data }) => {
 
                 <button
                   type="button"
+                  onClick={() => onDelete?.(user)} // ✅ ADDED
                   className="inline-flex items-center justify-center p-2 rounded-md text-danger-500 hover:text-danger-600 hover:bg-danger-50 transition"
                   aria-label={`Delete ${user.taiKhoan}`}
                 >

@@ -20,3 +20,6 @@ export type TCreateUserPayload = {
   hoTen: string;
   maLoaiNguoiDung: TMaLoaiNguoiDung; // thường HV/GV
 };
+
+// ✅ update payload giống create
+export type TUpdateUserPayload = TCreateUserPayload;
