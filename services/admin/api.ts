@@ -28,21 +28,21 @@ api.interceptors.request.use(
     config.headers["Accept"] = "application/json";
     config.headers["Content-Type"] = "application/json-patch+json";
 
-    console.groupCollapsed("🔎 [API REQUEST]");
-    console.log("URL:", `${config.baseURL}${config.url}`);
-    console.log("METHOD:", config.method?.toUpperCase());
-    console.log("DATA:", config.data);
-    console.log("hasAccessToken:", !!accessToken);
-    console.log(
-      "Authorization:",
-      accessToken ? `Bearer ${mask(accessToken)}` : null,
-    );
-    console.log("hasTokenCybersoft:", !!TOKEN_CYBERSOFT);
-    console.log(
-      "TokenCybersoft:",
-      TOKEN_CYBERSOFT ? mask(TOKEN_CYBERSOFT, 6, 0) : null,
-    );
-    console.groupEnd();
+    // console.groupCollapsed("🔎 [API REQUEST]");
+    // console.log("URL:", `${config.baseURL}${config.url}`);
+    // console.log("METHOD:", config.method?.toUpperCase());
+    // console.log("DATA:", config.data);
+    // console.log("hasAccessToken:", !!accessToken);
+    // console.log(
+    //   "Authorization:",
+    //   accessToken ? `Bearer ${mask(accessToken)}` : null,
+    // );
+    // console.log("hasTokenCybersoft:", !!TOKEN_CYBERSOFT);
+    // console.log(
+    //   "TokenCybersoft:",
+    //   TOKEN_CYBERSOFT ? mask(TOKEN_CYBERSOFT, 6, 0) : null,
+    // );
+    // console.groupEnd();
 
     return config;
   },
@@ -52,22 +52,22 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (res) => res,
   (error) => {
-    console.groupCollapsed("❌ [API ERROR]");
-    console.log("STATUS:", error?.response?.status);
-    console.log("RESPONSE DATA:", error?.response?.data);
-    console.log("REQUEST URL:", error?.config?.url);
-    console.log("SENT HEADERS:", {
-      Authorization: error?.config?.headers?.Authorization
-        ? `Bearer ${mask(String(error.config.headers.Authorization).replace(/^Bearer\s+/i, ""))}`
-        : null,
-      TokenCybersoft: error?.config?.headers?.TokenCybersoft
-        ? mask(String(error.config.headers.TokenCybersoft), 6, 0)
-        : null,
-      "Content-Type":
-        error?.config?.headers?.["Content-Type"] ||
-        error?.config?.headers?.["content-type"],
-    });
-    console.groupEnd();
+    // console.groupCollapsed("❌ [API ERROR]");
+    // console.log("STATUS:", error?.response?.status);
+    // console.log("RESPONSE DATA:", error?.response?.data);
+    // console.log("REQUEST URL:", error?.config?.url);
+    // console.log("SENT HEADERS:", {
+    //   Authorization: error?.config?.headers?.Authorization
+    //     ? `Bearer ${mask(String(error.config.headers.Authorization).replace(/^Bearer\s+/i, ""))}`
+    //     : null,
+    //   TokenCybersoft: error?.config?.headers?.TokenCybersoft
+    //     ? mask(String(error.config.headers.TokenCybersoft), 6, 0)
+    //     : null,
+    //   "Content-Type":
+    //     error?.config?.headers?.["Content-Type"] ||
+    //     error?.config?.headers?.["content-type"],
+    // });
+    // console.groupEnd();
     return Promise.reject(error);
   },
 );

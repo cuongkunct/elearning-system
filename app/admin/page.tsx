@@ -5,7 +5,7 @@ import { useEffect, useContext, useMemo } from "react";
 import type { RootState, DispatchType } from "@/store/index";
 
 import { fetchAdminUser } from "./../../store/admin/user/adminUser.slice";
-import UserTable from "./../../components/admin/userTable";
+import UserTable from "../../components/admin/user/userTable";
 import Pagination from "./../../components/admin/pagination";
 import { Spinner } from "@heroui/react";
 

@@ -7,13 +7,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navbar } from "@/components/admin/navbar";
 import { AdminSidebar } from "@/components/admin/sidebar";
 
-import type { AdminActionKey } from "./../../types/admin/navbar.type";
+import type { AdminActionKey } from "../../types/admin/navbar.type";
 import type { TUser } from "@/types/admin/user.type";
 import type { DispatchType, RootState } from "@/store";
 
-import AddUserModal from "./addUserModal";
-import EditUserModal from "./editUserModal";
-import DeleteUserModal from "./deleteUserModal"; // ✅ ADDED
+import AddUserModal from "./user/addUserModal";
+import EditUserModal from "./user/editUserModal";
+import DeleteUserModal from "./user/deleteUserModal";
+
+// -- Course
+import AddCourseModal from "@/components/admin/course/addCourseModal";
+import { addCourse, fetchCourses } from "@/store/admin/courses/course.thunk";
+import { resetAddCourseState } from "@/store/admin/courses/courses.slice";
 
 import {
   fetchAdminUser,
@@ -54,7 +59,7 @@ export default function AdminShell({
 
   // ✅ CHANGED: modalKey thêm delete_user
   const [modalKey, setModalKey] = useState<
-    AdminActionKey | "edit_user" | "delete_user" | null
+    AdminActionKey | "edit_user" | "delete_user" | "add_course" | null
   >(null);
 
   const [selectedUser, setSelectedUser] = useState<TUser | null>(null);
@@ -69,7 +74,6 @@ export default function AdminShell({
     return updateError.message || "Update user failed";
   }, [updateError]);
 
-  // ✅ ADDED
   const deleteErrorMessage = useMemo(() => {
     if (!deleteError) return null;
     return deleteError.message || "Delete user failed";
@@ -79,7 +83,10 @@ export default function AdminShell({
     setModalKey(key);
     dispatch(resetCreateState());
     dispatch(resetUpdateState());
-    dispatch(resetDeleteState()); // ✅ ADDED
+    dispatch(resetDeleteState());
+
+    dispatch(resetAddCourseState());
+
     onOpen();
   };
 
@@ -93,7 +100,9 @@ export default function AdminShell({
 
       dispatch(resetCreateState());
       dispatch(resetUpdateState());
-      dispatch(resetDeleteState()); // ✅ ADDED
+      dispatch(resetDeleteState());
+
+      dispatch(resetAddCourseState());
     }
   };
 
@@ -122,6 +131,14 @@ export default function AdminShell({
     }),
     [dispatch, onOpen],
   );
+
+  // --- Course modals ---
+  const {
+    data: courseData,
+    addLoading,
+    addError,
+  } = useSelector((s: RootState) => s.course);
+  const addCourseErrorMessage = addError ? addError.message : null;
 
   return (
     <AdminModalContext.Provider value={ctxValue}>
@@ -192,6 +209,30 @@ export default function AdminShell({
             // refresh lại theo nhóm hiện tại (ưu tiên lấy từ selectedUser nếu có)
             refreshList((selectedUser as any)?.maNhom || "GP01");
             handleOpenChange(false);
+          }
+        }}
+      />
+
+      <AddCourseModal
+        isOpen={isOpen && modalKey === "add_course"}
+        onOpenChange={handleOpenChange}
+        defaultGroup="GP01"
+        loading={addLoading}
+        error={addCourseErrorMessage}
+        onSubmit={async (payload) => {
+          const action = await dispatch(addCourse(payload));
+
+          if (addCourse.fulfilled.match(action)) {
+            const currentPage = courseData?.currentPage || 1;
+            dispatch(
+              fetchCourses({
+                page: currentPage,
+                pageSize: 10,
+                maNhom: payload.maNhom,
+              }),
+            );
+            handleOpenChange(false);
+            dispatch(resetAddCourseState());
           }
         }}
       />

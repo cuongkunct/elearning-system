@@ -9,7 +9,7 @@ import { siteConfig } from "@/config/admin/site";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/admin/navbar";
 import { AdminSidebar } from "@/components/admin/sidebar";
-import AdminShell from "./../../components/admin/adminShell";
+import AdminShell from "../../components/admin/adminShell";
 
 export const metadata: Metadata = {
   title: {

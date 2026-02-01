@@ -1,5 +1,5 @@
 import React from "react";
-import { TUser } from "./../../types/admin/user.type";
+import { TUser } from "../../../types/admin/user.type";
 import {
   Table,
   TableHeader,
@@ -8,7 +8,7 @@ import {
   TableRow,
   TableCell,
 } from "@heroui/react";
-import { EditIcon, DeleteIcon } from "./icon";
+import { EditIcon, DeleteIcon } from "../icon";
 
 interface UserTableProps {
   data: TUser[];
