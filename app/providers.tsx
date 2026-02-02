@@ -8,8 +8,8 @@ import { ToastProvider } from "@heroui/toast";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { useRouter } from "next/navigation";
 import { Provider } from "react-redux";
-
 import store from "../store";
+
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -26,6 +26,7 @@ declare module "@react-types/shared" {
 
 export function Providers({ children, themeProps }: ProvidersProps) {
   const router = useRouter();
+
 
   return (
     <Provider store={store}>

@@ -6,18 +6,19 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import NotificationModal from "../../../components/user/shared/NotificationModal";
+
 
 import { DispatchType } from "@/store";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
 import { RegisterFormData, registerSchema } from "@/schemas/register.schema";
 import { registerUser } from "@/store/user/auth/auth.slice";
+import NotificationModal from "@/components/user/shared/NotificationModal";
 
 export default function Register() {
   const router = useRouter();
   const dispatch = useDispatch<DispatchType>();
   const [open, setOpen] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
+  const [err, setErr] = useState<any>(null);
   const [isVisible, setIsVisible] = React.useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -146,13 +147,13 @@ export default function Register() {
       <NotificationModal
         color={err ? "danger" : "success"}
         isOpen={open}
-        title={err ?? "Register successfully"}
+        title={err?.content || err || "Login successful"}
         onClose={() => {
           if (err) {
             setOpen(false);
           } else {
             setOpen(false)
-            router.push("/login");
+            router.push("/auth/login");
           }
         }}
       />

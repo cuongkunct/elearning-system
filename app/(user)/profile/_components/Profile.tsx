@@ -5,21 +5,21 @@ import { Input } from "@heroui/input";
 import { addToast, Form } from "@heroui/react";
 import React, { useEffect, useMemo, useState } from "react";
 import { User2Icon } from "lucide-react";
-
-import { fetchUpdateUserProfile } from "@/services/user/userAccount/user.service";
-import {
-  EditUserProfileRequest,
-  UserProfileResponse,
-} from "@/types/user/userProfile/userProfile.type";
 import { EditIcon } from "@/components/icons";
 
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, DispatchType } from "@/store";
+import { updateUserProfile } from "@/store/user/profile/profile.slice";
+
 type Props = {
-  userData?: UserProfileResponse;
   onUpdate?: () => void;
 };
 
-export default function Profile({ userData, onUpdate }: Props) {
-  const userDataMemo = useMemo(() => userData, [userData]);
+export default function Profile({ onUpdate }: Props) {
+  const dispatch = useDispatch<DispatchType>();
+  const authState = useSelector((state: RootState) => state.auth.userData);
+  const profileState = useSelector((state: RootState) => state.userProfile.profile);
+
   const [isEdit, setIsEdit] = useState(false);
   const [formData, setFormData] = useState({
     taiKhoan: "",
@@ -29,16 +29,15 @@ export default function Profile({ userData, onUpdate }: Props) {
     matKhau: "",
     maNhom: "",
     maLoaiNguoiDung: "",
-  } as EditUserProfileRequest);
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  });
+
+
+  const userDataMemo = useMemo(() => profileState.data, [profileState.data]);
+
 
   useEffect(() => {
     if (!userDataMemo) return;
+
     setFormData({
       taiKhoan: userDataMemo.taiKhoan || "",
       hoTen: userDataMemo.hoTen || "",
@@ -49,21 +48,45 @@ export default function Profile({ userData, onUpdate }: Props) {
       maLoaiNguoiDung: userDataMemo.maLoaiNguoiDung || "",
     });
   }, [userDataMemo]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await fetchUpdateUserProfile(formData);
 
-    if (res) {
-      try {
-        onUpdate?.();
-        setIsEdit(false);
-      } catch (error) {
-        addToast({
-          title: "Error updating user profile",
-          description: error as string,
-          color: "danger",
-        });
-      }
+    if (!authState?.accessToken) {
+      addToast({
+        title: "Unauthorized",
+        description: "No access token found",
+        color: "danger",
+      });
+      return;
+    }
+
+    try {
+      await dispatch(
+        updateUserProfile({ data: formData, token: authState.accessToken })
+      ).unwrap();
+
+      addToast({
+        title: "Profile updated",
+        description: "Your profile has been updated successfully",
+        color: "success",
+      });
+
+      setIsEdit(false);
+      onUpdate?.();
+    } catch (err: any) {
+      addToast({
+        title: "Error updating profile",
+        description: err?.message || err,
+        color: "danger",
+      });
     }
   };
 

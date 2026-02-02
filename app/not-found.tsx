@@ -20,11 +20,11 @@ export default function NotFound() {
             404
           </h1>
           <p className="mt-4 text-2xl font-semibold text-gray-800 dark:text-gray-200">
-            Oops! Page not found
+            Oops! Page not found or <strong className="text-red-500 text-4xl">you don&apos;t have permission to access</strong>
           </p>
           <p className="mt-4 text-gray-600 dark:text-gray-400 max-w-md">
             The page you are looking for might have been removed, had its name
-            changed, or is temporarily unavailable.
+            changed, or is temporarily unavailable, or you don&apos;t have access.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
             <Link href="/">
