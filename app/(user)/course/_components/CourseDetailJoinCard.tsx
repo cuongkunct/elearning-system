@@ -10,7 +10,7 @@ import ButtonJoinCourse from "../../courses/_components/BottonJoinCourse";
 import CourseCurriculum from "./CourseCurriculum";
 
 import { Course } from "@/types/user/course/course.type";
-import { fetchUserProfile } from "@/services/user/userAccount/user.service";
+import { fetchUserProfile } from "@/services/user/user/user.service";
 import {
   joinCourseByMaKhoaHoc,
   cancelCourseByMaKhoaHoc,

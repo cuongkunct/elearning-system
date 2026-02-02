@@ -5,9 +5,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 
-const CYBERSOFT_TOKEN: string =
-  process.env.NEXT_PUBLIC_CYBERSOFT_TOKEN ||
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJOb2RlanMgNTMiLCJIZXRIYW5TdHJpbmciOiIxOC8wNi8yMDI2IiwiSGV0SGFuVGltZSI6IjE3ODE3NDA4MDAwMDAiLCJuYmYiOjE3NjI4ODA0MDAsImV4cCI6MTc4MTg4ODQwMH0.DYatRVH7r1q5E_487BJ23mwTOYDycKumjaNeO7NmC04";
+const CYBERSOFT_TOKEN = process.env.NEXT_PUBLIC_TOKEN_CYBERSOFT;
 
 // 🎯 Axios instance
 const axiosInstance: AxiosInstance = axios.create({
@@ -20,6 +18,7 @@ const axiosInstance: AxiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    console.log(CYBERSOFT_TOKEN);
     config.headers.set("TokenCybersoft", CYBERSOFT_TOKEN);
 
     return config;

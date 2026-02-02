@@ -21,20 +21,19 @@ import {
   Avatar,
 } from "@heroui/react";
 import clsx from "clsx";
-import Cookies from "js-cookie";
 import NextLink from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
+import { useSelector } from "react-redux";
 import { LogoIcon, SearchIcon } from "@/components/icons";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { siteConfig } from "@/config/user/site";
 import { RootState } from "@/store";
-import { logout, setLoginData } from "@/store/user/auth/auth.slice";
 import { getListCategory } from "@/services/user/category/category.service";
 import { Category } from "@/types/user/category/category.type";
-
+import { useDispatch } from "react-redux";
+import { set } from "zod";
+import { setLoginData } from "@/store/user/auth/auth.slice";
 export const Navbar = () => {
   const rout = useRouter();
   const dispatch = useDispatch();
@@ -42,8 +41,7 @@ export const Navbar = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string>("");
   const [searchKey, setSearchKey] = useState<string>("");
-  const authState = useSelector((state: RootState) => state.auth.login);
-  const { data: loginData } = authState;
+  const userSession = useSelector((state: RootState) => state.auth.userData);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -59,6 +57,12 @@ export const Navbar = () => {
     fetchCategories();
   }, []);
 
+  const handleLogout = async () => {
+    dispatch(setLoginData({ accessToken: "", role: "" }));
+    await fetch("/api/auth/logout", { method: "POST" });
+    rout.push("/auth/login");
+  };
+
   const categoriesMemo = useMemo(() => {
     return categories.map((cat) => (
       <li key={cat.maDanhMuc}>
@@ -73,16 +77,6 @@ export const Navbar = () => {
   }, [categories]);
 
   useEffect(() => {
-    const userData = Cookies.get("userData");
-
-    if (userData) {
-      const parsed = JSON.parse(userData);
-
-      dispatch(setLoginData(parsed));
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
     if (pathname !== "/search") {
       setSearchKey("");
     }
@@ -93,11 +87,6 @@ export const Navbar = () => {
     if (!searchKey.trim()) return;
     rout.push(`/search?key=${searchKey}`);
     setMenuOpen(false);
-  };
-
-  const handleLogout = () => {
-    dispatch(logout());
-    rout.push("/login");
   };
 
   const searchInput = (
@@ -238,17 +227,17 @@ export const Navbar = () => {
           <ThemeSwitch />
         </NavbarItem>
         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
-        <NavbarItem className={loginData?.content?.accessToken ? "hidden" : ""}>
-          <Button as={Link} color="primary" href="/login" variant="flat">
+        <NavbarItem className={userSession ? "hidden" : ""}>
+          <Button as={Link} color="primary" href="/auth/login" variant="flat">
             Login
           </Button>
         </NavbarItem>
-        <NavbarItem className={loginData?.content?.accessToken ? "hidden" : ""}>
-          <Button as={Link} color="default" href="/register" variant="flat">
+        <NavbarItem className={userSession ? "hidden" : ""}>
+          <Button as={Link} color="default" href="/auth/register" variant="flat">
             Sign Up
           </Button>
         </NavbarItem>
-        <NavbarItem className={loginData?.content?.accessToken ? "" : "hidden"}>
+        <NavbarItem className={userSession ? "" : "hidden"}>
           <div className="flex items-center gap-4">
             <Dropdown placement="bottom-end">
               <DropdownTrigger>
@@ -256,7 +245,7 @@ export const Navbar = () => {
                   isBordered
                   as="button"
                   className="transition-transform"
-                  name={loginData?.content?.hoTen}
+                  color="primary"
                 />
               </DropdownTrigger>
               <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -266,10 +255,10 @@ export const Navbar = () => {
                   onClick={() => rout.push("/profile")}
                 >
                   <p className="font-semibold">My Profile</p>
-                  <p className="font-semibold">{loginData?.content?.hoTen}</p>
                 </DropdownItem>
-                <DropdownItem key="help_and_feedback">
-                  Help & Feedback
+
+                <DropdownItem key="admin" onClick={() => rout.push("/admin")}>
+                  Admin
                 </DropdownItem>
                 <DropdownItem
                   key="logout"

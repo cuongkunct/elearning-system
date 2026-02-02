@@ -1,22 +1,28 @@
 import type { NextRequest } from "next/server";
-
 import { NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const userData = req.cookies.get("userData")?.value;
+  const sessionToken = req.cookies.get("sessionToken");
   const { pathname } = req.nextUrl;
 
-  if (userData && (pathname === "/login" || pathname === "/register")) {
+
+  if (sessionToken && (pathname === "/auth/login" || pathname === "/register")) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  if (!userData && pathname === "/profile") {
-    return NextResponse.redirect(new URL("/login", req.url));
+  if (!sessionToken && pathname === "/profile") {
+    return NextResponse.redirect(new URL("/auth/login", req.url));
+  }
+  if (
+    sessionToken?.content?.maLoaiNguoiDung === "HV" &&
+    pathname.startsWith("/admin")
+  ) {
+    return NextResponse.rewrite(new URL("/not-found", req.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/login", "/register", "/:path*"],
+  matcher: ["/auth/login", "/auth/register", "/profile", "/admin/:path*"],
 };

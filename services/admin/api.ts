@@ -23,27 +23,8 @@ api.interceptors.request.use(
     const accessToken = getAccessTokenFromCookie();
     if (TOKEN_CYBERSOFT) config.headers["TokenCybersoft"] = TOKEN_CYBERSOFT;
     if (accessToken) config.headers["Authorization"] = withBearer(accessToken);
-
-    // ✅ match swagger/curl
     config.headers["Accept"] = "application/json";
     config.headers["Content-Type"] = "application/json-patch+json";
-
-    // console.groupCollapsed("🔎 [API REQUEST]");
-    // console.log("URL:", `${config.baseURL}${config.url}`);
-    // console.log("METHOD:", config.method?.toUpperCase());
-    // console.log("DATA:", config.data);
-    // console.log("hasAccessToken:", !!accessToken);
-    // console.log(
-    //   "Authorization:",
-    //   accessToken ? `Bearer ${mask(accessToken)}` : null,
-    // );
-    // console.log("hasTokenCybersoft:", !!TOKEN_CYBERSOFT);
-    // console.log(
-    //   "TokenCybersoft:",
-    //   TOKEN_CYBERSOFT ? mask(TOKEN_CYBERSOFT, 6, 0) : null,
-    // );
-    // console.groupEnd();
-
     return config;
   },
   (error) => Promise.reject(error),

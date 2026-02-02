@@ -4,6 +4,8 @@ import clsx from "clsx";
 import { Providers } from "./providers";
 import { fontSans } from "@/config/fonts";
 import { Metadata } from "next";
+import { cookies } from "next/headers";
+import { AuthHydrator } from "./(user)/auth/login/_components/AuthHydrator";
 export const metadata: Metadata = {
   title: {
     default: "TOT - E-Learning Platform | Learn Anytime, Anywhere",
@@ -72,7 +74,15 @@ export const metadata: Metadata = {
 };
 
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const cookieStore = await cookies();
+  const cookieSession = cookieStore.get("sessionToken")?.value;
+  const role = cookieStore.get("userRole")?.value;
+  console.log({ cookieSession, role });
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -81,8 +91,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           fontSans.variable,
         )}
       >
-        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          {children}
+        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }} >
+          <AuthHydrator cookieSession={cookieSession} role={role}>
+            {children}
+          </AuthHydrator>
         </Providers>
       </body>
     </html>

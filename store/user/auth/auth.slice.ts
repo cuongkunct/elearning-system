@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import Cookies from "js-cookie";
-import Router from "next/router";
+
 
 import axiosInstance from "@/services/axiosInstance";
 import {
@@ -23,8 +22,6 @@ export const registerUser = createAsyncThunk<
       content: res.data,
     };
   } catch (error) {
-    console.log(" error", error);
-
     return rejectWithValue(handleAxiosError(error));
   }
 });
@@ -36,10 +33,6 @@ export const loginUser = createAsyncThunk<
 >("auth/login", async (userData, { rejectWithValue }) => {
   try {
     const res = await axiosInstance.post("QuanLyNguoiDung/DangNhap", userData);
-    console.log("res", res);
-    if (res.data.maLoaiNguoiDung == "GV") {
-
-    }
     return {
       statusCode: res.status,
       content: res.data,
@@ -60,6 +53,7 @@ type AuthState = {
     loading: boolean;
     error?: ApiError;
   };
+  userData: { accessToken: string; role: string } | null;
 };
 
 const initialState: AuthState = {
@@ -71,18 +65,15 @@ const initialState: AuthState = {
     data: null,
     loading: false,
   },
+  userData: null,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout(state) {
-      state.login.data = null;
-      Cookies.remove("userData");
-    },
-    setLoginData(state, action: PayloadAction<UserLoginResponse>) {
-      state.login.data = action.payload;
+    setLoginData(state, action: PayloadAction<{ accessToken: string; role: string }>) {
+      state.userData = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -106,13 +97,6 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.login.loading = false;
         state.login.data = action.payload;
-
-        Cookies.set("userData", JSON.stringify(action.payload), {
-          expires: 7,
-          sameSite: "lax",
-          secure: true,
-          path: "/",
-        });
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.login.loading = false;
