@@ -2,60 +2,83 @@
 
 import type { Course } from "@/types/user/course/course.type";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@heroui/button";
-import Cookies from "js-cookie";
 import { CalendarIcon, TimerIcon } from "lucide-react";
 
 import { LogoIcon } from "@/components/icons";
 import { UserProfileResponse } from "@/types/user/userProfile/userProfile.type";
-import { cancelCourseByMaKhoaHoc } from "@/services/user/courses/course.service";
 import NotificationModal from "@/components/user/shared/NotificationModal";
+
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, DispatchType } from "@/store";
+import {
+  cancelCourse,
+  resetCourseState,
+} from "@/store/user/course/course.slice";
+
+
 type Props = {
-  userData?: UserProfileResponse;
+  userData: UserProfileResponse;
   onCancel?: () => void;
 };
 
 export default function MyCoursePage({ userData, onCancel }: Props) {
+  const dispatch = useDispatch<DispatchType>();
+  const userSession = useSelector((state: RootState) => state.auth.userData);
+
   const [courses, setCourses] = useState<Course[]>(
     userData?.chiTietKhoaHocGhiDanh || [],
   );
+
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [err, setErr] = useState<string | null>(null);
 
-  const handleCancelCourse = async (id: string) => {
-    const userData = Cookies.get("userData");
 
-    if (!userData) {
+  useEffect(() => {
+    if (userData?.chiTietKhoaHocGhiDanh) {
+      setCourses(userData.chiTietKhoaHocGhiDanh);
+    }
+  }, [userData]);
+
+  const handleCancelCourse = async (maKhoaHoc: string) => {
+    if (!userSession) {
       setTitle("Please login");
-      setErr("You need to login to join this course.");
+      setErr("You need to login to cancel this course.");
       setOpen(true);
-
       return;
     }
     try {
-      setLoading((prev) => ({ ...prev, [id]: true }));
-      const res = await cancelCourseByMaKhoaHoc(id);
+      setLoading((prev) => ({ ...prev, [maKhoaHoc]: true }));
+      await dispatch(
+        cancelCourse({
+          maKhoaHoc,
+          taiKhoan: userData?.taiKhoan,
+          token: userSession.accessToken,
+        }),
+      ).unwrap();
+      setCourses((prev) =>
+        prev.filter((c) => c.maKhoaHoc !== maKhoaHoc),
+      );
 
-      if (res === "Hủy ghi danh thành công!") {
-        onCancel?.();
-        setCourses((prev) => prev.filter((c) => c.maKhoaHoc !== id));
-        setLoading((prev) => ({ ...prev, [id]: false }));
-        setTitle("Cancel course successfully");
-        setErr(null);
-        setOpen(true);
-      }
+      onCancel?.();
+
+      setTitle("Cancel course successfully");
+      setErr(null);
+      setOpen(true);
     } catch (e: any) {
       setTitle("Action failed");
       setErr(e?.message || "Something went wrong");
       setOpen(true);
     } finally {
-      setLoading((prev) => ({ ...prev, [id]: false }));
+      setLoading((prev) => ({ ...prev, [maKhoaHoc]: false }));
+      dispatch(resetCourseState());
     }
   };
+
   const courseMemo = useMemo(() => courses, [courses]);
 
   if (courseMemo.length === 0) {
@@ -73,7 +96,7 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
         <h2 className="text-3xl font-bold ">My joined course</h2>
       </div>
 
-      <div className="space-y-4 flex flex-col gap-4 justify-center items-center ">
+      <div className="space-y-4 flex flex-col gap-4 justify-center items-center">
         {courseMemo.map((course: Course) => (
           <div
             key={course.maKhoaHoc}
@@ -81,25 +104,30 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
           >
             <Image
               alt={course.tenKhoaHoc}
-              className=" object-cover rounded mr-4"
+              className="object-cover rounded mr-4"
               height={300}
               src={course.hinhAnh}
               width={300}
             />
 
             <div className="flex-1">
-              <h3 className="font-bold text-lg mb-1">{course.tenKhoaHoc}</h3>
-              <p className=" text-sm mb-2 truncate w-64">{course.moTa}</p>
-              <div className="flex items-center gap-4 text-sm  mb-2">
-                <div className="flex gap-2 items-center justify-center">
+              <h3 className="font-bold text-lg mb-1">
+                {course.tenKhoaHoc}
+              </h3>
+              <p className="text-sm mb-2 truncate w-64">
+                {course.moTa}
+              </p>
+              <div className="flex items-center gap-4 text-sm mb-2">
+                <div className="flex gap-2 items-center">
                   <TimerIcon />
-                  <span> {Math.ceil(course.luotXem / 12)} hours</span>
+                  <span>{Math.ceil(course.luotXem / 12)} hours</span>
                 </div>
-                <div className="flex gap-2 items-center justify-center">
+                <div className="flex gap-2 items-center">
                   <CalendarIcon />
-                  <span>{new Date(course.ngayTao).toLocaleDateString()}</span>
+                  <span>
+                    {new Date(course.ngayTao).toLocaleDateString()}
+                  </span>
                 </div>
-
                 <div className="flex items-center gap-1">
                   <span className="text-yellow-400">★★★★★</span>
                   <span className="font-medium text-gray-700">
@@ -118,6 +146,7 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
             </Button>
           </div>
         ))}
+
         <NotificationModal
           color={err ? "danger" : "success"}
           isOpen={open}

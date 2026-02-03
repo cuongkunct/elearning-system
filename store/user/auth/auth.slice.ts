@@ -42,6 +42,11 @@ export const loginUser = createAsyncThunk<
   }
 });
 
+type LoginData = {
+  accessToken: string;
+  role: string;
+};
+
 type AuthState = {
   register: {
     data: UserRegisterResponse | null;
@@ -53,7 +58,7 @@ type AuthState = {
     loading: boolean;
     error?: ApiError;
   };
-  userData: { accessToken: string; role: string } | null;
+  userData: LoginData | null;
 };
 
 const initialState: AuthState = {
@@ -72,9 +77,12 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setLoginData(state, action: PayloadAction<{ accessToken: string; role: string }>) {
+    setLoginData(
+      state,
+      action: PayloadAction<LoginData | null>
+    ) {
       state.userData = action.payload;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -105,5 +113,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, setLoginData } = authSlice.actions;
+export const { setLoginData } = authSlice.actions;
 export default authSlice.reducer;

@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { IconSvgProps } from "@/types";
+import { GoToTop } from '@/components/user/layout/GoToTop';
 
 export const Logo: React.FC<IconSvgProps> = ({
   size = 36,
@@ -395,6 +396,14 @@ export const EyeFilledIcon = (_props: IconSvgProps) => {
         d="M11.9984 9.14062C10.4284 9.14062 9.14844 10.4206 9.14844 12.0006C9.14844 13.5706 10.4284 14.8506 11.9984 14.8506C13.5684 14.8506 14.8584 13.5706 14.8584 12.0006C14.8584 10.4306 13.5684 9.14062 11.9984 9.14062Z"
         fill="currentColor"
       />
+    </svg>
+  );
+};
+export const GoToTopIcon = (_props: IconSvgProps) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 18.75 7.5-7.5 7.5 7.5" />
+      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 7.5-7.5 7.5 7.5" />
     </svg>
   );
 };

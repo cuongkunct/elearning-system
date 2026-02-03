@@ -1,10 +1,7 @@
-import Cookies from "js-cookie";
-
 import {
   Course,
   CoursePaginationResponse,
 } from "@/types/user/course/course.type";
-import axiosInstance from "@/services/axiosInstance";
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 const TOKEN_CYBERSOFT = process.env.NEXT_PUBLIC_TOKEN_CYBERSOFT;
 
@@ -88,48 +85,3 @@ export async function getRelatedCourses(maDanhMuc?: string) {
   return res.json();
 }
 
-export async function joinCourseByMaKhoaHoc(maKhoaHoc: string) {
-  const account = Cookies.get("userData");
-
-  if (!account) {
-    throw new Error("Unauthorized");
-  }
-  const userData = JSON.parse(account).content;
-  const res = await axiosInstance.post(
-    `QuanLyKhoaHoc/DangKyKhoaHoc`,
-    {
-      maKhoaHoc,
-      taiKhoan: userData.taiKhoan,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${userData.accessToken}`,
-      },
-    },
-  );
-
-  return res.data;
-}
-
-export async function cancelCourseByMaKhoaHoc(maKhoaHoc: string) {
-  const account = Cookies.get("userData");
-
-  if (!account) {
-    throw new Error("Unauthorized");
-  }
-  const userData = JSON.parse(account).content;
-  const res = await axiosInstance.post(
-    `QuanLyKhoaHoc/HuyGhiDanh`,
-    {
-      maKhoaHoc,
-      taiKhoan: userData.taiKhoan,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${userData.accessToken}`,
-      },
-    },
-  );
-
-  return res.data;
-}

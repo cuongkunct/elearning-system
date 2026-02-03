@@ -32,7 +32,6 @@ import { RootState } from "@/store";
 import { getListCategory } from "@/services/user/category/category.service";
 import { Category } from "@/types/user/category/category.type";
 import { useDispatch } from "react-redux";
-import { set } from "zod";
 import { setLoginData } from "@/store/user/auth/auth.slice";
 export const Navbar = () => {
   const rout = useRouter();
@@ -58,9 +57,11 @@ export const Navbar = () => {
   }, []);
 
   const handleLogout = async () => {
-    dispatch(setLoginData({ accessToken: "", role: "" }));
-    await fetch("/api/auth/logout", { method: "POST" });
-    rout.push("/auth/login");
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } finally {
+      dispatch(setLoginData(null));
+    }
   };
 
   const categoriesMemo = useMemo(() => {
@@ -241,12 +242,7 @@ export const Navbar = () => {
           <div className="flex items-center gap-4">
             <Dropdown placement="bottom-end">
               <DropdownTrigger>
-                <Avatar
-                  isBordered
-                  as="button"
-                  className="transition-transform"
-                  color="primary"
-                />
+                <Avatar isBordered color="warning" src="https://i.pravatar.cc/150?u=a04258114e29026708c" />
               </DropdownTrigger>
               <DropdownMenu aria-label="Profile Actions" variant="flat">
                 <DropdownItem

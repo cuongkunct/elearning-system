@@ -12,6 +12,7 @@ import {
   getCoursesPagination,
 } from "@/services/user/courses/course.service";
 import { getListCategory } from "@/services/user/category/category.service";
+import CourseListWithFilter from "./_components/CourseListWithFilter";
 
 export const metadata: Metadata = {
   title: "Online Courses",
@@ -63,13 +64,33 @@ export default async function CategoriesPage({
 
   return (
     <div>
-      <div className="lg:flex w-full gap-4">
-        <div className="">
+      <div className="">
+        <CourseListWithFilter
+          categories={categories}
+          courses={courseList.items}
+        >
+          {/* Truyền Pagination vào làm children để Wrapper hiển thị dưới list */}
+          {!id && (
+            <div className="flex justify-center p-4">
+              <CourseListPagination
+                currentPage={currentPage}
+                totalPages={courseList.totalPages}
+              />
+            </div>
+          )}
+        </CourseListWithFilter>
+
+        {!id && (
+          <div className="py-18">
+            <CategoriesIntro />
+          </div>
+        )}
+        {/* <div className="">
           {categories?.length > 0 && (
             <CategoriesFilter categories={categories} />
           )}
-        </div>
-        <div className="flex-[7]">
+        </div> */}
+        {/* <div className="flex-[7]">
           <SortButtons />
           <div className="flex justify-end mb-2">
             <p className="text-gray-700 text-sm font-semibold mb-2 mr-0">
@@ -93,13 +114,13 @@ export default async function CategoriesPage({
               <CourseCard courses={courseList?.items} />
             </>
           )}
-        </div>
+        </div> */}
       </div>
-      {showPagination ? (
+      {/* {showPagination ? (
         <div className="py-18">
           <CategoriesIntro />
         </div>
-      ) : null}
+      ) : null} */}
     </div>
   );
 }

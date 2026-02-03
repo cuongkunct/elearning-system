@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import clsx from "clsx";
-
+import GoToTop from "@/components/user/layout/GoToTop";
 import { Providers } from "./providers";
 import { fontSans } from "@/config/fonts";
 import { Metadata } from "next";
@@ -82,7 +82,6 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const cookieSession = cookieStore.get("sessionToken")?.value;
   const role = cookieStore.get("userRole")?.value;
-  console.log({ cookieSession, role });
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -94,6 +93,7 @@ export default async function RootLayout({
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }} >
           <AuthHydrator cookieSession={cookieSession} role={role}>
             {children}
+            <GoToTop />
           </AuthHydrator>
         </Providers>
       </body>

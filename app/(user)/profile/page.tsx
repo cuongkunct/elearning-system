@@ -20,7 +20,7 @@ export default function ProfilePage() {
   const userSession = useSelector((state: RootState) => state.auth.userData);
   const profileState = useSelector((state: RootState) => state.userProfile.profile);
   const updateState = useSelector((state: RootState) => state.userProfile.update);
-  console.log("updateState", userSession);
+
   const [prfSwitch, setPrfSwitch] = useState<"profile" | "courses">("profile");
 
   useEffect(() => {
@@ -79,7 +79,6 @@ export default function ProfilePage() {
 
   return (
     <div className="flex flex-col md:flex-row lg:flex-row">
-      {/* Profile card */}
       <div className="flex flex-1/5 flex-col">
         <Card className="md:col-span-1 min-h-full p-6 rounded-2xl shadow-xl">
           <div className="flex flex-col items-center gap-4">
@@ -105,7 +104,7 @@ export default function ProfilePage() {
 
       <div className="flex flex-4/5 mt-2">
         <div className="pl-4 w-full flex flex-col justify-center items-center md:items-start lg:items-start">
-          <div className="flex gap-2 mb-4">
+          <div className="flex mb-4">
             <Button
               color={prfSwitch === "profile" ? "secondary" : "primary"}
               radius="none"
@@ -125,7 +124,7 @@ export default function ProfilePage() {
           </div>
 
           {prfSwitch === "profile" ? (
-            <Profile userData={userInfo} onUpdate={handleUpdateProfile} />
+            <Profile userSession={userSession?.accessToken} onUpdate={handleUpdateProfile} />
           ) : (
             <MyCoursePage userData={userInfo} onCancel={handleUpdateProfile} />
           )}

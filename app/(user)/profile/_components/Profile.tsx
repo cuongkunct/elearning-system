@@ -11,13 +11,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, DispatchType } from "@/store";
 import { updateUserProfile } from "@/store/user/profile/profile.slice";
 
+
 type Props = {
+  userSession?: string
   onUpdate?: () => void;
 };
 
-export default function Profile({ onUpdate }: Props) {
+export default function Profile({ userSession, onUpdate }: Props) {
   const dispatch = useDispatch<DispatchType>();
-  const authState = useSelector((state: RootState) => state.auth.userData);
   const profileState = useSelector((state: RootState) => state.userProfile.profile);
 
   const [isEdit, setIsEdit] = useState(false);
@@ -59,7 +60,7 @@ export default function Profile({ onUpdate }: Props) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!authState?.accessToken) {
+    if (!userSession) {
       addToast({
         title: "Unauthorized",
         description: "No access token found",
@@ -70,7 +71,7 @@ export default function Profile({ onUpdate }: Props) {
 
     try {
       await dispatch(
-        updateUserProfile({ data: formData, token: authState.accessToken })
+        updateUserProfile({ data: formData, token: userSession })
       ).unwrap();
 
       addToast({
