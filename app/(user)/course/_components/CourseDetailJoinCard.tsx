@@ -9,11 +9,12 @@ import ButtonJoinCourse from "../../courses/_components/BottonJoinCourse";
 import CourseCurriculum from "./CourseCurriculum";
 
 import { Course } from "@/types/user/course/course.type";
-import NotificationModal from "@/components/user/shared/NotificationModal";
+
 import { joinCourse, cancelCourse } from "@/store/user/course/course.slice";
 import { RootState, DispatchType } from "@/store";
 import { getUserProfile } from "@/store/user/profile/profile.slice";
-import { addToast } from "@heroui/react";
+
+import { showToast } from "@/utils/toast";
 
 export default function CourseDetailJoinCard({
   course,
@@ -39,10 +40,10 @@ export default function CourseDetailJoinCard({
     dispatch(getUserProfile({ token: accessToken }))
       .unwrap()
       .catch((err: any) => {
-        addToast({
+        showToast({
           title: "Error fetching user profile",
-          description: err?.message || err,
-          color: "danger",
+          description: err,
+          type: "danger",
         });
       });
   }, [dispatch, accessToken]);
@@ -62,9 +63,11 @@ export default function CourseDetailJoinCard({
 
   const handleToggleJoin = async () => {
     if (!userProfile || !accessToken) {
-      setTitle("Please login");
-      setErr("You need to login to join this course.");
-      setOpen(true);
+      showToast({
+        title: "Please login",
+        description: "You need to login to join this course",
+        type: "danger",
+      })
       return;
     }
 
@@ -80,8 +83,11 @@ export default function CourseDetailJoinCard({
 
         if (res === "Ghi danh thành công!") {
           setIsJoined(true);
-          setTitle("Join course successfully 🎉");
-          setErr(null);
+          showToast({
+            title: "Join course successfully",
+            description: "You have successfully joined the course",
+            type: "success",
+          })
         }
       } else {
         const res = await dispatch(
@@ -94,16 +100,18 @@ export default function CourseDetailJoinCard({
 
         if (res === "Hủy ghi danh thành công!") {
           setIsJoined(false);
-          setTitle("Cancel course successfully");
-          setErr(null);
+          showToast({
+            title: "Cancel course successfully",
+            type: "success",
+          })
         }
       }
-
-      setOpen(true);
-    } catch (e: any) {
-      setTitle("Action failed");
-      setErr(e);
-      setOpen(true);
+    } catch (err: any) {
+      showToast({
+        title: "Error joining course",
+        description: err,
+        type: "danger",
+      });
     }
   };
 
@@ -138,13 +146,6 @@ export default function CourseDetailJoinCard({
           />
         </div>
       </div>
-
-      <NotificationModal
-        color={err ? "danger" : "success"}
-        isOpen={open}
-        title={title}
-        onClose={() => setOpen(false)}
-      />
     </section>
   );
 }

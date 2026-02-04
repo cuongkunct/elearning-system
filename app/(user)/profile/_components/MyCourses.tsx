@@ -9,7 +9,7 @@ import { CalendarIcon, TimerIcon } from "lucide-react";
 
 import { LogoIcon } from "@/components/icons";
 import { UserProfileResponse } from "@/types/user/userProfile/userProfile.type";
-import NotificationModal from "@/components/user/shared/NotificationModal";
+
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, DispatchType } from "@/store";
@@ -17,6 +17,8 @@ import {
   cancelCourse,
   resetCourseState,
 } from "@/store/user/course/course.slice";
+
+import { showToast } from "@/utils/toast";
 
 
 type Props = {
@@ -27,16 +29,23 @@ type Props = {
 export default function MyCoursePage({ userData, onCancel }: Props) {
   const dispatch = useDispatch<DispatchType>();
   const userSession = useSelector((state: RootState) => state.auth.userData);
-
+  const cancelStatus = useSelector((state: RootState) => state.userCourse.cancel.success);
   const [courses, setCourses] = useState<Course[]>(
     userData?.chiTietKhoaHocGhiDanh || [],
   );
-
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
-  const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState("");
-  const [err, setErr] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (cancelStatus) {
+      showToast({
+        title: "Cancel course successfully",
+        description: "You have successfully canceled the course",
+        type: "success",
+      })
+
+      dispatch(resetCourseState());
+    }
+  }, [cancelStatus, dispatch]);
 
   useEffect(() => {
     if (userData?.chiTietKhoaHocGhiDanh) {
@@ -63,16 +72,13 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
       setCourses((prev) =>
         prev.filter((c) => c.maKhoaHoc !== maKhoaHoc),
       );
-
       onCancel?.();
-
-      setTitle("Cancel course successfully");
-      setErr(null);
-      setOpen(true);
-    } catch (e: any) {
-      setTitle("Action failed");
-      setErr(e?.message || "Something went wrong");
-      setOpen(true);
+    } catch (err: any) {
+      showToast({
+        title: "Error canceling course",
+        description: err,
+        type: "danger",
+      })
     } finally {
       setLoading((prev) => ({ ...prev, [maKhoaHoc]: false }));
       dispatch(resetCourseState());
@@ -131,7 +137,7 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
                 <div className="flex items-center gap-1">
                   <span className="text-yellow-400">★★★★★</span>
                   <span className="font-medium text-gray-700">
-                    {(Math.random() * (5 - 4) + 4).toFixed(1)}
+                    5
                   </span>
                 </div>
               </div>
@@ -146,13 +152,6 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
             </Button>
           </div>
         ))}
-
-        <NotificationModal
-          color={err ? "danger" : "success"}
-          isOpen={open}
-          title={title}
-          onClose={() => setOpen(false)}
-        />
       </div>
     </section>
   );

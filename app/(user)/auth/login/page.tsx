@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Form, Input, Button, addToast } from "@heroui/react";
+import { Form, Input, Button, } from "@heroui/react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +14,7 @@ import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
 import { LoginFormData, loginSchema } from "@/schemas/login.schema";
 import NotificationModal from "@/components/user/shared/NotificationModal";
 import { setLoginData } from "@/store/user/auth/auth.slice";
+import { showToast } from "@/utils/toast";
 
 export default function Login() {
   const router = useRouter();
@@ -34,10 +35,10 @@ export default function Login() {
     try {
       const res = await dispatch(loginUser(data)).unwrap();
       if (res.statusCode === 200) {
-        addToast({
+        showToast({
           title: "Login Successful",
           description: "You have login successfully.",
-          color: "success",
+          type: "success",
         });
         if (res.content.maLoaiNguoiDung === "GV") {
           router.push("/admin");
@@ -54,11 +55,12 @@ export default function Login() {
           }
           return res.json();
         });
-        console.log(" resultFromServer", resultFromServer);
+
         dispatch(setLoginData({
           accessToken: resultFromServer?.res?.accessToken,
           role: resultFromServer?.res?.maLoaiNguoiDung
         }));
+
       }
     } catch (err: any) {
       setOpen(true);
