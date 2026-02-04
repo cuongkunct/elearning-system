@@ -11,7 +11,6 @@ export default function GoToTop() {
     const onScroll = () => {
       setVisible(window.scrollY > 300);
     };
-
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);

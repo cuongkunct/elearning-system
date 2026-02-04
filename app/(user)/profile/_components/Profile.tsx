@@ -2,7 +2,7 @@
 
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
-import { addToast, Form } from "@heroui/react";
+import { Form } from "@heroui/react";
 import React, { useEffect, useMemo, useState } from "react";
 import { User2Icon } from "lucide-react";
 import { EditIcon } from "@/components/icons";
@@ -10,6 +10,7 @@ import { EditIcon } from "@/components/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, DispatchType } from "@/store";
 import { updateUserProfile } from "@/store/user/profile/profile.slice";
+import { showToast } from "@/utils/toast";
 
 
 type Props = {
@@ -61,10 +62,10 @@ export default function Profile({ userSession, onUpdate }: Props) {
     e.preventDefault();
 
     if (!userSession) {
-      addToast({
+      showToast({
         title: "Unauthorized",
         description: "No access token found",
-        color: "danger",
+        type: "danger",
       });
       return;
     }
@@ -74,19 +75,19 @@ export default function Profile({ userSession, onUpdate }: Props) {
         updateUserProfile({ data: formData, token: userSession })
       ).unwrap();
 
-      addToast({
+      showToast({
         title: "Profile updated",
         description: "Your profile has been updated successfully",
-        color: "success",
+        type: "success",
       });
 
       setIsEdit(false);
       onUpdate?.();
     } catch (err: any) {
-      addToast({
+      showToast({
         title: "Error updating profile",
-        description: err?.message || err,
-        color: "danger",
+        description: err,
+        type: "danger",
       });
     }
   };

@@ -41,12 +41,12 @@ export default function CourseCardItem({ course }: { course: Course }) {
             <div className="flex items-center gap-1">
               <span className="text-yellow-400">★★★★★</span>
               <span className="font-medium text-gray-700">
-                {(Math.random() * (5 - 4) + 4).toFixed(1)}
+                5
               </span>
             </div>
             <div className="flex items-center gap-1">
               <User2Icon />
-              {(Math.random() * 1000).toFixed(0)}
+              80
               <span>students</span>
             </div>
           </div>

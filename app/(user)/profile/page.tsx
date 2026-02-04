@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Avatar, Button, Card } from "@heroui/react";
-import { addToast } from "@heroui/react";
+
 
 import Profile from "./_components/Profile";
 import MyCoursePage from "./_components/MyCourses";
@@ -14,6 +14,7 @@ import {
   getUserProfile,
   updateUserProfile,
 } from "@/store/user/profile/profile.slice";
+import { showToast } from "@/utils/toast";
 
 export default function ProfilePage() {
   const dispatch = useDispatch<DispatchType>();
@@ -28,16 +29,16 @@ export default function ProfilePage() {
     dispatch(getUserProfile({ token: userSession.accessToken }))
       .unwrap()
       .catch((err: any) => {
-        addToast({
+        showToast({
           title: "Error fetching user profile",
-          description: err?.message || err,
-          color: "danger",
+          description: err,
+          type: "danger",
         });
       });
   }, [dispatch, userSession?.accessToken]);
 
   const handleUpdateProfile = async (data?: any) => {
-    console.log("fetchToken ", userSession?.accessToken);
+
     if (!userSession?.accessToken) return;
 
     try {
@@ -47,19 +48,19 @@ export default function ProfilePage() {
           updateUserProfile({ data, token: userSession?.accessToken })
         ).unwrap();
 
-        addToast({
+        showToast({
           title: "Profile updated",
           description: "User profile updated successfully",
-          color: "success",
+          type: "success",
         });
       }
 
       await dispatch(getUserProfile({ token: userSession.accessToken })).unwrap();
     } catch (err: any) {
-      addToast({
+      showToast({
         title: "Error updating profile",
-        description: err?.message || err,
-        color: "danger",
+        description: err,
+        type: "danger",
       });
     }
   };
