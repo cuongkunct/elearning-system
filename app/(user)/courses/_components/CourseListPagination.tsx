@@ -17,7 +17,6 @@ export default function CourseListPagination({
 
   const onChangePage = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
-
     params.set("page", String(page));
     router.push(`?${params.toString()}`);
   };

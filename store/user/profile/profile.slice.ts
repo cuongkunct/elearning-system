@@ -15,7 +15,7 @@ export const getUserProfile = createAsyncThunk<
   { rejectValue: ApiError }
 >("user/getProfile", async ({ token }, { rejectWithValue }) => {
   try {
-    if (!token) throw new Error("Unauthorized");
+    if (!token) rejectWithValue(handleAxiosError("Unauthorized"));
 
     const res = await axiosInstance.post<UserProfileResponse>(
       `QuanLyNguoiDung/ThongTinTaiKhoan`,
@@ -35,8 +35,7 @@ export const updateUserProfile = createAsyncThunk<
   { rejectValue: ApiError }
 >("user/updateProfile", async ({ data, token }, { rejectWithValue }) => {
   try {
-    if (!token) throw new Error("Unauthorized");
-
+    if (!token) rejectWithValue(handleAxiosError("Unauthorized"));
     const res = await axiosInstance.put<UpdateUserProfileResponse>(
       `QuanLyNguoiDung/CapNhatThongTinNguoiDung`,
       data,
@@ -49,9 +48,6 @@ export const updateUserProfile = createAsyncThunk<
   }
 });
 
-// ----------------------------
-// Slice State
-// ----------------------------
 type UserState = {
   profile: {
     data: UserProfileResponse | null;
@@ -70,25 +66,14 @@ const initialState: UserState = {
   update: { data: null, loading: false },
 };
 
-// ----------------------------
-// Slice
-// ----------------------------
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    clearUserProfile(state) {
-      state.profile.data = null;
-      state.profile.error = undefined;
-      state.profile.loading = false;
-      state.update.data = null;
-      state.update.error = undefined;
-      state.update.loading = false;
-    },
   },
   extraReducers: (builder) => {
     builder
-      // getUserProfile
+      /*Get user profile */
       .addCase(getUserProfile.pending, (state) => {
         state.profile.loading = true;
         state.profile.error = undefined;
@@ -101,7 +86,7 @@ const userSlice = createSlice({
         state.profile.loading = false;
         state.profile.error = action.payload;
       })
-      // updateUserProfile
+      /*Update user profile */
       .addCase(updateUserProfile.pending, (state) => {
         state.update.loading = true;
         state.update.error = undefined;
@@ -117,5 +102,4 @@ const userSlice = createSlice({
   },
 });
 
-export const { clearUserProfile } = userSlice.actions;
 export default userSlice.reducer;

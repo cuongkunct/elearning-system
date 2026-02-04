@@ -15,6 +15,7 @@ export async function getListCategory(): Promise<Category[]> {
       headers: {
         TokenCybersoft: TOKEN_CYBERSOFT!,
       },
+      next: { revalidate: 60 },
     });
 
     if (!res.ok) throw new Error(`Fetch categories failed: ${res.statusText}`);
@@ -40,9 +41,7 @@ export async function getCourseAndCategory() {
 
     return { courses, categories };
   } catch (error) {
-    console.error("Failed to fetch courses or categories", error);
-
-    return { courses: [], categories: [] }; // trả về empty array để React không crash
+    return { courses: [], categories: [] };
   }
 }
 

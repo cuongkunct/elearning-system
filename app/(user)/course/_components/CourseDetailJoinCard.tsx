@@ -2,20 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { UserIcon, TimerIcon, BookIcon } from "lucide-react";
-import Cookies from "js-cookie";
+import { useDispatch, useSelector } from "react-redux";
 
 import CourseCardItem from "../../courses/_components/CourseCardItem";
 import ButtonJoinCourse from "../../courses/_components/BottonJoinCourse";
-
 import CourseCurriculum from "./CourseCurriculum";
 
 import { Course } from "@/types/user/course/course.type";
-import { fetchUserProfile } from "@/services/user/user/user.service";
-import {
-  joinCourseByMaKhoaHoc,
-  cancelCourseByMaKhoaHoc,
-} from "@/services/user/courses/course.service";
 import NotificationModal from "@/components/user/shared/NotificationModal";
+import { joinCourse, cancelCourse } from "@/store/user/course/course.slice";
+import { RootState, DispatchType } from "@/store";
+import { getUserProfile } from "@/store/user/profile/profile.slice";
+import { addToast } from "@heroui/react";
 
 export default function CourseDetailJoinCard({
   course,
@@ -24,83 +22,100 @@ export default function CourseDetailJoinCard({
   course: Course;
   intro: string;
 }) {
+  const dispatch = useDispatch<DispatchType>();
+
+  const userProfile = useSelector((state: RootState) => state.userProfile.profile);
+  const accessToken = useSelector((state: RootState) => state.auth.userData?.accessToken);
+  const { loading: joinLoading } = useSelector((state: RootState) => state.userCourse.join);
+  const { loading: cancelLoading } = useSelector((state: RootState) => state.userCourse.cancel);
+  const isLoading = joinLoading || cancelLoading;
   const [isJoined, setIsJoined] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
-    const checkJoined = async () => {
-      try {
-        const res = await fetchUserProfile();
-        const joined = res?.chiTietKhoaHocGhiDanh?.some(
-          (c: Course) => c.maKhoaHoc === course.maKhoaHoc,
-        );
+    if (!accessToken) return;
+    dispatch(getUserProfile({ token: accessToken }))
+      .unwrap()
+      .catch((err: any) => {
+        addToast({
+          title: "Error fetching user profile",
+          description: err?.message || err,
+          color: "danger",
+        });
+      });
+  }, [dispatch, accessToken]);
 
-        setIsJoined(!!joined);
-      } catch {
-        setIsJoined(false);
-      }
-    };
+  useEffect(() => {
+    if (!userProfile) {
+      setIsJoined(false);
+      return;
+    }
 
-    checkJoined();
-  }, [course.maKhoaHoc]);
+    const joined = userProfile.data?.chiTietKhoaHocGhiDanh?.some(
+      (c: Course) => c.maKhoaHoc === course.maKhoaHoc
+    );
+
+    setIsJoined(!!joined);
+  }, [userProfile, course.maKhoaHoc]);
 
   const handleToggleJoin = async () => {
-    const userData = Cookies.get("userData");
-
-    if (!userData) {
+    if (!userProfile || !accessToken) {
       setTitle("Please login");
       setErr("You need to login to join this course.");
       setOpen(true);
-
       return;
     }
 
     try {
-      setLoading(true);
-
       if (!isJoined) {
-        const res = await joinCourseByMaKhoaHoc(course.maKhoaHoc);
+        const res = await dispatch(
+          joinCourse({
+            maKhoaHoc: course.maKhoaHoc,
+            taiKhoan: userProfile?.data?.taiKhoan as string,
+            token: accessToken,
+          })
+        ).unwrap();
 
         if (res === "Ghi danh thành công!") {
           setIsJoined(true);
           setTitle("Join course successfully 🎉");
           setErr(null);
-          setOpen(true);
         }
       } else {
-        const res = await cancelCourseByMaKhoaHoc(course.maKhoaHoc);
+        const res = await dispatch(
+          cancelCourse({
+            maKhoaHoc: course.maKhoaHoc,
+            taiKhoan: userProfile.data?.taiKhoan as string,
+            token: accessToken,
+          })
+        ).unwrap();
 
         if (res === "Hủy ghi danh thành công!") {
           setIsJoined(false);
           setTitle("Cancel course successfully");
           setErr(null);
-          setOpen(true);
         }
       }
+
+      setOpen(true);
     } catch (e: any) {
       setTitle("Action failed");
-      setErr(e?.message || "Something went wrong");
+      setErr(e);
       setOpen(true);
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <section className="max-w-7xl mx-auto py-12 grid md:grid-cols-3 gap-8">
       <div className="md:col-span-2 w-full">
-        <h2 className="text-2xl font-semibold text-center md:text-left py-4">Course introduction</h2>
-        <p className="leading-relaxed text-gray-700 text-left md:text-left">
-          {intro}
-        </p>
-
+        <h2 className="text-2xl font-semibold py-4">Course introduction</h2>
+        <p className="leading-relaxed text-gray-700">{intro}</p>
         <CourseCurriculum />
       </div>
 
-      <div className="flex flex-col gap-4 rounded-2xl p-2 shadow-lg border border-gray-100 bg-white">
+      <div className="flex flex-col gap-4 rounded-2xl p-2 shadow-lg bg-white">
         <CourseCardItem course={course} />
 
         <div className="space-y-2 text-sm text-gray-600">
@@ -118,11 +133,12 @@ export default function CourseDetailJoinCard({
         <div className="pt-4 flex justify-center">
           <ButtonJoinCourse
             isJoined={isJoined}
-            loading={loading}
+            loading={isLoading}
             onJoin={handleToggleJoin}
           />
         </div>
       </div>
+
       <NotificationModal
         color={err ? "danger" : "success"}
         isOpen={open}

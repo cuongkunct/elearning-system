@@ -34,7 +34,16 @@ export default function Login() {
     try {
       const res = await dispatch(loginUser(data)).unwrap();
       if (res.statusCode === 200) {
-        // Handle login success set cookie
+        addToast({
+          title: "Login Successful",
+          description: "You have login successfully.",
+          color: "success",
+        });
+        if (res.content.maLoaiNguoiDung === "GV") {
+          router.push("/admin");
+        } else {
+          router.push("/");
+        }
         const resultFromServer = await fetch('/api/auth/login', {
           method: 'POST', body: JSON.stringify(res?.content), headers: {
             'Content-Type': 'application/json',
@@ -50,16 +59,6 @@ export default function Login() {
           accessToken: resultFromServer?.res?.accessToken,
           role: resultFromServer?.res?.maLoaiNguoiDung
         }));
-        addToast({
-          title: "Login Successful",
-          description: "You have login successfully.",
-          color: "success",
-        });
-        if (res.content.maLoaiNguoiDung === "GV") {
-          router.push("/admin");
-        } else {
-          router.push("/");
-        }
       }
     } catch (err: any) {
       setOpen(true);
