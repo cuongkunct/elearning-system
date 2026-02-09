@@ -45,7 +45,6 @@ export default async function CategoriesPage({
       currentPage: res.currentPage,
       totalPages: res.totalPages,
     };
-    showPagination = true;
   } else {
     const res = await getRelatedCourses(id);
 
@@ -66,7 +65,7 @@ export default async function CategoriesPage({
           categories={categories}
           courses={courseList.items}
         >
-          {/* Truyền Pagination vào làm children để Wrapper hiển thị dưới list */}
+          {/* Showw pagination */}
           {!id && (
             <div className="flex justify-center p-4">
               <CourseListPagination

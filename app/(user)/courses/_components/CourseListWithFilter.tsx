@@ -1,11 +1,10 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
-import { Button, Spinner, Drawer, DrawerContent, DrawerHeader, DrawerBody, useDisclosure } from "@heroui/react";
+import { Button, Drawer, DrawerContent, DrawerHeader, DrawerBody, useDisclosure } from "@heroui/react";
 import { EyeIcon, FilterIcon, ResetFilter, UserIcon } from "@/components/icons";
 import { Category } from "@/types/user/category/category.type";
 import { Course } from "@/types/user/course/course.type";
-import CourseCardItem from "@/app/(user)/courses/_components/CourseCardItem";
 import CourseCard from "./CourseList";
 import SkeletonCard from "@/components/user/shared/SkeletonCard";
 
@@ -107,7 +106,6 @@ export default function CourseListWithFilter({ categories, courses, children }: 
         {isPending ? (<SkeletonCard numberCard={4} />) : (
           <CourseCard courses={courses} />
         )}
-        {/* Các phần bổ sung như Pagination */}
         <div className="mt-8">
           {children}
         </div>
