@@ -55,9 +55,11 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
 
   const handleCancelCourse = async (maKhoaHoc: string) => {
     if (!userSession) {
-      setTitle("Please login");
-      setErr("You need to login to cancel this course.");
-      setOpen(true);
+      showToast({
+        title: "Unauthorized",
+        description: "No access token found",
+        type: "danger",
+      })
       return;
     }
     try {
