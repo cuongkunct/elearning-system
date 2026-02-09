@@ -40,9 +40,7 @@ export default function CourseCardItem({ course }: { course: Course }) {
           <div className="flex items-center gap-4 text-sm text-gray-600">
             <div className="flex items-center gap-1">
               <span className="text-yellow-400">★★★★★</span>
-              <span className="font-medium text-gray-700">
-                5
-              </span>
+              <span className="font-medium text-gray-700">5</span>
             </div>
             <div className="flex items-center gap-1">
               <User2Icon />

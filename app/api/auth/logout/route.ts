@@ -9,6 +9,6 @@ export async function POST() {
           "userRole=; Path=/; SameSite=Lax; Secure; Max-Age=0",
         ].join(", "),
       },
-    }
+    },
   );
 }

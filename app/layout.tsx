@@ -1,11 +1,13 @@
 import "@/styles/globals.css";
 import clsx from "clsx";
-import GoToTop from "@/components/user/layout/GoToTop";
-import { Providers } from "./providers";
-import { fontSans } from "@/config/fonts";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
+
+import { Providers } from "./providers";
 import { AuthHydrator } from "./(user)/auth/login/_components/AuthHydrator";
+
+import { fontSans } from "@/config/fonts";
+import GoToTop from "@/components/user/layout/GoToTop";
 
 export const metadata: Metadata = {
   title: {
@@ -74,7 +76,6 @@ export const metadata: Metadata = {
   category: "education",
 };
 
-
 export default async function RootLayout({
   children,
 }: {
@@ -83,15 +84,16 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const cookieSession = cookieStore.get("sessionToken")?.value;
   const role = cookieStore.get("userRole")?.value;
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html suppressHydrationWarning lang="en">
       <body
         className={clsx(
           "min-h-screen text-foreground bg-background font-sans antialiased",
           fontSans.variable,
         )}
       >
-        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }} >
+        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <AuthHydrator cookieSession={cookieSession} role={role}>
             {children}
             <GoToTop />

@@ -9,7 +9,6 @@ export type UserProfileResponse = {
   taiKhoan: string;
 };
 
-
 export type EditUserProfile = {
   taiKhoan: string;
   matKhau: string;

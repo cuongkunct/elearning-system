@@ -1,5 +1,7 @@
 "use client";
 
+import type { TUser } from "@/types/admin/user.type";
+
 import { useEffect, useMemo, useState } from "react";
 import {
   Modal,
@@ -12,8 +14,6 @@ import {
   Select,
   SelectItem,
 } from "@heroui/react";
-
-import type { TUser } from "@/types/admin/user.type";
 
 export type EditUserForm = {
   taiKhoan: string;
@@ -42,7 +42,9 @@ const validateEmail = (email: string) => /^\S+@\S+\.\S+$/.test(email.trim());
 function inferMaLoaiNguoiDung(user: any): string {
   if (user?.maLoaiNguoiDung) return user.maLoaiNguoiDung;
   const t = (user?.tenLoaiNguoiDung || "").toLowerCase();
+
   if (t.includes("giáo") || t.includes("gv")) return "GV";
+
   return "HV";
 }
 
@@ -112,7 +114,7 @@ export default function EditUserModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} radius="lg" size="xl">
+    <Modal isOpen={isOpen} radius="lg" size="xl" onOpenChange={onOpenChange}>
       <ModalContent>
         {(onClose) => (
           <>
@@ -132,61 +134,62 @@ export default function EditUserModal({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
-                  label="Tài khoản"
-                  value={form.taiKhoan}
                   isDisabled
                   isRequired
+                  label="Tài khoản"
+                  value={form.taiKhoan}
                 />
 
                 <Input
+                  isRequired
+                  errorMessage={showError("matKhau") ? errors.matKhau : ""}
+                  isInvalid={showError("matKhau")}
                   label="Mật khẩu"
                   type="password"
                   value={form.matKhau}
                   onValueChange={set("matKhau")}
-                  isRequired
-                  isInvalid={showError("matKhau")}
-                  errorMessage={showError("matKhau") ? errors.matKhau : ""}
                 />
 
                 <Input
+                  isRequired
                   className="md:col-span-2"
+                  errorMessage={showError("hoTen") ? errors.hoTen : ""}
+                  isInvalid={showError("hoTen")}
                   label="Họ tên"
                   value={form.hoTen}
                   onValueChange={set("hoTen")}
-                  isRequired
-                  isInvalid={showError("hoTen")}
-                  errorMessage={showError("hoTen") ? errors.hoTen : ""}
                 />
 
                 <Input
+                  isRequired
+                  errorMessage={showError("soDT") ? errors.soDT : ""}
+                  isInvalid={showError("soDT")}
                   label="Số điện thoại"
                   value={form.soDT}
                   onValueChange={set("soDT")}
-                  isRequired
-                  isInvalid={showError("soDT")}
-                  errorMessage={showError("soDT") ? errors.soDT : ""}
                 />
 
                 <Input
+                  isRequired
+                  errorMessage={showError("email") ? errors.email : ""}
+                  isInvalid={showError("email")}
                   label="Email"
                   type="email"
                   value={form.email}
                   onValueChange={set("email")}
-                  isRequired
-                  isInvalid={showError("email")}
-                  errorMessage={showError("email") ? errors.email : ""}
                 />
 
                 <Select
+                  isRequired
+                  errorMessage={showError("maNhom") ? errors.maNhom : ""}
+                  isInvalid={showError("maNhom")}
                   label="Mã nhóm"
                   selectedKeys={[form.maNhom]}
                   onSelectionChange={(keys) => {
                     const v = Array.from(keys)[0] as string;
+
                     if (v) setForm((p) => ({ ...p, maNhom: v }));
                   }}
-                  isRequired
-                  isInvalid={showError("maNhom")}
-                  errorMessage={showError("maNhom") ? errors.maNhom : ""}
                 >
                   {[
                     "GP01",
@@ -203,17 +206,18 @@ export default function EditUserModal({
                 </Select>
 
                 <Select
+                  isRequired
+                  errorMessage={
+                    showError("maLoaiNguoiDung") ? errors.maLoaiNguoiDung : ""
+                  }
+                  isInvalid={showError("maLoaiNguoiDung")}
                   label="Loại người dùng"
                   selectedKeys={[form.maLoaiNguoiDung]}
                   onSelectionChange={(keys) => {
                     const v = Array.from(keys)[0] as string;
+
                     if (v) setForm((p) => ({ ...p, maLoaiNguoiDung: v }));
                   }}
-                  isRequired
-                  isInvalid={showError("maLoaiNguoiDung")}
-                  errorMessage={
-                    showError("maLoaiNguoiDung") ? errors.maLoaiNguoiDung : ""
-                  }
                 >
                   <SelectItem key="HV">HV (Học viên)</SelectItem>
                   <SelectItem key="GV">GV (Giáo vụ)</SelectItem>
@@ -226,7 +230,7 @@ export default function EditUserModal({
             </ModalBody>
 
             <ModalFooter>
-              <Button variant="light" onPress={onClose} isDisabled={loading}>
+              <Button isDisabled={loading} variant="light" onPress={onClose}>
                 Cancel
               </Button>
               <Button

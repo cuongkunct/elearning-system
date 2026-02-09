@@ -1,14 +1,14 @@
-import { publicApi } from "../publicApi";
 import type {
   TPaginationResponse,
   TCourse,
   TGetCoursesQuery,
 } from "@/types/admin/course/course.type";
-
-import { api } from "../api"; // ✅ dùng api có TokenCybersoft
-import { getAccessTokenFromStorage } from "../utils/authCookie";
 import type { TAddCoursePayload } from "@/types/admin/course/course.type";
 import type { TUpdateCoursePayload } from "@/types/admin/course/course.type";
+
+import { publicApi } from "../publicApi";
+import { api } from "../api"; // ✅ dùng api có TokenCybersoft
+import { getAccessTokenFromStorage } from "../utils/authCookie";
 
 // helper đảm bảo prefix Bearer
 const withBearer = (token: string) =>
@@ -68,6 +68,7 @@ export const courseService = {
   // ✅ ADDED
   async uploadCourseImage(file: File, tenKhoaHoc: string) {
     const frm = new FormData();
+
     frm.append("file", file);
     frm.append("tenKhoaHoc", tenKhoaHoc);
 

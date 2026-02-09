@@ -1,29 +1,26 @@
 "use client";
 
+import type { DispatchType, RootState } from "@/store";
+import type { TCourse } from "@/types/admin/course/course.type";
+
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "@heroui/react";
-
-import type { DispatchType, RootState } from "@/store";
 
 import CourseTable from "@/components/admin/course/courseTable";
 import Pagination from "@/components/admin/pagination";
 import EditCourseModal from "@/components/admin/course/editCourseModal";
 import DeleteCourseModal from "@/components/admin/course/deleteCourseModal";
-
 import {
   fetchCourses,
   updateCourse,
   deleteCourse,
   uploadCourseImage,
 } from "@/store/admin/courses/course.thunk";
-
 import {
   resetUpdateCourseState,
   resetDeleteCourseState,
 } from "@/store/admin/courses/courses.slice";
-
-import type { TCourse } from "@/types/admin/course/course.type";
 
 export default function CoursePage() {
   const dispatch: DispatchType = useDispatch();
@@ -70,6 +67,7 @@ export default function CoursePage() {
 
   const courseTableData = useMemo(() => {
     if (!isCourseSearching) return courseData?.items || [];
+
     return searchResult ? [searchResult] : [];
   }, [isCourseSearching, courseData?.items, searchResult]);
 
@@ -90,6 +88,7 @@ export default function CoursePage() {
 
   const courseUpdateErrorMessage = useMemo(() => {
     if (!courseUpdateError) return null;
+
     return courseUpdateError.message || "Update course failed";
   }, [courseUpdateError]);
 
@@ -110,6 +109,7 @@ export default function CoursePage() {
 
   const deleteErrorMessage = useMemo(() => {
     if (!deleteError) return null;
+
     return deleteError.message || "Delete course failed";
   }, [deleteError]);
 
@@ -156,8 +156,8 @@ export default function CoursePage() {
 
         <CourseTable
           data={courseTableData}
-          onEdit={handleOpenCourseEdit}
           onDelete={handleOpenCourseDelete}
+          onEdit={handleOpenCourseEdit}
           onUpload={async (course, file) => {
             console.log("✅ [CoursePage] UPLOAD START:", {
               maKhoaHoc: course.maKhoaHoc,
@@ -183,10 +183,12 @@ export default function CoursePage() {
                   : payload?.message ||
                     payload?.content ||
                     "Upload thành công!";
+
               alert(msg);
 
               // optional: refresh lại list để thấy ảnh mới (nếu UI hiển thị ảnh)
               const currentPage = courseData?.currentPage || 1;
+
               dispatch(
                 fetchCourses({
                   page: currentPage,
@@ -202,6 +204,7 @@ export default function CoursePage() {
                 (action as any).payload?.message ||
                 (action as any).error?.message ||
                 "Upload file không thành công!";
+
               alert(errMsg);
             }
           }}
@@ -220,16 +223,17 @@ export default function CoursePage() {
       ) : null}
 
       <EditCourseModal
-        isOpen={isCourseEditOpen}
-        onOpenChange={handleCloseCourseEdit}
         course={selectedCourse}
-        loading={courseUpdateLoading}
         error={courseUpdateErrorMessage}
+        isOpen={isCourseEditOpen}
+        loading={courseUpdateLoading}
+        onOpenChange={handleCloseCourseEdit}
         onSubmit={async (payload) => {
           const action = await dispatch(updateCourse(payload as any));
 
           if (updateCourse.fulfilled.match(action)) {
             const currentPage = courseData?.currentPage || 1;
+
             dispatch(
               fetchCourses({
                 page: currentPage,
@@ -243,29 +247,32 @@ export default function CoursePage() {
       />
 
       <DeleteCourseModal
-        isOpen={isCourseDeleteOpen}
-        onOpenChange={handleCloseCourseDelete}
-        title="Delete course"
         description={
           selectedCourseForDelete
             ? `Bạn chắc chắn muốn xoá khóa học "${selectedCourseForDelete.tenKhoaHoc}" (${selectedCourseForDelete.maKhoaHoc})?`
             : "Bạn chắc chắn muốn xoá khóa học này?"
         }
-        loading={deleteLoading}
         error={deleteErrorMessage}
+        isOpen={isCourseDeleteOpen}
+        loading={deleteLoading}
+        title="Delete course"
         onConfirm={async () => {
           const maKhoaHoc = selectedCourseForDelete?.maKhoaHoc;
+
           if (!maKhoaHoc) return;
 
           const action = await dispatch(deleteCourse(maKhoaHoc));
+
           if (deleteCourse.fulfilled.match(action)) {
             const currentPage = courseData?.currentPage || 1;
+
             dispatch(
               fetchCourses({ page: currentPage, pageSize: 10, maNhom: "GP01" }),
             );
             handleCloseCourseDelete(false);
           }
         }}
+        onOpenChange={handleCloseCourseDelete}
       />
     </section>
   );

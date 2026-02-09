@@ -84,4 +84,3 @@ export async function getRelatedCourses(maDanhMuc?: string) {
 
   return res.json();
 }
-

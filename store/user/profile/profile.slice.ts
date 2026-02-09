@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
 import axiosInstance from "@/services/axiosInstance";
 import {
   UserProfileResponse,
@@ -7,7 +8,6 @@ import {
 } from "@/types/user/userProfile/userProfile.type";
 import { ApiError } from "@/services/api.type";
 import { handleAxiosError } from "@/services/handleAxiosError";
-
 
 export const getUserProfile = createAsyncThunk<
   UserProfileResponse,
@@ -20,7 +20,7 @@ export const getUserProfile = createAsyncThunk<
     const res = await axiosInstance.post<UserProfileResponse>(
       `QuanLyNguoiDung/ThongTinTaiKhoan`,
       {},
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token}` } },
     );
 
     return res.data;
@@ -39,7 +39,7 @@ export const updateUserProfile = createAsyncThunk<
     const res = await axiosInstance.put<UpdateUserProfileResponse>(
       `QuanLyNguoiDung/CapNhatThongTinNguoiDung`,
       data,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token}` } },
     );
 
     return res.data;
@@ -69,8 +69,7 @@ const initialState: UserState = {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       /*Get user profile */

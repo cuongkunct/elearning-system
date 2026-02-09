@@ -1,5 +1,4 @@
 import React from "react";
-import { TUser } from "../../../types/admin/user.type";
 import {
   Table,
   TableHeader,
@@ -8,6 +7,8 @@ import {
   TableRow,
   TableCell,
 } from "@heroui/react";
+
+import { TUser } from "../../../types/admin/user.type";
 import { EditIcon, DeleteIcon } from "../icon";
 
 interface UserTableProps {
@@ -19,8 +20,8 @@ interface UserTableProps {
 const UserTable: React.FC<UserTableProps> = ({ data, onEdit, onDelete }) => {
   return (
     <Table
-      aria-label="User data table"
       removeWrapper
+      aria-label="User data table"
       classNames={{
         table: "w-full",
         th: "bg-[#F9F9F9] border-b border-[#F9F9F9] text-sm font-medium",
@@ -51,19 +52,19 @@ const UserTable: React.FC<UserTableProps> = ({ data, onEdit, onDelete }) => {
             <TableCell>
               <div className="flex items-center justify-center gap-2">
                 <button
+                  aria-label={`Edit ${user.taiKhoan}`}
+                  className="inline-flex items-center justify-center p-2 rounded-md text-default-400 hover:text-default-600 hover:bg-default-100 transition"
                   type="button"
                   onClick={() => onEdit?.(user)} // ✅ ADDED
-                  className="inline-flex items-center justify-center p-2 rounded-md text-default-400 hover:text-default-600 hover:bg-default-100 transition"
-                  aria-label={`Edit ${user.taiKhoan}`}
                 >
                   <EditIcon className="text-lg" />
                 </button>
 
                 <button
+                  aria-label={`Delete ${user.taiKhoan}`}
+                  className="inline-flex items-center justify-center p-2 rounded-md text-danger-500 hover:text-danger-600 hover:bg-danger-50 transition"
                   type="button"
                   onClick={() => onDelete?.(user)} // ✅ ADDED
-                  className="inline-flex items-center justify-center p-2 rounded-md text-danger-500 hover:text-danger-600 hover:bg-danger-50 transition"
-                  aria-label={`Delete ${user.taiKhoan}`}
                 >
                   <DeleteIcon className="text-lg" />
                 </button>

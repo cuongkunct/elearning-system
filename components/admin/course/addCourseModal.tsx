@@ -1,5 +1,7 @@
 "use client";
 
+import type { TAddCoursePayload } from "@/types/admin/course/course.type";
+
 import { useEffect, useMemo, useState } from "react";
 import {
   Modal,
@@ -11,12 +13,11 @@ import {
   Input,
 } from "@heroui/react";
 
-import type { TAddCoursePayload } from "@/types/admin/course/course.type";
-
 function formatDDMMYYYY(d: Date) {
   const dd = String(d.getDate()).padStart(2, "0");
   const mm = String(d.getMonth() + 1).padStart(2, "0");
   const yyyy = String(d.getFullYear());
+
   return `${dd}/${mm}/${yyyy}`;
 }
 
@@ -25,11 +26,14 @@ function getTaiKhoanFromUserDataCookie(): string {
   const cookie = document.cookie
     .split("; ")
     .find((x) => x.startsWith("userData="));
+
   if (!cookie) return "";
   const raw = cookie.substring("userData=".length);
+
   try {
     const decoded = decodeURIComponent(raw);
     const obj = JSON.parse(decoded);
+
     return obj?.content?.taiKhoan || "";
   } catch {
     return "";
@@ -85,6 +89,7 @@ export default function AddCourseModal({
 
   const errors = useMemo(() => {
     const e: Partial<Record<keyof TAddCoursePayload, string>> = {};
+
     if (!form.maKhoaHoc.trim()) e.maKhoaHoc = "Mã khóa học là bắt buộc";
     if (!form.biDanh.trim()) e.biDanh = "Bí danh là bắt buộc";
     if (!form.tenKhoaHoc.trim()) e.tenKhoaHoc = "Tên khóa học là bắt buộc";
@@ -96,6 +101,7 @@ export default function AddCourseModal({
       e.maDanhMucKhoaHoc = "Mã danh mục là bắt buộc";
     if (!form.taiKhoanNguoiTao.trim())
       e.taiKhoanNguoiTao = "Tài khoản người tạo là bắt buộc";
+
     return e;
   }, [form]);
 
@@ -117,7 +123,7 @@ export default function AddCourseModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} radius="lg" size="xl">
+    <Modal isOpen={isOpen} radius="lg" size="xl" onOpenChange={onOpenChange}>
       <ModalContent>
         {(onClose) => (
           <>
@@ -137,43 +143,43 @@ export default function AddCourseModal({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
+                  isRequired
+                  errorMessage={showError("maKhoaHoc") ? errors.maKhoaHoc : ""}
+                  isInvalid={showError("maKhoaHoc")}
                   label="Mã khóa học"
                   value={form.maKhoaHoc}
                   onValueChange={set("maKhoaHoc")}
-                  isRequired
-                  isInvalid={showError("maKhoaHoc")}
-                  errorMessage={showError("maKhoaHoc") ? errors.maKhoaHoc : ""}
                 />
 
                 <Input
+                  isRequired
+                  errorMessage={showError("biDanh") ? errors.biDanh : ""}
+                  isInvalid={showError("biDanh")}
                   label="Bí danh"
                   value={form.biDanh}
                   onValueChange={set("biDanh")}
-                  isRequired
-                  isInvalid={showError("biDanh")}
-                  errorMessage={showError("biDanh") ? errors.biDanh : ""}
                 />
 
                 <Input
-                  className="md:col-span-2"
-                  label="Tên khóa học"
-                  value={form.tenKhoaHoc}
-                  onValueChange={set("tenKhoaHoc")}
                   isRequired
-                  isInvalid={showError("tenKhoaHoc")}
+                  className="md:col-span-2"
                   errorMessage={
                     showError("tenKhoaHoc") ? errors.tenKhoaHoc : ""
                   }
+                  isInvalid={showError("tenKhoaHoc")}
+                  label="Tên khóa học"
+                  value={form.tenKhoaHoc}
+                  onValueChange={set("tenKhoaHoc")}
                 />
 
                 <Input
+                  isRequired
                   className="md:col-span-2"
+                  errorMessage={showError("moTa") ? errors.moTa : ""}
+                  isInvalid={showError("moTa")}
                   label="Mô tả"
                   value={form.moTa}
                   onValueChange={set("moTa")}
-                  isRequired
-                  isInvalid={showError("moTa")}
-                  errorMessage={showError("moTa") ? errors.moTa : ""}
                 />
 
                 <Input
@@ -193,53 +199,53 @@ export default function AddCourseModal({
                 />
 
                 <Input
+                  isRequired
                   className="md:col-span-2"
+                  errorMessage={showError("hinhAnh") ? errors.hinhAnh : ""}
+                  isInvalid={showError("hinhAnh")}
                   label="Hình ảnh (URL)"
                   value={form.hinhAnh}
                   onValueChange={set("hinhAnh")}
-                  isRequired
-                  isInvalid={showError("hinhAnh")}
-                  errorMessage={showError("hinhAnh") ? errors.hinhAnh : ""}
                 />
 
                 <Input
+                  isRequired
+                  errorMessage={showError("maNhom") ? errors.maNhom : ""}
+                  isInvalid={showError("maNhom")}
                   label="Mã nhóm"
                   value={form.maNhom}
                   onValueChange={set("maNhom")}
-                  isRequired
-                  isInvalid={showError("maNhom")}
-                  errorMessage={showError("maNhom") ? errors.maNhom : ""}
                 />
 
                 <Input
+                  isRequired
+                  errorMessage={showError("ngayTao") ? errors.ngayTao : ""}
+                  isInvalid={showError("ngayTao")}
                   label="Ngày tạo (dd/MM/yyyy)"
                   value={form.ngayTao}
                   onValueChange={set("ngayTao")}
-                  isRequired
-                  isInvalid={showError("ngayTao")}
-                  errorMessage={showError("ngayTao") ? errors.ngayTao : ""}
                 />
 
                 <Input
-                  label="Mã danh mục khóa học"
-                  value={form.maDanhMucKhoaHoc}
-                  onValueChange={set("maDanhMucKhoaHoc")}
                   isRequired
-                  isInvalid={showError("maDanhMucKhoaHoc")}
                   errorMessage={
                     showError("maDanhMucKhoaHoc") ? errors.maDanhMucKhoaHoc : ""
                   }
+                  isInvalid={showError("maDanhMucKhoaHoc")}
+                  label="Mã danh mục khóa học"
+                  value={form.maDanhMucKhoaHoc}
+                  onValueChange={set("maDanhMucKhoaHoc")}
                 />
 
                 <Input
-                  label="Tài khoản người tạo"
-                  value={form.taiKhoanNguoiTao}
-                  onValueChange={set("taiKhoanNguoiTao")}
                   isRequired
-                  isInvalid={showError("taiKhoanNguoiTao")}
                   errorMessage={
                     showError("taiKhoanNguoiTao") ? errors.taiKhoanNguoiTao : ""
                   }
+                  isInvalid={showError("taiKhoanNguoiTao")}
+                  label="Tài khoản người tạo"
+                  value={form.taiKhoanNguoiTao}
+                  onValueChange={set("taiKhoanNguoiTao")}
                 />
               </div>
 
@@ -249,7 +255,7 @@ export default function AddCourseModal({
             </ModalBody>
 
             <ModalFooter>
-              <Button variant="light" onPress={onClose} isDisabled={loading}>
+              <Button isDisabled={loading} variant="light" onPress={onClose}>
                 Cancel
               </Button>
               <Button

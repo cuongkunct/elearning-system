@@ -1,12 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import { Form, Input, Button, } from "@heroui/react";
+import { Form, Input, Button } from "@heroui/react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
-
 
 import { DispatchType } from "@/store";
 import { loginUser } from "@/store/user/auth/auth.slice";
@@ -34,6 +32,7 @@ export default function Login() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const res = await dispatch(loginUser(data)).unwrap();
+
       if (res.statusCode === 200) {
         showToast({
           title: "Login Successful",
@@ -45,22 +44,26 @@ export default function Login() {
         } else {
           router.push("/");
         }
-        const resultFromServer = await fetch('/api/auth/login', {
-          method: 'POST', body: JSON.stringify(res?.content), headers: {
-            'Content-Type': 'application/json',
-          }
+        const resultFromServer = await fetch("/api/auth/login", {
+          method: "POST",
+          body: JSON.stringify(res?.content),
+          headers: {
+            "Content-Type": "application/json",
+          },
         }).then(async (res) => {
           if (!res.ok) {
             throw res;
           }
+
           return res.json();
         });
 
-        dispatch(setLoginData({
-          accessToken: resultFromServer?.res?.accessToken,
-          role: resultFromServer?.res?.maLoaiNguoiDung
-        }));
-
+        dispatch(
+          setLoginData({
+            accessToken: resultFromServer?.res?.accessToken,
+            role: resultFromServer?.res?.maLoaiNguoiDung,
+          }),
+        );
       }
     } catch (err: any) {
       setOpen(true);

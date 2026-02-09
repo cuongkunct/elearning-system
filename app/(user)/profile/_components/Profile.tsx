@@ -5,22 +5,23 @@ import { Input } from "@heroui/input";
 import { Form } from "@heroui/react";
 import React, { useEffect, useMemo, useState } from "react";
 import { User2Icon } from "lucide-react";
-import { EditIcon } from "@/components/icons";
-
 import { useDispatch, useSelector } from "react-redux";
+
+import { EditIcon } from "@/components/icons";
 import { RootState, DispatchType } from "@/store";
 import { updateUserProfile } from "@/store/user/profile/profile.slice";
 import { showToast } from "@/utils/toast";
 
-
 type Props = {
-  userSession?: string
+  userSession?: string;
   onUpdate?: () => void;
 };
 
 export default function Profile({ userSession, onUpdate }: Props) {
   const dispatch = useDispatch<DispatchType>();
-  const profileState = useSelector((state: RootState) => state.userProfile.profile);
+  const profileState = useSelector(
+    (state: RootState) => state.userProfile.profile,
+  );
 
   const [isEdit, setIsEdit] = useState(false);
   const [formData, setFormData] = useState({
@@ -33,9 +34,7 @@ export default function Profile({ userSession, onUpdate }: Props) {
     maLoaiNguoiDung: "",
   });
 
-
   const userDataMemo = useMemo(() => profileState.data, [profileState.data]);
-
 
   useEffect(() => {
     if (!userDataMemo) return;
@@ -67,12 +66,13 @@ export default function Profile({ userSession, onUpdate }: Props) {
         description: "No access token found",
         type: "danger",
       });
+
       return;
     }
 
     try {
       await dispatch(
-        updateUserProfile({ data: formData, token: userSession })
+        updateUserProfile({ data: formData, token: userSession }),
       ).unwrap();
 
       showToast({

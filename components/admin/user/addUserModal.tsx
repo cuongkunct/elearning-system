@@ -44,8 +44,10 @@ const validatePassword = (pwd: string) =>
 
 const validateUsername = (username: string) => {
   const v = username.trim();
+
   if (v.length < 6) return "Tài khoản tối thiểu 6 ký tự";
   if (/\s/.test(v)) return "Tài khoản không được chứa khoảng trắng";
+
   return "";
 };
 
@@ -94,6 +96,7 @@ export default function AddUserModal({
     if (!form.taiKhoan.trim()) errs.taiKhoan = "Tài khoản là bắt buộc";
     else {
       const userErr = validateUsername(form.taiKhoan);
+
       if (userErr) errs.taiKhoan = userErr;
     }
 
@@ -158,11 +161,12 @@ export default function AddUserModal({
   const bannerMessage = useMemo(() => {
     if (!submitAttempted) return null;
     if (!hasAnyError) return null;
+
     return "Vui lòng kiểm tra các trường bôi đỏ trước khi tạo user.";
   }, [submitAttempted, hasAnyError]);
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} radius="lg" size="xl">
+    <Modal isOpen={isOpen} radius="lg" size="xl" onOpenChange={onOpenChange}>
       <ModalContent>
         {(onClose) => (
           <>
@@ -181,70 +185,71 @@ export default function AddUserModal({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
-                  label="Tài khoản"
-                  value={form.taiKhoan}
-                  onValueChange={setField("taiKhoan")}
                   isRequired
-                  isInvalid={showError("taiKhoan")}
                   errorMessage={
                     showError("taiKhoan") ? currentErrors.taiKhoan : ""
                   }
+                  isInvalid={showError("taiKhoan")}
+                  label="Tài khoản"
+                  value={form.taiKhoan}
+                  onValueChange={setField("taiKhoan")}
                 />
 
                 <Input
+                  isRequired
+                  errorMessage={
+                    showError("matKhau") ? currentErrors.matKhau : ""
+                  }
+                  isInvalid={showError("matKhau")}
                   label="Mật khẩu"
                   type="password"
                   value={form.matKhau}
                   onValueChange={setField("matKhau")}
-                  isRequired
-                  isInvalid={showError("matKhau")}
-                  errorMessage={
-                    showError("matKhau") ? currentErrors.matKhau : ""
-                  }
                 />
 
                 <Input
+                  isRequired
                   className="md:col-span-2"
+                  errorMessage={showError("hoTen") ? currentErrors.hoTen : ""}
+                  isInvalid={showError("hoTen")}
                   label="Họ tên"
                   value={form.hoTen}
                   onValueChange={setField("hoTen")}
-                  isRequired
-                  isInvalid={showError("hoTen")}
-                  errorMessage={showError("hoTen") ? currentErrors.hoTen : ""}
                 />
 
                 <Input
+                  isRequired // ✅ hiện dấu * đỏ
+                  errorMessage={showError("soDT") ? currentErrors.soDT : ""}
+                  isInvalid={showError("soDT")} // ✅ đỏ khi sai/thiếu
                   label="Số điện thoại"
                   value={form.soDT}
                   onValueChange={setField("soDT")}
-                  isRequired // ✅ hiện dấu * đỏ
-                  isInvalid={showError("soDT")} // ✅ đỏ khi sai/thiếu
-                  errorMessage={showError("soDT") ? currentErrors.soDT : ""}
                 />
 
                 <Input
+                  isRequired
+                  errorMessage={showError("email") ? currentErrors.email : ""}
+                  isInvalid={showError("email")}
                   label="Email"
                   type="email"
                   value={form.email}
                   onValueChange={setField("email")}
-                  isRequired
-                  isInvalid={showError("email")}
-                  errorMessage={showError("email") ? currentErrors.email : ""}
                 />
 
                 <Select
+                  isRequired
+                  errorMessage={showError("maNhom") ? currentErrors.maNhom : ""}
+                  isInvalid={showError("maNhom")}
                   label="Mã nhóm"
                   selectedKeys={[form.maNhom]}
                   onSelectionChange={(keys) => {
                     const v = Array.from(keys)[0] as string;
+
                     if (v) {
                       setForm((p) => ({ ...p, maNhom: v }));
                       setTouched((prev) => ({ ...prev, maNhom: true })); // ✅ NEW
                     }
                   }}
-                  isRequired
-                  isInvalid={showError("maNhom")}
-                  errorMessage={showError("maNhom") ? currentErrors.maNhom : ""}
                 >
                   {[
                     "GP01",
@@ -261,10 +266,18 @@ export default function AddUserModal({
                 </Select>
 
                 <Select
+                  isRequired
+                  errorMessage={
+                    showError("maLoaiNguoiDung")
+                      ? currentErrors.maLoaiNguoiDung
+                      : ""
+                  }
+                  isInvalid={showError("maLoaiNguoiDung")}
                   label="Loại người dùng"
                   selectedKeys={[form.maLoaiNguoiDung]}
                   onSelectionChange={(keys) => {
                     const v = Array.from(keys)[0] as string;
+
                     if (v) {
                       setForm((p) => ({ ...p, maLoaiNguoiDung: v }));
                       setTouched((prev) => ({
@@ -273,13 +286,6 @@ export default function AddUserModal({
                       })); // ✅ NEW
                     }
                   }}
-                  isRequired
-                  isInvalid={showError("maLoaiNguoiDung")}
-                  errorMessage={
-                    showError("maLoaiNguoiDung")
-                      ? currentErrors.maLoaiNguoiDung
-                      : ""
-                  }
                 >
                   <SelectItem key="HV">HV (Học viên)</SelectItem>
                   <SelectItem key="GV">GV (Giáo vụ)</SelectItem>
@@ -293,7 +299,7 @@ export default function AddUserModal({
             </ModalBody>
 
             <ModalFooter>
-              <Button variant="light" onPress={onClose} isDisabled={loading}>
+              <Button isDisabled={loading} variant="light" onPress={onClose}>
                 Cancel
               </Button>
 

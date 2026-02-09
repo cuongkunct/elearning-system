@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-
 import axiosInstance from "@/services/axiosInstance";
 import {
   UserRegister,
@@ -17,6 +16,7 @@ export const registerUser = createAsyncThunk<
 >("auth/register", async (userData, { rejectWithValue }) => {
   try {
     const res = await axiosInstance.post("QuanLyNguoiDung/DangKy", userData);
+
     return {
       statusCode: res.status,
       content: res.data,
@@ -33,6 +33,7 @@ export const loginUser = createAsyncThunk<
 >("auth/login", async (userData, { rejectWithValue }) => {
   try {
     const res = await axiosInstance.post("QuanLyNguoiDung/DangNhap", userData);
+
     return {
       statusCode: res.status,
       content: res.data,
@@ -77,13 +78,10 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setLoginData(
-      state,
-      action: PayloadAction<LoginData | null>
-    ) {
+    setLoginData(state, action: PayloadAction<LoginData | null>) {
       state.userData = action.payload;
       localStorage.setItem("sessionToken", action.payload?.accessToken || "");
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -102,7 +100,6 @@ const authSlice = createSlice({
       .addCase(loginUser.pending, (state) => {
         state.login.loading = true;
         state.login.error = undefined;
-
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.login.loading = false;

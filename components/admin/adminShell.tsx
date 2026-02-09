@@ -1,25 +1,24 @@
 "use client";
 
-import React, { createContext, useMemo, useState } from "react";
-import { useDisclosure } from "@heroui/react";
-import { useDispatch, useSelector } from "react-redux";
-
-import { Navbar } from "@/components/admin/navbar";
-import { AdminSidebar } from "@/components/admin/sidebar";
-
 import type { AdminActionKey } from "../../types/admin/navbar.type";
 import type { TUser } from "@/types/admin/user.type";
 import type { DispatchType, RootState } from "@/store";
+
+import { useDispatch, useSelector } from "react-redux";
+import { useDisclosure } from "@heroui/react";
+import React, { createContext, useMemo, useState } from "react";
 
 import AddUserModal from "./user/addUserModal";
 import EditUserModal from "./user/editUserModal";
 import DeleteUserModal from "./user/deleteUserModal";
 
+import { Navbar } from "@/components/admin/navbar";
+import { AdminSidebar } from "@/components/admin/sidebar";
+
 // -- Course
 import AddCourseModal from "@/components/admin/course/addCourseModal";
 import { addCourse, fetchCourses } from "@/store/admin/courses/course.thunk";
 import { resetAddCourseState } from "@/store/admin/courses/courses.slice";
-
 import {
   fetchAdminUser,
   createAdminUser,
@@ -66,16 +65,19 @@ export default function AdminShell({
 
   const createErrorMessage = useMemo(() => {
     if (!createError) return null;
+
     return createError.message || "Create user failed";
   }, [createError]);
 
   const updateErrorMessage = useMemo(() => {
     if (!updateError) return null;
+
     return updateError.message || "Update user failed";
   }, [updateError]);
 
   const deleteErrorMessage = useMemo(() => {
     if (!deleteError) return null;
+
     return deleteError.message || "Delete user failed";
   }, [deleteError]);
 
@@ -109,6 +111,7 @@ export default function AdminShell({
   // helper refresh list
   const refreshList = (maNhom: string) => {
     const currentPage = data?.currentPage || 1;
+
     dispatch(fetchAdminUser({ page: currentPage, pageSize: 19, maNhom }));
   };
 
@@ -158,13 +161,14 @@ export default function AdminShell({
 
       {/* Add user */}
       <AddUserModal
-        isOpen={isOpen && modalKey === "add_user"}
-        onOpenChange={handleOpenChange}
         defaultGroup="GP01"
-        loading={createLoading}
         error={createErrorMessage}
+        isOpen={isOpen && modalKey === "add_user"}
+        loading={createLoading}
+        onOpenChange={handleOpenChange}
         onSubmit={async (payload) => {
           const action = await dispatch(createAdminUser(payload as any));
+
           if (createAdminUser.fulfilled.match(action)) {
             refreshList(payload.maNhom);
             handleOpenChange(false);
@@ -174,14 +178,15 @@ export default function AdminShell({
 
       {/* Edit user */}
       <EditUserModal
-        isOpen={isOpen && modalKey === "edit_user"}
-        onOpenChange={handleOpenChange}
         defaultGroup="GP01"
-        user={selectedUser}
-        loading={updateLoading}
         error={updateErrorMessage}
+        isOpen={isOpen && modalKey === "edit_user"}
+        loading={updateLoading}
+        user={selectedUser}
+        onOpenChange={handleOpenChange}
         onSubmit={async (payload) => {
           const action = await dispatch(updateAdminUser(payload as any));
+
           if (updateAdminUser.fulfilled.match(action)) {
             refreshList(payload.maNhom);
             handleOpenChange(false);
@@ -191,39 +196,41 @@ export default function AdminShell({
 
       {/* ✅ ADDED: Delete user confirm modal */}
       <DeleteUserModal
-        isOpen={isOpen && modalKey === "delete_user"}
-        onOpenChange={handleOpenChange}
-        title="Delete user"
         description={
           selectedUser
             ? `Bạn chắc chắn muốn xoá user "${selectedUser.taiKhoan}"? Hành động này không thể hoàn tác.`
             : "Bạn chắc chắn muốn xoá user này?"
         }
-        loading={deleteLoading}
         error={deleteErrorMessage}
+        isOpen={isOpen && modalKey === "delete_user"}
+        loading={deleteLoading}
+        title="Delete user"
         onConfirm={async () => {
           if (!selectedUser?.taiKhoan) return;
 
           const action = await dispatch(deleteAdminUser(selectedUser.taiKhoan));
+
           if (deleteAdminUser.fulfilled.match(action)) {
             // refresh lại theo nhóm hiện tại (ưu tiên lấy từ selectedUser nếu có)
             refreshList((selectedUser as any)?.maNhom || "GP01");
             handleOpenChange(false);
           }
         }}
+        onOpenChange={handleOpenChange}
       />
 
       <AddCourseModal
-        isOpen={isOpen && modalKey === "add_course"}
-        onOpenChange={handleOpenChange}
         defaultGroup="GP01"
-        loading={addLoading}
         error={addCourseErrorMessage}
+        isOpen={isOpen && modalKey === "add_course"}
+        loading={addLoading}
+        onOpenChange={handleOpenChange}
         onSubmit={async (payload) => {
           const action = await dispatch(addCourse(payload));
 
           if (addCourse.fulfilled.match(action)) {
             const currentPage = courseData?.currentPage || 1;
+
             dispatch(
               fetchCourses({
                 page: currentPage,
