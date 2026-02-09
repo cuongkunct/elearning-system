@@ -8,6 +8,7 @@ export const publicApi = axios.create({
 
 publicApi.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    config.withCredentials = true;
     if (TOKEN_CYBERSOFT) config.headers["TokenCybersoft"] = TOKEN_CYBERSOFT;
     return config;
   },
