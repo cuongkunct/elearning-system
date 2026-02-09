@@ -6,7 +6,7 @@ import type {
 } from "@/types/admin/course/course.type";
 
 import { api } from "../api"; // ✅ dùng api có TokenCybersoft
-import { getAccessTokenFromCookie } from "../utils/authCookie";
+import { getAccessTokenFromStorage } from "../utils/authCookie";
 import type { TAddCoursePayload } from "@/types/admin/course/course.type";
 import type { TUpdateCoursePayload } from "@/types/admin/course/course.type";
 
@@ -33,7 +33,7 @@ export const courseService = {
   // ✅ ADDED: add course (cần Bearer token + TokenCybersoft -> api)
 
   async addCourse(payload: TAddCoursePayload) {
-    const token = getAccessTokenFromCookie();
+    const token = getAccessTokenFromStorage();
 
     return api.post("QuanLyKhoaHoc/ThemKhoaHoc", payload, {
       // ✅ bắt buộc: Bearer + accessToken từ cookie
@@ -50,7 +50,7 @@ export const courseService = {
 
   // ✅ ADDED
   async deleteCourse(maKhoaHoc: string) {
-    const token = getAccessTokenFromCookie();
+    const token = getAccessTokenFromStorage();
 
     return api.delete("QuanLyKhoaHoc/XoaKhoaHoc", {
       params: { MaKhoaHoc: maKhoaHoc }, // ✅ đúng param

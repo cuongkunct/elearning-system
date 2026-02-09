@@ -20,7 +20,6 @@ axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     console.log(CYBERSOFT_TOKEN);
     config.headers.set("TokenCybersoft", CYBERSOFT_TOKEN);
-
     return config;
   },
   (error: AxiosError) => Promise.reject(error),

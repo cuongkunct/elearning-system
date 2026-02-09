@@ -1,70 +1,34 @@
-// src/utils/authCookie.ts
-type AnyObj = Record<string, any>;
-
-function getCookieValue(name: string): string | null {
-  if (typeof document === "undefined") return null;
-
-  const match = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith(`${name}=`));
-
-  if (!match) return null;
-  return match.substring(name.length + 1);
-}
-
-function safeJsonParse(input: string): AnyObj | null {
-  try {
-    return JSON.parse(input);
-  } catch {
-    return null;
-  }
-}
+// src/utils/authStorage.ts
 
 /**
- * Hỗ trợ nhiều kiểu cookie:
- * 1) cookie lưu JSON cả object response (như bạn đưa) => { content: { accessToken: "..." } }
- * 2) cookie lưu JSON user => { accessToken: "..." }
- * 3) cookie lưu trực tiếp accessToken => "eyJhbGciOi..."
- * 4) cookie bị encodeURIComponent
+ * Lấy accessToken từ Local Storage với key 'sessionToken'
  */
-export function getAccessTokenFromCookie(
-  cookieNames: string[] = [
-    "userData",
-    "user",
-    "auth",
-    "currentUser",
-    "token",
-    "accessToken",
-  ],
-): string | null {
-  for (const name of cookieNames) {
-    const raw = getCookieValue(name);
-    if (!raw) continue;
+export function getAccessTokenFromStorage(): string | null {
+  // Kiểm tra xem có đang ở môi trường trình duyệt không (tránh lỗi SSR trong Next.js)
+  if (typeof window === "undefined") return null;
 
-    // thử decode
-    const decoded = (() => {
-      try {
-        return decodeURIComponent(raw);
-      } catch {
-        return raw;
-      }
-    })();
+  try {
+    const raw = localStorage.getItem("sessionToken");
 
-    // case: cookie là token trực tiếp
-    if (decoded.startsWith("eyJ")) return decoded;
+    if (!raw) return null;
 
-    // case: cookie là JSON
-    const obj = safeJsonParse(decoded);
-    if (!obj) continue;
+    // 1. Nếu lưu trực tiếp chuỗi token (thường bắt đầu bằng eyJ...)
+    if (raw.startsWith("eyJ")) {
+      return raw;
+    }
 
-    // hỗ trợ format bạn đưa: { statusCode, content: { accessToken } }
-    const token =
-      obj?.content?.accessToken ||
-      obj?.accessToken ||
-      obj?.token ||
-      obj?.content?.token;
-
-    if (typeof token === "string" && token.length > 20) return token;
+    // 2. Nếu lỡ lưu dưới dạng JSON object (đề phòng trường hợp bạn lưu cả object)
+    try {
+      const obj = JSON.parse(raw);
+      const token = obj?.accessToken || obj?.content?.accessToken || obj?.token;
+      if (typeof token === "string") return token;
+    } catch {
+      // Nếu không phải JSON thì trả về raw luôn (nếu nó thỏa mãn độ dài token)
+      return raw.length > 20 ? raw : null;
+    }
+  } catch (error) {
+    console.error("Lỗi khi truy cập LocalStorage:", error);
+    return null;
   }
 
   return null;

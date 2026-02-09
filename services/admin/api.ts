@@ -1,6 +1,5 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
-import { getAccessTokenFromCookie } from "./utils/authCookie";
-
+import { getAccessTokenFromStorage } from "./utils/authCookie";
 const TOKEN_CYBERSOFT = process.env.NEXT_PUBLIC_TOKEN_CYBERSOFT || "";
 
 const withBearer = (token: string) => {
@@ -19,12 +18,15 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig<any>) => {
-    const accessToken = getAccessTokenFromCookie();
+  (config: InternalAxiosRequestConfig) => {
+    const accessToken = getAccessTokenFromStorage();
     if (TOKEN_CYBERSOFT) config.headers["TokenCybersoft"] = TOKEN_CYBERSOFT;
-    if (accessToken) config.headers["Authorization"] = withBearer(accessToken);
+    if (accessToken) {
+      config.headers["Authorization"] = withBearer(accessToken as string);
+    }
     config.headers["Accept"] = "application/json";
     config.headers["Content-Type"] = "application/json-patch+json";
+
     return config;
   },
   (error) => Promise.reject(error),

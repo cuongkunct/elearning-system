@@ -82,6 +82,7 @@ const authSlice = createSlice({
       action: PayloadAction<LoginData | null>
     ) {
       state.userData = action.payload;
+      localStorage.setItem("sessionToken", action.payload?.accessToken || "");
     }
   },
   extraReducers: (builder) => {
@@ -101,6 +102,7 @@ const authSlice = createSlice({
       .addCase(loginUser.pending, (state) => {
         state.login.loading = true;
         state.login.error = undefined;
+
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.login.loading = false;

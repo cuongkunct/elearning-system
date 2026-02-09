@@ -16,3 +16,6 @@ Githup: https://github.com/cuongkunct/elearning-system
 Deploy [Vervel]: https://elearning-system-seven.vercel.app/
 
 Link youtube: Doing
+
+Account: Admin: dean12 / 123456
+         User: cuong123 / Cuong240418cc#
