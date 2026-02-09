@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { cache } from "react";
+
 import Link from "next/link";
 import { Button } from "@heroui/button";
-
 
 import {
   categorySeoMap,
@@ -21,8 +20,6 @@ import { ArrowIcon, LogoIcon } from "@/components/icons";
 type PageProps = {
   params: Promise<{ id: string }>;
 };
-
-
 
 export async function generateMetadata({
   params,

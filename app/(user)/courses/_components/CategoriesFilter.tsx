@@ -46,9 +46,9 @@ export default function CategoriesFilter({ categories }: Props) {
       return (
         <Button
           key={category.maDanhMuc}
-          isLoading={isPending}
           className="hidden sm:hidden md:hidden lg:block xl:block"
           color={isActive ? "primary" : "default"}
+          isLoading={isPending}
           onPress={() => {
             handleSelectCategory(category.maDanhMuc);
           }}
@@ -66,7 +66,6 @@ export default function CategoriesFilter({ categories }: Props) {
       return (
         <Button
           key={category.maDanhMuc}
-
           fullWidth
           color={isActive ? "primary" : "default"}
           onPress={() => {

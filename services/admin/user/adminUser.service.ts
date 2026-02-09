@@ -1,7 +1,8 @@
 // src/services/admin/user/adminUser.service.ts
-import { api } from "../api";
 import type { TCreateUserPayload } from "@/services/api.type";
 import type { ApiResponse } from "@/services/api.type";
+
+import { api } from "../api";
 
 export type TCyberApiResponse<T = any> = {
   statusCode: number;
@@ -15,6 +16,7 @@ export const adminUserService = {
       "/QuanLyNguoiDung/ThemNguoiDung",
       payload,
     );
+
     return res.data;
   },
 };

@@ -1,5 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
 import type { AxiosError } from "axios";
+import type {
+  TPaginationResponse,
+  TCourse,
+} from "@/types/admin/course/course.type";
+import type { SerializableApiError } from "@/services/admin/utils/apiError";
+
+import { createSlice } from "@reduxjs/toolkit";
 
 import {
   fetchCourses,
@@ -7,11 +13,6 @@ import {
   updateCourse,
   deleteCourse,
 } from "./course.thunk";
-import type {
-  TPaginationResponse,
-  TCourse,
-} from "@/types/admin/course/course.type";
-import type { SerializableApiError } from "@/services/admin/utils/apiError";
 import { searchCourseByMaKhoaHoc } from "./course.thunk"; // ✅ ADDED
 
 type CourseState = {

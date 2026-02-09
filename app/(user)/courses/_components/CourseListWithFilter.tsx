@@ -1,11 +1,20 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
-import { Button, Drawer, DrawerContent, DrawerHeader, DrawerBody, useDisclosure } from "@heroui/react";
+import {
+  Button,
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerBody,
+  useDisclosure,
+} from "@heroui/react";
+
+import CourseCard from "./CourseList";
+
 import { EyeIcon, FilterIcon, ResetFilter, UserIcon } from "@/components/icons";
 import { Category } from "@/types/user/category/category.type";
 import { Course } from "@/types/user/course/course.type";
-import CourseCard from "./CourseList";
 import SkeletonCard from "@/components/user/shared/SkeletonCard";
 
 interface Props {
@@ -14,7 +23,11 @@ interface Props {
   children?: React.ReactNode; // Dùng cho Pagination hoặc Intro nếu cần
 }
 
-export default function CourseListWithFilter({ categories, courses, children }: Props) {
+export default function CourseListWithFilter({
+  categories,
+  courses,
+  children,
+}: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -22,23 +35,27 @@ export default function CourseListWithFilter({ categories, courses, children }: 
   const [activeSort, setActiveSort] = useState<string>("");
 
   const selectedCategory = searchParams.get("id") || "";
+
   useEffect(() => {
     const sort = searchParams.get("sort") || "";
+
     setActiveSort(sort);
   }, [searchParams]);
 
   const handleSort = (sort: string) => {
     startTransition(() => {
       const params = new URLSearchParams(searchParams.toString());
+
       params.set("sort", sort);
       setActiveSort(sort);
       router.push(`?${params.toString()}`);
     });
   };
-  // Hàm xử lý Filter 
+  // Hàm xử lý Filter
   const handleFilter = (id?: string) => {
     startTransition(() => {
       const params = new URLSearchParams(searchParams.toString());
+
       if (!id || selectedCategory === id) {
         params.delete("id");
       } else {
@@ -55,14 +72,19 @@ export default function CourseListWithFilter({ categories, courses, children }: 
         <h1 className="text-xl font-semibold pb-4 flex items-center gap-2">
           Categories
         </h1>
-        <Button className="lg:hidden" color="success" endContent={<FilterIcon />} onPress={onOpen}>
+        <Button
+          className="lg:hidden"
+          color="success"
+          endContent={<FilterIcon />}
+          onPress={onOpen}
+        >
           Filter by Category
         </Button>
         <Button
           color="danger"
-          variant="flat"
-          isDisabled={isPending}
           endContent={<ResetFilter />}
+          isDisabled={isPending}
+          variant="flat"
           onPress={() => handleFilter()}
         >
           Reset Filter
@@ -71,9 +93,9 @@ export default function CourseListWithFilter({ categories, courses, children }: 
           {categories.map((cat) => (
             <Button
               key={cat.maDanhMuc}
+              className="justify-start font-medium"
               color={selectedCategory === cat.maDanhMuc ? "primary" : "default"}
               isDisabled={isPending}
-              className="justify-start font-medium"
               onPress={() => handleFilter(cat.maDanhMuc)}
             >
               {cat.tenDanhMuc}
@@ -82,33 +104,36 @@ export default function CourseListWithFilter({ categories, courses, children }: 
         </div>
       </aside>
 
-
       <main className="flex-[7] relative">
         <div className="flex gap-2 mb-4 lg:py-0 items-center ">
-          <p className="font-semibold flex items-center justify-center">Sort by:</p>
+          <p className="font-semibold flex items-center justify-center">
+            Sort by:
+          </p>
           <Button
-            variant={activeSort === "viewed" ? "solid" : "bordered"}
             color="primary"
             endContent={<EyeIcon />}
+            variant={activeSort === "viewed" ? "solid" : "bordered"}
             onPress={() => handleSort("viewed")}
           >
             Top viewed
           </Button>
 
           <Button
-            variant={activeSort === "joined" ? "solid" : "bordered"}
             color="primary"
             startContent={<UserIcon />}
+            variant={activeSort === "joined" ? "solid" : "bordered"}
             onPress={() => handleSort("joined")}
-          > Top joined
+          >
+            {" "}
+            Top joined
           </Button>
         </div>
-        {isPending ? (<SkeletonCard numberCard={4} />) : (
+        {isPending ? (
+          <SkeletonCard numberCard={4} />
+        ) : (
           <CourseCard courses={courses} />
         )}
-        <div className="mt-8">
-          {children}
-        </div>
+        <div className="mt-8">{children}</div>
       </main>
 
       <Drawer isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -121,9 +146,16 @@ export default function CourseListWithFilter({ categories, courses, children }: 
                   <Button
                     key={cat.maDanhMuc}
                     fullWidth
-                    variant={selectedCategory === cat.maDanhMuc ? "solid" : "flat"}
-                    color={selectedCategory === cat.maDanhMuc ? "primary" : "default"}
-                    onPress={() => { handleFilter(cat.maDanhMuc); onClose(); }}
+                    color={
+                      selectedCategory === cat.maDanhMuc ? "primary" : "default"
+                    }
+                    variant={
+                      selectedCategory === cat.maDanhMuc ? "solid" : "flat"
+                    }
+                    onPress={() => {
+                      handleFilter(cat.maDanhMuc);
+                      onClose();
+                    }}
                   >
                     {cat.tenDanhMuc}
                   </Button>

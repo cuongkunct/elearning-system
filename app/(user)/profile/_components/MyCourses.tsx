@@ -6,20 +6,16 @@ import { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@heroui/button";
 import { CalendarIcon, TimerIcon } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { LogoIcon } from "@/components/icons";
 import { UserProfileResponse } from "@/types/user/userProfile/userProfile.type";
-
-
-import { useDispatch, useSelector } from "react-redux";
 import { RootState, DispatchType } from "@/store";
 import {
   cancelCourse,
   resetCourseState,
 } from "@/store/user/course/course.slice";
-
 import { showToast } from "@/utils/toast";
-
 
 type Props = {
   userData: UserProfileResponse;
@@ -29,7 +25,9 @@ type Props = {
 export default function MyCoursePage({ userData, onCancel }: Props) {
   const dispatch = useDispatch<DispatchType>();
   const userSession = useSelector((state: RootState) => state.auth.userData);
-  const cancelStatus = useSelector((state: RootState) => state.userCourse.cancel.success);
+  const cancelStatus = useSelector(
+    (state: RootState) => state.userCourse.cancel.success,
+  );
   const [courses, setCourses] = useState<Course[]>(
     userData?.chiTietKhoaHocGhiDanh || [],
   );
@@ -41,7 +39,7 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
         title: "Cancel course successfully",
         description: "You have successfully canceled the course",
         type: "success",
-      })
+      });
 
       dispatch(resetCourseState());
     }
@@ -59,7 +57,8 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
         title: "Unauthorized",
         description: "No access token found",
         type: "danger",
-      })
+      });
+
       return;
     }
     try {
@@ -71,16 +70,14 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
           token: userSession.accessToken,
         }),
       ).unwrap();
-      setCourses((prev) =>
-        prev.filter((c) => c.maKhoaHoc !== maKhoaHoc),
-      );
+      setCourses((prev) => prev.filter((c) => c.maKhoaHoc !== maKhoaHoc));
       onCancel?.();
     } catch (err: any) {
       showToast({
         title: "Error canceling course",
         description: err,
         type: "danger",
-      })
+      });
     } finally {
       setLoading((prev) => ({ ...prev, [maKhoaHoc]: false }));
       dispatch(resetCourseState());
@@ -119,12 +116,8 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
             />
 
             <div className="flex-1">
-              <h3 className="font-bold text-lg mb-1">
-                {course.tenKhoaHoc}
-              </h3>
-              <p className="text-sm mb-2 truncate w-64">
-                {course.moTa}
-              </p>
+              <h3 className="font-bold text-lg mb-1">{course.tenKhoaHoc}</h3>
+              <p className="text-sm mb-2 truncate w-64">{course.moTa}</p>
               <div className="flex items-center gap-4 text-sm mb-2">
                 <div className="flex gap-2 items-center">
                   <TimerIcon />
@@ -132,15 +125,11 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
                 </div>
                 <div className="flex gap-2 items-center">
                   <CalendarIcon />
-                  <span>
-                    {new Date(course.ngayTao).toLocaleDateString()}
-                  </span>
+                  <span>{new Date(course.ngayTao).toLocaleDateString()}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <span className="text-yellow-400">★★★★★</span>
-                  <span className="font-medium text-gray-700">
-                    5
-                  </span>
+                  <span className="font-medium text-gray-700">5</span>
                 </div>
               </div>
             </div>

@@ -1,13 +1,15 @@
 "use client";
 
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useContext, useMemo } from "react";
 import type { RootState, DispatchType } from "@/store/index";
 
-import { fetchAdminUser } from "./../../store/admin/user/adminUser.slice";
-import UserTable from "../../components/admin/user/userTable";
-import Pagination from "./../../components/admin/pagination";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useContext, useMemo } from "react";
 import { Spinner } from "@heroui/react";
+
+import UserTable from "../../components/admin/user/userTable";
+
+import { fetchAdminUser } from "./../../store/admin/user/adminUser.slice";
+import Pagination from "./../../components/admin/pagination";
 
 import { AdminModalContext } from "@/components/admin/adminShell";
 
@@ -84,8 +86,8 @@ export default function Home() {
 
         <UserTable
           data={tableData}
-          onEdit={(user) => openEditUser(user)}
           onDelete={(user) => openDeleteUser(user)}
+          onEdit={(user) => openEditUser(user)}
         />
       </div>
 

@@ -25,13 +25,14 @@ import NextLink from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+
 import { LogoIcon, SearchIcon } from "@/components/icons";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { siteConfig } from "@/config/user/site";
 import { RootState } from "@/store";
 import { getListCategory } from "@/services/user/category/category.service";
 import { Category } from "@/types/user/category/category.type";
-import { useDispatch } from "react-redux";
 import { setLoginData } from "@/store/user/auth/auth.slice";
 export const Navbar = () => {
   const router = useRouter();
@@ -236,7 +237,12 @@ export const Navbar = () => {
           </Button>
         </NavbarItem>
         <NavbarItem className={userSession ? "hidden" : ""}>
-          <Button as={Link} color="default" href="/auth/register" variant="flat">
+          <Button
+            as={Link}
+            color="default"
+            href="/auth/register"
+            variant="flat"
+          >
             Sign Up
           </Button>
         </NavbarItem>
@@ -244,7 +250,11 @@ export const Navbar = () => {
           <div className="flex items-center gap-4">
             <Dropdown placement="bottom-end">
               <DropdownTrigger>
-                <Avatar isBordered color="warning" src="https://i.pravatar.cc/150?u=a04258114e29026708c" />
+                <Avatar
+                  isBordered
+                  color="warning"
+                  src="https://i.pravatar.cc/150?u=a04258114e29026708c"
+                />
               </DropdownTrigger>
               <DropdownMenu aria-label="Profile Actions" variant="flat">
                 <DropdownItem

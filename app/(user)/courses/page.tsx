@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 import CourseListPagination from "./_components/CourseListPagination";
 import CategoriesIntro from "./_components/CategoriesIntro";
-
+import CourseListWithFilter from "./_components/CourseListWithFilter";
 
 import { Course } from "@/types/user/course/course.type";
 import {
@@ -10,7 +10,6 @@ import {
   getCoursesPagination,
 } from "@/services/user/courses/course.service";
 import { getListCategory } from "@/services/user/category/category.service";
-import CourseListWithFilter from "./_components/CourseListWithFilter";
 
 export const metadata: Metadata = {
   title: "Online Courses",

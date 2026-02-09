@@ -8,7 +8,11 @@ interface ToastProps {
   type?: ToastType;
 }
 
-export function showToast({ title, description, type = "default" }: ToastProps) {
+export function showToast({
+  title,
+  description,
+  type = "default",
+}: ToastProps) {
   let desc: string | undefined;
 
   if (!description) {

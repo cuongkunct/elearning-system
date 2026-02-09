@@ -1,16 +1,17 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AxiosError } from "axios";
-
-import { courseService } from "@/services/admin/course/course.service";
 import type {
   TPaginationResponse,
   TCourse,
   TGetCoursesQuery,
 } from "@/types/admin/course/course.type";
 import type { SerializableApiError } from "@/services/admin/utils/apiError";
-import { toSerializableApiError } from "@/services/admin/utils/apiError";
 import type { TAddCoursePayload } from "@/types/admin/course/course.type";
 import type { TUpdateCoursePayload } from "@/types/admin/course/course.type";
+
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
+
+import { courseService } from "@/services/admin/course/course.service";
+import { toSerializableApiError } from "@/services/admin/utils/apiError";
 
 export const fetchCourses = createAsyncThunk<
   TPaginationResponse<TCourse>,
@@ -19,6 +20,7 @@ export const fetchCourses = createAsyncThunk<
 >("course/fetchCourses", async (query, { rejectWithValue }) => {
   try {
     const res = await courseService.getCoursesPagination(query);
+
     return res.data;
   } catch (err) {
     return rejectWithValue(err as AxiosError);
@@ -33,6 +35,7 @@ export const addCourse = createAsyncThunk<
 >("course/addCourse", async (payload, { rejectWithValue }) => {
   try {
     const res = await courseService.addCourse(payload);
+
     return res.data;
   } catch (err) {
     return rejectWithValue(toSerializableApiError(err));
@@ -47,6 +50,7 @@ export const updateCourse = createAsyncThunk<
 >("course/updateCourse", async (payload, { rejectWithValue }) => {
   try {
     const res = await courseService.updateCourse(payload);
+
     return res.data;
   } catch (err) {
     return rejectWithValue(toSerializableApiError(err));
@@ -62,6 +66,7 @@ export const deleteCourse = createAsyncThunk<
 >("course/deleteCourse", async (maKhoaHoc, { rejectWithValue }) => {
   try {
     const res = await courseService.deleteCourse(maKhoaHoc);
+
     return res.data;
   } catch (err) {
     return rejectWithValue(toSerializableApiError(err));
@@ -80,6 +85,7 @@ export const searchCourseByMaKhoaHoc = createAsyncThunk<
   async ({ maKhoaHoc }, { rejectWithValue }) => {
     try {
       const res = await courseService.getCourseInfo(maKhoaHoc);
+
       return res.data;
     } catch (err) {
       return rejectWithValue(toSerializableApiError(err));
@@ -97,6 +103,7 @@ export const uploadCourseImage = createAsyncThunk<
   async ({ file, tenKhoaHoc }, { rejectWithValue }) => {
     try {
       const res = await courseService.uploadCourseImage(file, tenKhoaHoc);
+
       return res.data;
     } catch (err) {
       return rejectWithValue(toSerializableApiError(err));

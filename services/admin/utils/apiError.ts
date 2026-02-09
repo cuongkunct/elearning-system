@@ -25,6 +25,7 @@ export function toSerializableApiError(err: unknown): SerializableApiError {
   } else {
     // Case 2: server trả object json
     const m = data?.content || data?.message || e?.message || "Request failed";
+
     message = typeof m === "string" ? stripLeadingStatus(m) : JSON.stringify(m);
     console.log("message from string data:", message);
   }

@@ -29,7 +29,7 @@ export default function DeleteUserModal({
   onConfirm,
 }: Props) {
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} radius="lg" size="md">
+    <Modal isOpen={isOpen} radius="lg" size="md" onOpenChange={onOpenChange}>
       <ModalContent>
         {(onClose) => (
           <>
@@ -43,7 +43,7 @@ export default function DeleteUserModal({
             </ModalBody>
 
             <ModalFooter>
-              <Button variant="light" onPress={onClose} isDisabled={loading}>
+              <Button isDisabled={loading} variant="light" onPress={onClose}>
                 Cancel
               </Button>
               <Button color="danger" isLoading={loading} onPress={onConfirm}>

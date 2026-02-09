@@ -1,19 +1,17 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { AxiosError } from "axios";
-
-import { api } from "@/services/admin/api";
-import { publicApi } from "@/services/admin/publicApi"; // ✅ ADDED: search chỉ dùng TokenCybersoft
 import type { initState } from "@/types/api.type";
-
 import type {
   TUser,
   TPaginationResponse,
   TGetUsersQuery,
 } from "./../../../types/admin/user.type";
-
 import type { TCreateUserPayload } from "@/services/api.type";
 import type { TUpdateUserPayload } from "@/services/api.type";
 
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
+
+import { api } from "@/services/admin/api";
+import { publicApi } from "@/services/admin/publicApi"; // ✅ ADDED: search chỉ dùng TokenCybersoft
 import {
   toSerializableApiError,
   type SerializableApiError,
@@ -61,6 +59,7 @@ export const createAdminUser = createAsyncThunk<
 >("admin/createAdminUser", async (payload, { rejectWithValue }) => {
   try {
     const res = await api.post("QuanLyNguoiDung/ThemNguoiDung", payload);
+
     return res.data;
   } catch (error) {
     return rejectWithValue(toSerializableApiError(error));
@@ -80,6 +79,7 @@ export const updateAdminUser = createAsyncThunk<
       "QuanLyNguoiDung/CapNhatThongTinNguoiDung",
       payload,
     );
+
     return res.data;
   } catch (error) {
     return rejectWithValue(toSerializableApiError(error));
@@ -98,6 +98,7 @@ export const deleteAdminUser = createAsyncThunk<
     const res = await api.delete("QuanLyNguoiDung/XoaNguoiDung", {
       params: { TaiKhoan: taiKhoan },
     });
+
     return res.data;
   } catch (error) {
     return rejectWithValue(toSerializableApiError(error));

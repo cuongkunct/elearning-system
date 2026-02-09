@@ -6,14 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 import CourseCardItem from "../../courses/_components/CourseCardItem";
 import ButtonJoinCourse from "../../courses/_components/BottonJoinCourse";
+
 import CourseCurriculum from "./CourseCurriculum";
 
 import { Course } from "@/types/user/course/course.type";
-
 import { joinCourse, cancelCourse } from "@/store/user/course/course.slice";
 import { RootState, DispatchType } from "@/store";
 import { getUserProfile } from "@/store/user/profile/profile.slice";
-
 import { showToast } from "@/utils/toast";
 
 export default function CourseDetailJoinCard({
@@ -25,10 +24,18 @@ export default function CourseDetailJoinCard({
 }) {
   const dispatch = useDispatch<DispatchType>();
 
-  const userProfile = useSelector((state: RootState) => state.userProfile.profile);
-  const accessToken = useSelector((state: RootState) => state.auth.userData?.accessToken);
-  const { loading: joinLoading } = useSelector((state: RootState) => state.userCourse.join);
-  const { loading: cancelLoading } = useSelector((state: RootState) => state.userCourse.cancel);
+  const userProfile = useSelector(
+    (state: RootState) => state.userProfile.profile,
+  );
+  const accessToken = useSelector(
+    (state: RootState) => state.auth.userData?.accessToken,
+  );
+  const { loading: joinLoading } = useSelector(
+    (state: RootState) => state.userCourse.join,
+  );
+  const { loading: cancelLoading } = useSelector(
+    (state: RootState) => state.userCourse.cancel,
+  );
   const isLoading = joinLoading || cancelLoading;
   const [isJoined, setIsJoined] = useState(false);
   const [open, setOpen] = useState(false);
@@ -51,11 +58,12 @@ export default function CourseDetailJoinCard({
   useEffect(() => {
     if (!userProfile) {
       setIsJoined(false);
+
       return;
     }
 
     const joined = userProfile.data?.chiTietKhoaHocGhiDanh?.some(
-      (c: Course) => c.maKhoaHoc === course.maKhoaHoc
+      (c: Course) => c.maKhoaHoc === course.maKhoaHoc,
     );
 
     setIsJoined(!!joined);
@@ -67,7 +75,8 @@ export default function CourseDetailJoinCard({
         title: "Please login",
         description: "You need to login to join this course",
         type: "danger",
-      })
+      });
+
       return;
     }
 
@@ -78,7 +87,7 @@ export default function CourseDetailJoinCard({
             maKhoaHoc: course.maKhoaHoc,
             taiKhoan: userProfile?.data?.taiKhoan as string,
             token: accessToken,
-          })
+          }),
         ).unwrap();
 
         if (res === "Ghi danh thành công!") {
@@ -87,7 +96,7 @@ export default function CourseDetailJoinCard({
             title: "Join course successfully",
             description: "You have successfully joined the course",
             type: "success",
-          })
+          });
         }
       } else {
         const res = await dispatch(
@@ -95,7 +104,7 @@ export default function CourseDetailJoinCard({
             maKhoaHoc: course.maKhoaHoc,
             taiKhoan: userProfile.data?.taiKhoan as string,
             token: accessToken,
-          })
+          }),
         ).unwrap();
 
         if (res === "Hủy ghi danh thành công!") {
@@ -103,7 +112,7 @@ export default function CourseDetailJoinCard({
           showToast({
             title: "Cancel course successfully",
             type: "success",
-          })
+          });
         }
       }
     } catch (err: any) {

@@ -17,8 +17,8 @@ const Pagination: React.FC<PaginationProps> = ({
       <HeroUIPagination
         initialPage={currentPage} // Trang hiện tại
         total={totalPages} // Tổng số trang
-        onChange={(page) => onPageChange(page)} // Hàm callback khi chuyển trang
         variant="bordered" // Bạn có thể thay đổi variant tùy ý (flat, bordered, faded, light)
+        onChange={(page) => onPageChange(page)} // Hàm callback khi chuyển trang
       />
     </div>
   );

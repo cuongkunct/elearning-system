@@ -103,8 +103,9 @@
 // };
 
 // export default CourseTable;
-import React from "react";
 import type { TCourse } from "@/types/admin/course/course.type";
+
+import React from "react";
 import {
   Table,
   TableHeader,
@@ -113,6 +114,7 @@ import {
   TableRow,
   TableCell,
 } from "@heroui/react";
+
 import { EditIcon, DeleteIcon } from "@/components/admin/icon";
 
 interface CourseTableProps {
@@ -130,8 +132,8 @@ const CourseTable: React.FC<CourseTableProps> = ({
 }) => {
   return (
     <Table
-      aria-label="Course data table"
       removeWrapper
+      aria-label="Course data table"
       classNames={{
         table: "w-full",
         th: "bg-[#F9F9F9] border-b border-[#F9F9F9] text-sm font-medium",
@@ -177,6 +179,8 @@ const CourseTable: React.FC<CourseTableProps> = ({
                 <div className="flex items-center justify-center gap-2">
                   {/* Edit */}
                   <button
+                    aria-label={`Edit ${course.maKhoaHoc}`}
+                    className="inline-flex items-center justify-center p-2 rounded-md text-default-400 hover:text-default-600 hover:bg-default-100 transition"
                     type="button"
                     onClick={() => {
                       console.log("✅ [CourseTable] EDIT CLICK:", {
@@ -185,14 +189,14 @@ const CourseTable: React.FC<CourseTableProps> = ({
                       });
                       onEdit?.(course);
                     }}
-                    className="inline-flex items-center justify-center p-2 rounded-md text-default-400 hover:text-default-600 hover:bg-default-100 transition"
-                    aria-label={`Edit ${course.maKhoaHoc}`}
                   >
                     <EditIcon className="text-lg" />
                   </button>
 
                   {/* Delete */}
                   <button
+                    aria-label={`Delete ${course.maKhoaHoc}`}
+                    className="inline-flex items-center justify-center p-2 rounded-md text-danger-500 hover:text-danger-600 hover:bg-danger-50 transition"
                     type="button"
                     onClick={() => {
                       console.log("✅ [CourseTable] DELETE CLICK:", {
@@ -201,14 +205,14 @@ const CourseTable: React.FC<CourseTableProps> = ({
                       });
                       onDelete?.(course);
                     }}
-                    className="inline-flex items-center justify-center p-2 rounded-md text-danger-500 hover:text-danger-600 hover:bg-danger-50 transition"
-                    aria-label={`Delete ${course.maKhoaHoc}`}
                   >
                     <DeleteIcon className="text-lg" />
                   </button>
 
                   {/* Upload */}
                   <button
+                    aria-label={`Upload image for ${course.maKhoaHoc}`}
+                    className="inline-flex items-center justify-center px-3 py-2 rounded-md text-primary hover:bg-primary-50 transition text-sm font-medium"
                     type="button"
                     onClick={() => {
                       console.log("✅ [CourseTable] UPLOAD CLICK:", {
@@ -218,22 +222,22 @@ const CourseTable: React.FC<CourseTableProps> = ({
                       const el = document.getElementById(
                         inputId,
                       ) as HTMLInputElement | null;
+
                       el?.click(); // ✅ mở file picker
                     }}
-                    className="inline-flex items-center justify-center px-3 py-2 rounded-md text-primary hover:bg-primary-50 transition text-sm font-medium"
-                    aria-label={`Upload image for ${course.maKhoaHoc}`}
                   >
                     Upload
                   </button>
 
                   {/* input file (ẩn để UI đẹp) */}
                   <input
-                    id={inputId}
-                    type="file"
                     accept="image/*"
+                    id={inputId}
                     style={{ display: "none" }} // ✅ dùng style thay vì className hidden cũng ok
+                    type="file"
                     onChange={(e) => {
                       const file = e.target.files?.[0];
+
                       if (!file) return;
 
                       console.log("✅ [CourseTable] FILE SELECTED:", {

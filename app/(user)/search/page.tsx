@@ -1,5 +1,4 @@
 import CourseListPagination from "../courses/_components/CourseListPagination";
-
 import CourseCard from "../courses/_components/CourseList";
 
 import { getCoursesPagination } from "@/services/user/courses/course.service";

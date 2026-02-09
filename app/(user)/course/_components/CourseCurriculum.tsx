@@ -137,7 +137,9 @@ const chapters: Chapter[] = [
 export default function CourseCurriculum() {
   return (
     <div className="mt-12 ">
-      <h2 className="text-2xl font-semibold text-center md:text-left py-4">Nội dung khóa học</h2>
+      <h2 className="text-2xl font-semibold text-center md:text-left py-4">
+        Nội dung khóa học
+      </h2>
       <Accordion className="w-full" selectionMode="multiple" variant="splitted">
         {chapters.map((chapter) => (
           <AccordionItem
@@ -153,8 +155,12 @@ export default function CourseCurriculum() {
             }
             title={
               <div className="truncate">
-                <p className="font-semibold text-sm truncate">{chapter.title}</p>
-                <p className="text-sm text-gray-500 truncate">{chapter.description}</p>
+                <p className="font-semibold text-sm truncate">
+                  {chapter.title}
+                </p>
+                <p className="text-sm text-gray-500 truncate">
+                  {chapter.description}
+                </p>
               </div>
             }
           >
@@ -180,13 +186,14 @@ export default function CourseCurriculum() {
                     )}
                   </div>
 
-                  <span className="text-sm text-gray-500 mt-1 sm:mt-0">{lesson.duration}</span>
+                  <span className="text-sm text-gray-500 mt-1 sm:mt-0">
+                    {lesson.duration}
+                  </span>
                 </div>
               ))}
             </div>
           </AccordionItem>
         ))}
-
       </Accordion>
     </div>
   );

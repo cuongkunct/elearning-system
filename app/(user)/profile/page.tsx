@@ -1,15 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Avatar, Button, Card } from "@heroui/react";
-
+import { useSelector, useDispatch } from "react-redux";
 
 import Profile from "./_components/Profile";
 import MyCoursePage from "./_components/MyCourses";
+
 import SkeletonItem from "@/components/user/shared/SkeletonCardItem";
-
-import { useSelector, useDispatch } from "react-redux";
 import { RootState, DispatchType } from "@/store";
-
 import {
   getUserProfile,
   updateUserProfile,
@@ -19,8 +17,12 @@ import { showToast } from "@/utils/toast";
 export default function ProfilePage() {
   const dispatch = useDispatch<DispatchType>();
   const userSession = useSelector((state: RootState) => state.auth.userData);
-  const profileState = useSelector((state: RootState) => state.userProfile.profile);
-  const updateState = useSelector((state: RootState) => state.userProfile.update);
+  const profileState = useSelector(
+    (state: RootState) => state.userProfile.profile,
+  );
+  const updateState = useSelector(
+    (state: RootState) => state.userProfile.update,
+  );
 
   const [prfSwitch, setPrfSwitch] = useState<"profile" | "courses">("profile");
 
@@ -38,14 +40,12 @@ export default function ProfilePage() {
   }, [dispatch, userSession?.accessToken]);
 
   const handleUpdateProfile = async (data?: any) => {
-
     if (!userSession?.accessToken) return;
 
     try {
       if (data) {
-
         await dispatch(
-          updateUserProfile({ data, token: userSession?.accessToken })
+          updateUserProfile({ data, token: userSession?.accessToken }),
         ).unwrap();
 
         showToast({
@@ -55,7 +55,9 @@ export default function ProfilePage() {
         });
       }
 
-      await dispatch(getUserProfile({ token: userSession.accessToken })).unwrap();
+      await dispatch(
+        getUserProfile({ token: userSession.accessToken }),
+      ).unwrap();
     } catch (err: any) {
       showToast({
         title: "Error updating profile",
@@ -64,7 +66,6 @@ export default function ProfilePage() {
       });
     }
   };
-
 
   const loading = profileState.loading || updateState.loading;
 
@@ -90,13 +91,15 @@ export default function ProfilePage() {
             </div>
             <div className="w-full text-sm text-gray-600 space-y-2">
               <p>
-                <span className="font-medium">Username:</span> {userInfo.taiKhoan}
+                <span className="font-medium">Username:</span>{" "}
+                {userInfo.taiKhoan}
               </p>
               <p>
                 <span className="font-medium">Group:</span> {userInfo.maNhom}
               </p>
               <p>
-                <span className="font-medium">Role:</span> {userInfo.maLoaiNguoiDung}
+                <span className="font-medium">Role:</span>{" "}
+                {userInfo.maLoaiNguoiDung}
               </p>
             </div>
           </div>
@@ -125,7 +128,10 @@ export default function ProfilePage() {
           </div>
 
           {prfSwitch === "profile" ? (
-            <Profile userSession={userSession?.accessToken} onUpdate={handleUpdateProfile} />
+            <Profile
+              userSession={userSession?.accessToken}
+              onUpdate={handleUpdateProfile}
+            />
           ) : (
             <MyCoursePage userData={userInfo} onCancel={handleUpdateProfile} />
           )}

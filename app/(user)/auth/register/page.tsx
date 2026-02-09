@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-
-
 import { DispatchType } from "@/store";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
 import { RegisterFormData, registerSchema } from "@/schemas/register.schema";
@@ -152,7 +150,7 @@ export default function Register() {
           if (err) {
             setOpen(false);
           } else {
-            setOpen(false)
+            setOpen(false);
             router.push("/auth/login");
           }
         }}

@@ -17,10 +17,11 @@ export function getAccessTokenFromStorage(): string | null {
       return raw;
     }
 
-    // 2. Nếu lỡ lưu dưới dạng JSON object 
+    // 2. Nếu lỡ lưu dưới dạng JSON object
     try {
       const obj = JSON.parse(raw);
       const token = obj?.accessToken || obj?.content?.accessToken || obj?.token;
+
       if (typeof token === "string") return token;
     } catch {
       // Nếu không phải JSON thì trả về raw luôn (nếu nó thỏa mãn độ dài token)
@@ -28,6 +29,7 @@ export function getAccessTokenFromStorage(): string | null {
     }
   } catch (error) {
     console.error("Lỗi khi truy cập LocalStorage:", error);
+
     return null;
   }
 

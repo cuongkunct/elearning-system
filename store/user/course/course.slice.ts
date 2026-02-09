@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
 import axiosInstance from "@/services/axiosInstance";
 import { handleAxiosError } from "@/services/handleAxiosError";
 import { ApiError } from "@/services/api.type";
@@ -20,51 +21,55 @@ type CourseState = {
   cancel: CourseActionState;
 };
 
-
 export const joinCourse = createAsyncThunk<
   any,
   CourseActionPayload,
   { rejectValue: ApiError }
->("course/join", async ({ maKhoaHoc, taiKhoan, token }, { rejectWithValue }) => {
-  try {
-    const res = await axiosInstance.post(
-      "QuanLyKhoaHoc/DangKyKhoaHoc",
-      { maKhoaHoc, taiKhoan },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+>(
+  "course/join",
+  async ({ maKhoaHoc, taiKhoan, token }, { rejectWithValue }) => {
+    try {
+      const res = await axiosInstance.post(
+        "QuanLyKhoaHoc/DangKyKhoaHoc",
+        { maKhoaHoc, taiKhoan },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      },
-    );
+      );
 
-    return res.data;
-  } catch (error) {
-    return rejectWithValue(handleAxiosError(error));
-  }
-});
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(handleAxiosError(error));
+    }
+  },
+);
 
 export const cancelCourse = createAsyncThunk<
   any,
   CourseActionPayload,
   { rejectValue: ApiError }
->("course/cancel", async ({ maKhoaHoc, taiKhoan, token }, { rejectWithValue }) => {
-  try {
-    const res = await axiosInstance.post(
-      "QuanLyKhoaHoc/HuyGhiDanh",
-      { maKhoaHoc, taiKhoan },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+>(
+  "course/cancel",
+  async ({ maKhoaHoc, taiKhoan, token }, { rejectWithValue }) => {
+    try {
+      const res = await axiosInstance.post(
+        "QuanLyKhoaHoc/HuyGhiDanh",
+        { maKhoaHoc, taiKhoan },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      },
-    );
+      );
 
-    return res.data;
-  } catch (error) {
-    return rejectWithValue(handleAxiosError(error));
-  }
-});
-
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(handleAxiosError(error));
+    }
+  },
+);
 
 const initialState: CourseState = {
   join: {
