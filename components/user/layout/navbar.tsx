@@ -34,7 +34,7 @@ import { Category } from "@/types/user/category/category.type";
 import { useDispatch } from "react-redux";
 import { setLoginData } from "@/store/user/auth/auth.slice";
 export const Navbar = () => {
-  const rout = useRouter();
+  const router = useRouter();
   const dispatch = useDispatch();
   const pathname = usePathname();
   const [categories, setCategories] = useState<Category[]>([]);
@@ -60,7 +60,9 @@ export const Navbar = () => {
     try {
       await fetch("/api/auth/logout", { method: "POST" });
     } finally {
+      router.push("/auth/login");
       dispatch(setLoginData(null));
+      localStorage.removeItem("sessionToken");
     }
   };
 
@@ -86,7 +88,7 @@ export const Navbar = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!searchKey.trim()) return;
-    rout.push(`/search?key=${searchKey}`);
+    router.push(`/search?key=${searchKey}`);
     setMenuOpen(false);
   };
 
@@ -248,12 +250,12 @@ export const Navbar = () => {
                 <DropdownItem
                   key="profile"
                   className="h-14 gap-2"
-                  onClick={() => rout.push("/profile")}
+                  onClick={() => router.push("/profile")}
                 >
                   <p className="font-semibold">My Profile</p>
                 </DropdownItem>
 
-                <DropdownItem key="admin" onClick={() => rout.push("/admin")}>
+                <DropdownItem key="admin" onClick={() => router.push("/admin")}>
                   Admin
                 </DropdownItem>
                 <DropdownItem
@@ -282,7 +284,7 @@ export const Navbar = () => {
               <button
                 className={`w-full text-left px-4 py-2 rounded`}
                 onClick={() => {
-                  rout.push(item.href);
+                  router.push(item.href);
                   setMenuOpen(false);
                 }}
               >

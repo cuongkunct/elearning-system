@@ -17,7 +17,7 @@ export function getAccessTokenFromStorage(): string | null {
       return raw;
     }
 
-    // 2. Nếu lỡ lưu dưới dạng JSON object (đề phòng trường hợp bạn lưu cả object)
+    // 2. Nếu lỡ lưu dưới dạng JSON object 
     try {
       const obj = JSON.parse(raw);
       const token = obj?.accessToken || obj?.content?.accessToken || obj?.token;

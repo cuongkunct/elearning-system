@@ -24,6 +24,7 @@ api.interceptors.request.use(
     if (accessToken) {
       config.headers["Authorization"] = withBearer(accessToken as string);
     }
+
     config.headers["Accept"] = "application/json";
     config.headers["Content-Type"] = "application/json-patch+json";
 
