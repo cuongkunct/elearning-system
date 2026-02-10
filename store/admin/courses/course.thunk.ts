@@ -20,7 +20,6 @@ export const fetchCourses = createAsyncThunk<
 >("course/fetchCourses", async (query, { rejectWithValue }) => {
   try {
     const res = await courseService.getCoursesPagination(query);
-
     return res.data;
   } catch (err) {
     return rejectWithValue(err as AxiosError);
@@ -35,7 +34,6 @@ export const addCourse = createAsyncThunk<
 >("course/addCourse", async (payload, { rejectWithValue }) => {
   try {
     const res = await courseService.addCourse(payload);
-
     return res.data;
   } catch (err) {
     return rejectWithValue(toSerializableApiError(err));
@@ -43,39 +41,43 @@ export const addCourse = createAsyncThunk<
 });
 
 // ✅ updateCourse
+/**
+ * ✅ CHANGED:
+ * - Trả về payload để slice patch UI ngay (searchResult + data.items)
+ * - Không phụ thuộc backend trả về gì
+ */
 export const updateCourse = createAsyncThunk<
-  unknown,
+  TUpdateCoursePayload,
   TUpdateCoursePayload,
   { rejectValue: SerializableApiError }
 >("course/updateCourse", async (payload, { rejectWithValue }) => {
   try {
-    const res = await courseService.updateCourse(payload);
-
-    return res.data;
+    await courseService.updateCourse(payload);
+    return payload;
   } catch (err) {
     return rejectWithValue(toSerializableApiError(err));
   }
 });
 
-// DeleteCourse thunk could be added here similarly if needed
-// ✅ ADDED
+// ✅ deleteCourse
+/**
+ * ✅ CHANGED:
+ * Trả về { maKhoaHoc } để slice biết xoá course nào khỏi UI
+ */
 export const deleteCourse = createAsyncThunk<
-  unknown,
+  { maKhoaHoc: string },
   string, // maKhoaHoc
   { rejectValue: SerializableApiError }
 >("course/deleteCourse", async (maKhoaHoc, { rejectWithValue }) => {
   try {
-    const res = await courseService.deleteCourse(maKhoaHoc);
-
-    return res.data;
+    await courseService.deleteCourse(maKhoaHoc);
+    return { maKhoaHoc };
   } catch (err) {
     return rejectWithValue(toSerializableApiError(err));
   }
 });
 
-// SearchCourse thunk could be added here similarly if needed
-
-// ✅ ADDED
+// ✅ searchCourseByMaKhoaHoc
 export const searchCourseByMaKhoaHoc = createAsyncThunk<
   TCourse,
   { maKhoaHoc: string },
@@ -85,7 +87,6 @@ export const searchCourseByMaKhoaHoc = createAsyncThunk<
   async ({ maKhoaHoc }, { rejectWithValue }) => {
     try {
       const res = await courseService.getCourseInfo(maKhoaHoc);
-
       return res.data;
     } catch (err) {
       return rejectWithValue(toSerializableApiError(err));
@@ -93,7 +94,7 @@ export const searchCourseByMaKhoaHoc = createAsyncThunk<
   },
 );
 
-// ✅ ADDED
+// ✅ uploadCourseImage
 export const uploadCourseImage = createAsyncThunk<
   unknown,
   { file: File; tenKhoaHoc: string },
@@ -103,7 +104,6 @@ export const uploadCourseImage = createAsyncThunk<
   async ({ file, tenKhoaHoc }, { rejectWithValue }) => {
     try {
       const res = await courseService.uploadCourseImage(file, tenKhoaHoc);
-
       return res.data;
     } catch (err) {
       return rejectWithValue(toSerializableApiError(err));

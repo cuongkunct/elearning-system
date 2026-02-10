@@ -1,12 +1,18 @@
 import type { NextRequest } from "next/server";
-
 import { NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
-  //Middleware bảo vệ router
+  // Middleware bảo vệ router
   const sessionToken = req.cookies.get("sessionToken")?.value;
   const role = req.cookies.get("userRole")?.value;
   const { pathname } = req.nextUrl;
+
+  // ✅ NEW: chưa login thì không được vào /admin
+  if (!sessionToken && pathname.startsWith("/admin")) {
+    return NextResponse.redirect(new URL("/", req.url));
+    // hoặc: return NextResponse.redirect(new URL("/auth/login", req.url));
+  }
+
   if (
     sessionToken &&
     (pathname === "/auth/login" || pathname === "/auth/register")
@@ -17,6 +23,7 @@ export function middleware(req: NextRequest) {
   if (!sessionToken && pathname === "/profile") {
     return NextResponse.redirect(new URL("/auth/login", req.url));
   }
+
   if (role === "HV" && pathname.startsWith("/admin")) {
     return NextResponse.rewrite(new URL("/not-found", req.url));
   }

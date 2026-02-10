@@ -11,13 +11,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 
 import { api } from "@/services/admin/api";
-import { publicApi } from "@/services/admin/publicApi"; // ✅ ADDED: search chỉ dùng TokenCybersoft
+import { publicApi } from "@/services/admin/publicApi"; // ✅ search chỉ dùng TokenCybersoft
 import {
   toSerializableApiError,
   type SerializableApiError,
 } from "@/services/admin/utils/apiError";
 
-// ✅ ADDED: query type cho search
+// ✅ query type cho search
 export type TSearchUserQuery = {
   maNhom: string;
   tuKhoa: string;
@@ -59,7 +59,6 @@ export const createAdminUser = createAsyncThunk<
 >("admin/createAdminUser", async (payload, { rejectWithValue }) => {
   try {
     const res = await api.post("QuanLyNguoiDung/ThemNguoiDung", payload);
-
     return res.data;
   } catch (error) {
     return rejectWithValue(toSerializableApiError(error));
@@ -89,17 +88,21 @@ export const updateAdminUser = createAsyncThunk<
 /* =========================
    4) DELETE USER
 ========================= */
+/**
+ * ✅ CHANGED:
+ * Trả về { taiKhoan } để reducer biết xoá user nào khỏi UI
+ */
 export const deleteAdminUser = createAsyncThunk<
-  unknown,
+  { taiKhoan: string },
   string, // taiKhoan
   { rejectValue: SerializableApiError }
 >("admin/deleteAdminUser", async (taiKhoan, { rejectWithValue }) => {
   try {
-    const res = await api.delete("QuanLyNguoiDung/XoaNguoiDung", {
+    await api.delete("QuanLyNguoiDung/XoaNguoiDung", {
       params: { TaiKhoan: taiKhoan },
     });
 
-    return res.data;
+    return { taiKhoan };
   } catch (error) {
     return rejectWithValue(toSerializableApiError(error));
   }
@@ -108,7 +111,6 @@ export const deleteAdminUser = createAsyncThunk<
 /* =========================
    5) SEARCH USERS
 ========================= */
-// ✅ ADDED
 export const searchAdminUsers = createAsyncThunk<
   TUser[],
   TSearchUserQuery,
@@ -150,7 +152,7 @@ type AdminUserState = initState<TPaginationResponse<TUser>> & {
   deleteLoading: boolean;
   deleteError: SerializableApiError | null;
 
-  // ✅ ADDED: search state
+  // search state
   searchKeyword: string;
   searchLoading: boolean;
   searchError: SerializableApiError | null;
@@ -171,7 +173,6 @@ const initialState: AdminUserState = {
   deleteLoading: false,
   deleteError: null,
 
-  // ✅ ADDED
   searchKeyword: "",
   searchLoading: false,
   searchError: null,
@@ -195,7 +196,6 @@ const adminUserSlice = createSlice({
       state.deleteError = null;
     },
 
-    // ✅ ADDED: search reducers
     setSearchKeyword: (state, action) => {
       state.searchKeyword = action.payload;
     },
@@ -253,15 +253,32 @@ const adminUserSlice = createSlice({
         state.deleteLoading = true;
         state.deleteError = null;
       })
-      .addCase(deleteAdminUser.fulfilled, (state) => {
+      .addCase(deleteAdminUser.fulfilled, (state, action) => {
         state.deleteLoading = false;
+
+        const { taiKhoan } = action.payload;
+
+        // ✅ FIX 1: đang search -> remove khỏi searchResults để UI biến mất ngay
+        state.searchResults = state.searchResults.filter(
+          (u) => u.taiKhoan !== taiKhoan,
+        );
+
+        // ✅ FIX 2: list phân trang -> remove khỏi data.items (nếu UI đang render từ list)
+        if (state.data?.items) {
+          state.data.items = state.data.items.filter(
+            (u) => u.taiKhoan !== taiKhoan,
+          );
+
+          // optional: giảm totalCount để UI phân trang/đếm record đúng
+          state.data.totalCount = Math.max(0, state.data.totalCount - 1);
+        }
       })
       .addCase(deleteAdminUser.rejected, (state, action) => {
         state.deleteLoading = false;
         state.deleteError = action.payload ?? { message: "Delete user failed" };
       })
 
-      // ✅ ADDED: search reducers
+      // ===== search =====
       .addCase(searchAdminUsers.pending, (state) => {
         state.searchLoading = true;
         state.searchError = null;
@@ -277,7 +294,6 @@ const adminUserSlice = createSlice({
   },
 });
 
-// ✅ CHANGED: export thêm setSearchKeyword/clearSearch
 export const {
   resetCreateState,
   resetUpdateState,

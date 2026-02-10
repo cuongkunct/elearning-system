@@ -72,7 +72,6 @@ export default function CoursePage() {
   }, [isCourseSearching, courseData?.items, searchResult]);
 
   const handleOpenCourseEdit = (course: TCourse) => {
-    console.log("✅ [CoursePage] open edit:", course.maKhoaHoc);
     setSelectedCourse(course);
     setIsCourseEditOpen(true);
     dispatch(resetUpdateCourseState());

@@ -16,16 +16,6 @@ export const siteConfig = {
       href: "/admin/course",
       action: { key: "add_course", label: "Add course" },
     },
-    {
-      label: "Blog",
-      title: "Blog Admin",
-      href: "/admin/blog",
-    },
-    {
-      label: "About",
-      title: "About Admin",
-      href: "/admin/about",
-    },
   ],
   navMenuItems: [
     {

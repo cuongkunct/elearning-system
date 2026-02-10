@@ -17,7 +17,7 @@ import {
 
 export type EditUserForm = {
   taiKhoan: string;
-  matKhau: string;
+  matKhau: string; // để trống nếu không đổi
   hoTen: string;
   soDT: string;
   maLoaiNguoiDung: string;
@@ -30,13 +30,16 @@ type Props = {
   onOpenChange: (open: boolean) => void;
   user: TUser | null;
   defaultGroup?: string;
-  onSubmit: (payload: EditUserForm) => Promise<void> | void;
+  onSubmit: (
+    payload: EditUserForm | Omit<EditUserForm, "matKhau">,
+  ) => Promise<void> | void;
   loading?: boolean;
   error?: string | null;
 };
 
 const validatePassword = (pwd: string) =>
   /^(?=.*[A-Z])(?=.*\d).{8,}$/.test(pwd);
+
 const validateEmail = (email: string) => /^\S+@\S+\.\S+$/.test(email.trim());
 
 function inferMaLoaiNguoiDung(user: any): string {
@@ -60,7 +63,7 @@ export default function EditUserModal({
   const initial: EditUserForm = useMemo(
     () => ({
       taiKhoan: user?.taiKhoan || "",
-      matKhau: "", // user nhập mật khẩu mới để update
+      matKhau: "", // để trống = giữ nguyên
       hoTen: user?.hoTen || "",
       soDT: user?.soDT || "",
       email: user?.email || "",
@@ -88,17 +91,20 @@ export default function EditUserModal({
 
     if (!form.hoTen.trim()) e.hoTen = "Họ tên là bắt buộc";
     if (!form.soDT.trim()) e.soDT = "Số điện thoại là bắt buộc";
+
     if (!form.email.trim()) e.email = "Email là bắt buộc";
     else if (!validateEmail(form.email)) e.email = "Email không hợp lệ";
 
     if (!form.maNhom.trim()) e.maNhom = "Mã nhóm là bắt buộc";
+
     if (!form.maLoaiNguoiDung.trim())
       e.maLoaiNguoiDung = "Loại người dùng là bắt buộc";
 
-    // mật khẩu update
-    if (!form.matKhau.trim()) e.matKhau = "Mật khẩu là bắt buộc";
-    else if (!validatePassword(form.matKhau))
+    // Mật khẩu: KHÔNG bắt buộc khi edit.
+    // Chỉ validate nếu user nhập để đổi mật khẩu.
+    if (form.matKhau.trim() && !validatePassword(form.matKhau)) {
       e.matKhau = "Mật khẩu ≥ 8 ký tự, có 1 chữ HOA và 1 số";
+    }
 
     return e;
   }, [form]);
@@ -108,9 +114,18 @@ export default function EditUserModal({
 
   const handleSubmit = async () => {
     if (loading) return;
+
     setSubmitAttempted(true);
     if (hasError) return;
-    await onSubmit(form);
+
+    // Nếu không nhập mật khẩu -> giữ nguyên mật khẩu cũ:
+    // Không gửi field matKhau lên API để backend không update mật khẩu.
+    const payload =
+      form.matKhau.trim().length > 0
+        ? form
+        : (({ matKhau, ...rest }) => rest)(form);
+
+    await onSubmit(payload);
   };
 
   return (
@@ -141,10 +156,11 @@ export default function EditUserModal({
                 />
 
                 <Input
-                  isRequired
+                  // mật khẩu không bắt buộc khi edit
                   errorMessage={showError("matKhau") ? errors.matKhau : ""}
                   isInvalid={showError("matKhau")}
-                  label="Mật khẩu"
+                  label="Mật khẩu (để trống nếu không đổi)"
+                  placeholder="••••••••"
                   type="password"
                   value={form.matKhau}
                   onValueChange={set("matKhau")}
@@ -187,7 +203,6 @@ export default function EditUserModal({
                   selectedKeys={[form.maNhom]}
                   onSelectionChange={(keys) => {
                     const v = Array.from(keys)[0] as string;
-
                     if (v) setForm((p) => ({ ...p, maNhom: v }));
                   }}
                 >
@@ -215,7 +230,6 @@ export default function EditUserModal({
                   selectedKeys={[form.maLoaiNguoiDung]}
                   onSelectionChange={(keys) => {
                     const v = Array.from(keys)[0] as string;
-
                     if (v) setForm((p) => ({ ...p, maLoaiNguoiDung: v }));
                   }}
                 >

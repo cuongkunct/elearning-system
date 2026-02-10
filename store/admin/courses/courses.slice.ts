@@ -12,8 +12,8 @@ import {
   addCourse,
   updateCourse,
   deleteCourse,
+  searchCourseByMaKhoaHoc,
 } from "./course.thunk";
-import { searchCourseByMaKhoaHoc } from "./course.thunk"; // ✅ ADDED
 
 type CourseState = {
   loading: boolean;
@@ -63,7 +63,6 @@ const courseSlice = createSlice({
       state.addLoading = false;
       state.addError = null;
     },
-    // ✅ ADDED
     resetUpdateCourseState: (state) => {
       state.updateLoading = false;
       state.updateError = null;
@@ -72,7 +71,7 @@ const courseSlice = createSlice({
       state.deleteLoading = false;
       state.deleteError = null;
     },
-    // ✅ ADDED
+
     setCourseSearchKeyword: (state, action) => {
       state.searchKeyword = action.payload;
     },
@@ -85,6 +84,7 @@ const courseSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // ===== fetch =====
       .addCase(fetchCourses.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -98,7 +98,7 @@ const courseSlice = createSlice({
         state.error = (action.payload as AxiosError) ?? null;
       })
 
-      // ✅ addCourse
+      // ===== add =====
       .addCase(addCourse.pending, (state) => {
         state.addLoading = true;
         state.addError = null;
@@ -110,13 +110,36 @@ const courseSlice = createSlice({
         state.addLoading = false;
         state.addError = action.payload ?? { message: "Add course failed" };
       })
-      // ✅ ADDED
+
+      // ===== update =====
       .addCase(updateCourse.pending, (state) => {
         state.updateLoading = true;
         state.updateError = null;
       })
-      .addCase(updateCourse.fulfilled, (state) => {
+      .addCase(updateCourse.fulfilled, (state, action) => {
         state.updateLoading = false;
+
+        const updated = action.payload; // TUpdateCoursePayload (from thunk)
+
+        // ✅ patch searchResult if matches
+        if (
+          state.searchResult &&
+          state.searchResult.maKhoaHoc === updated.maKhoaHoc
+        ) {
+          state.searchResult = {
+            ...state.searchResult,
+            ...updated,
+          } as any;
+        }
+
+        // ✅ patch list item if exists
+        if (state.data?.items?.length) {
+          state.data.items = state.data.items.map((c) =>
+            c.maKhoaHoc === updated.maKhoaHoc
+              ? ({ ...c, ...updated } as any)
+              : c,
+          );
+        }
       })
       .addCase(updateCourse.rejected, (state, action) => {
         state.updateLoading = false;
@@ -125,12 +148,28 @@ const courseSlice = createSlice({
         };
       })
 
+      // ===== delete =====
       .addCase(deleteCourse.pending, (state) => {
         state.deleteLoading = true;
         state.deleteError = null;
       })
-      .addCase(deleteCourse.fulfilled, (state) => {
+      .addCase(deleteCourse.fulfilled, (state, action) => {
         state.deleteLoading = false;
+
+        const { maKhoaHoc } = action.payload; // ✅ requires thunk return {maKhoaHoc}
+
+        // ✅ nếu đang search đúng khoá đó -> clear ngay
+        if (state.searchResult?.maKhoaHoc === maKhoaHoc) {
+          state.searchResult = null;
+        }
+
+        // ✅ remove khỏi list phân trang
+        if (state.data?.items?.length) {
+          state.data.items = state.data.items.filter(
+            (c) => c.maKhoaHoc !== maKhoaHoc,
+          );
+          state.data.totalCount = Math.max(0, state.data.totalCount - 1);
+        }
       })
       .addCase(deleteCourse.rejected, (state, action) => {
         state.deleteLoading = false;
@@ -138,7 +177,8 @@ const courseSlice = createSlice({
           message: "Delete course failed",
         };
       })
-      // ✅ ADDED
+
+      // ===== search =====
       .addCase(searchCourseByMaKhoaHoc.pending, (state) => {
         state.searchLoading = true;
         state.searchError = null;
@@ -164,4 +204,5 @@ export const {
   setCourseSearchKeyword,
   clearCourseSearch,
 } = courseSlice.actions;
+
 export default courseSlice.reducer;
