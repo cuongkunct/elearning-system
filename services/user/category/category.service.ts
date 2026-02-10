@@ -9,6 +9,7 @@ import { Course } from "@/types/user/course/course.type";
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 const TOKEN_CYBERSOFT = process.env.NEXT_PUBLIC_TOKEN_CYBERSOFT;
 
+// service to get list category
 export async function getListCategory(): Promise<Category[]> {
   try {
     const res = await fetch(`${BACKEND_URL}QuanLyKhoaHoc/LayDanhMucKhoaHoc`, {
@@ -28,6 +29,8 @@ export async function getListCategory(): Promise<Category[]> {
   }
 }
 
+
+// service to get course and category
 export async function getCourseAndCategory() {
   try {
     const [courses, categories] = await Promise.all([
@@ -45,6 +48,8 @@ export async function getCourseAndCategory() {
   }
 }
 
+
+// service to merge category with course count
 export function mergeCategoryWithCourseCount(
   courses: Course[],
   categories: Category[],

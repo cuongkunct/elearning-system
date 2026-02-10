@@ -5,7 +5,7 @@ import {
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 const TOKEN_CYBERSOFT = process.env.NEXT_PUBLIC_TOKEN_CYBERSOFT;
 
-/* service to get courses with pagination */
+// service to get course pagination
 export async function getCoursesPagination(
   page: number,
   searchKey?: string,
@@ -30,7 +30,7 @@ export async function getCoursesPagination(
 
   return res.json();
 }
-/* service to get all courses */
+// service to get all course
 export async function getAllCourses(): Promise<Course[]> {
   const res = await fetch(
     `${BACKEND_URL}QuanLyKhoaHoc/LayDanhSachKhoaHoc?MaNhom=GP01`,
@@ -45,13 +45,14 @@ export async function getAllCourses(): Promise<Course[]> {
   return res.json();
 }
 
+// service to get course detail
 export async function getCourseDetail(maKhoaHoc: string) {
   const res = await fetch(
     `${BACKEND_URL}QuanLyKhoaHoc/LayThongTinKhoaHoc?maKhoaHoc=${maKhoaHoc}`,
     {
       headers: { TokenCybersoft: TOKEN_CYBERSOFT! },
       next: {
-        revalidate: 60, // ISR – 60s cập nhật
+        revalidate: 60, // cache 60s
       },
     },
   );
@@ -63,6 +64,7 @@ export async function getCourseDetail(maKhoaHoc: string) {
   return res.json();
 }
 
+// service to get related courses
 export async function getRelatedCourses(maDanhMuc?: string) {
   const url = new URL(
     `${BACKEND_URL}QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?MaNhom=GP01`,

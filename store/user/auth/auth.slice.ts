@@ -9,6 +9,7 @@ import { UserLogin, UserLoginResponse } from "@/types/user/auth/login.type";
 import { handleAxiosError } from "@/services/handleAxiosError";
 import { ApiError } from "@/services/api.type";
 
+// register user thunk
 export const registerUser = createAsyncThunk<
   UserRegisterResponse,
   UserRegister,
@@ -25,7 +26,7 @@ export const registerUser = createAsyncThunk<
     return rejectWithValue(handleAxiosError(error));
   }
 });
-
+// login user thunk
 export const loginUser = createAsyncThunk<
   UserLoginResponse,
   UserLogin,
@@ -78,6 +79,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    // set login data logout
     setLoginData(state, action: PayloadAction<LoginData | null>) {
       state.userData = action.payload;
       localStorage.setItem("sessionToken", action.payload?.accessToken || "");
@@ -85,6 +87,7 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // register user
       .addCase(registerUser.pending, (state) => {
         state.register.loading = true;
         state.register.error = undefined;
@@ -97,6 +100,7 @@ const authSlice = createSlice({
         state.register.loading = false;
         state.register.error = action.payload;
       })
+      // login user
       .addCase(loginUser.pending, (state) => {
         state.login.loading = true;
         state.login.error = undefined;

@@ -20,7 +20,7 @@ type CourseState = {
   join: CourseActionState;
   cancel: CourseActionState;
 };
-
+// join course thunk
 export const joinCourse = createAsyncThunk<
   any,
   CourseActionPayload,
@@ -46,6 +46,7 @@ export const joinCourse = createAsyncThunk<
   },
 );
 
+// cancel course thunk
 export const cancelCourse = createAsyncThunk<
   any,
   CourseActionPayload,
@@ -95,7 +96,7 @@ const userCourseReducer = createSlice({
   },
   extraReducers: (builder) => {
     builder
-
+      // join course
       .addCase(joinCourse.pending, (state) => {
         state.join.loading = true;
         state.join.error = undefined;
@@ -108,7 +109,7 @@ const userCourseReducer = createSlice({
         state.join.loading = false;
         state.join.error = action.payload;
       })
-
+      // cancel course
       .addCase(cancelCourse.pending, (state) => {
         state.cancel.loading = true;
         state.cancel.error = undefined;
