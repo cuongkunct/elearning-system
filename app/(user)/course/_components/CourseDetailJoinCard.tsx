@@ -126,13 +126,13 @@ export default function CourseDetailJoinCard({
 
   return (
     <section className="max-w-7xl mx-auto py-12 grid md:grid-cols-3 gap-8">
-      <div className="md:col-span-2 w-full">
+      <div className="md:col-span-2 w-full px-4">
         <h2 className="text-2xl font-semibold py-4">Course introduction</h2>
-        <p className="leading-relaxed text-gray-700">{intro}</p>
+        <p className="leading-relaxed">{intro}</p>
         <CourseCurriculum />
       </div>
 
-      <div className="flex flex-col gap-4 rounded-2xl p-2 shadow-lg bg-white">
+      <div className="flex flex-col gap-4 rounded-2xl p-2 shadow-lg ">
         <CourseCardItem course={course} />
 
         <div className="space-y-2 text-sm text-gray-600">

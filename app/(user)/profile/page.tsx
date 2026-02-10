@@ -107,8 +107,8 @@ export default function ProfilePage() {
       </div>
 
       <div className="flex flex-4/5 mt-2">
-        <div className="pl-4 w-full flex flex-col justify-center items-center md:items-start lg:items-start">
-          <div className="flex mb-4">
+        <div className="w-full flex flex-col justify-center items-center md:items-start lg:items-start">
+          <div className="flex mb-4 px-6">
             <Button
               color={prfSwitch === "profile" ? "secondary" : "primary"}
               radius="none"

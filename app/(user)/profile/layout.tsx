@@ -5,7 +5,7 @@ export default function ProfileGuard({
 }) {
   return (
     <section className="">
-      <div className="">{children}</div>
+      {children}
     </section>
   );
 }
