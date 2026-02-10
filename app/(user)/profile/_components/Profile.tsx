@@ -100,10 +100,10 @@ export default function Profile({ userSession, onUpdate }: Props) {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         <Form
-          className="md:col-span-4 flex flex-col gap-8 p-10 rounded-2xl  min-h-screen"
+          className="w-full col-span-1 md:col-span-4 flex flex-col gap-8 rounded-2xl min-h-screen"
           onSubmit={handleSubmit}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             <Input
               isReadOnly
               label="Username"

@@ -16,6 +16,8 @@ import {
   resetCourseState,
 } from "@/store/user/course/course.slice";
 import { showToast } from "@/utils/toast";
+import { CardBody } from "@heroui/react";
+import SafeImage from "../../courses/_components/SafeImage";
 
 type Props = {
   userData: UserProfileResponse;
@@ -95,7 +97,7 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
   }
 
   return (
-    <section className="w-full mx-auto px-6">
+    <section className="w-full mx-auto py-4">
       <div className="flex items-center justify-start gap-4 my-4">
         <LogoIcon />
         <h2 className="text-3xl font-bold ">My joined course</h2>
@@ -105,17 +107,19 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
         {courseMemo.map((course: Course) => (
           <div
             key={course.maKhoaHoc}
-            className="flex flex-col md:flex-row items-center w-fit md:w-full rounded-lg shadow p-4 hover:shadow-xl transition-shadow"
+            className="flex flex-col md:flex-row items-center w-fit md:w-full rounded-lg shadow p-0 hover:shadow-xl transition-shadow"
           >
-            <Image
-              alt={course.tenKhoaHoc}
-              className="object-cover rounded mr-4"
-              height={300}
-              src={course.hinhAnh}
-              width={300}
-            />
+            <div className="flex items-center justify-center h-[200px] w-[340px]">
+              <SafeImage
+                alt={course.tenKhoaHoc}
+                className="w-full h-full object-cover aspect-square rounded-md"
+                height={500}
+                src={course.hinhAnh}
+                width={500}
+              />
+            </div>
 
-            <div className="flex-1">
+            <div className="flex-1 p-2">
               <h3 className="font-bold text-lg mb-1">{course.tenKhoaHoc}</h3>
               <p className="text-sm mb-2 truncate w-64">{course.moTa}</p>
               <div className="flex items-center gap-4 text-sm mb-2">
@@ -132,9 +136,9 @@ export default function MyCoursePage({ userData, onCancel }: Props) {
                   <span className="font-medium text-gray-700">5</span>
                 </div>
               </div>
-            </div>
 
-            <Button
+            </div>
+            <Button className="m-4"
               color="warning"
               isLoading={loading[course.maKhoaHoc]}
               onPress={() => handleCancelCourse(course.maKhoaHoc)}

@@ -138,7 +138,7 @@ export default function CourseCurriculum() {
   return (
     <div className="mt-12 ">
       <h2 className="text-2xl font-semibold text-center md:text-left py-4">
-        Nội dung khóa học
+        Course Details
       </h2>
       <Accordion className="w-full" selectionMode="multiple" variant="splitted">
         {chapters.map((chapter) => (
@@ -158,7 +158,7 @@ export default function CourseCurriculum() {
                 <p className="font-semibold text-sm truncate">
                   {chapter.title}
                 </p>
-                <p className="text-sm text-gray-500 truncate">
+                <p className="text-sm  truncate">
                   {chapter.description}
                 </p>
               </div>

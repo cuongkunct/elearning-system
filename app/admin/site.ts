@@ -19,7 +19,7 @@ export const navItems: AdminNavItem[] = [
 export const siteConfig = {
   name: "Next.js + HeroUI",
   description: "Make beautiful websites regardless of your design experience.",
-  navItems, // ✅ dùng navItems đã typed
+  navItems,
   navMenuItems: [
     { label: "Profile", href: "/profile" },
     { label: "Dashboard", href: "/dashboard" },

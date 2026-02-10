@@ -105,7 +105,7 @@ export default function CourseListWithFilter({
       </aside>
 
       <main className="flex-[7] relative">
-        <div className="flex gap-2 mb-4 lg:py-0 items-center ">
+        <div className="flex gap-2 mb-4 lg:py-0 items-center py-6">
           <p className="font-semibold flex items-center justify-center">
             Sort by:
           </p>
