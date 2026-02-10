@@ -3,10 +3,10 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
+  //Middleware bảo vệ router
   const sessionToken = req.cookies.get("sessionToken")?.value;
   const role = req.cookies.get("userRole")?.value;
   const { pathname } = req.nextUrl;
-
   if (
     sessionToken &&
     (pathname === "/auth/login" || pathname === "/auth/register")

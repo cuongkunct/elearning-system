@@ -9,6 +9,7 @@ import {
 import { ApiError } from "@/services/api.type";
 import { handleAxiosError } from "@/services/handleAxiosError";
 
+// get user profile
 export const getUserProfile = createAsyncThunk<
   UserProfileResponse,
   { token: string },
@@ -29,6 +30,7 @@ export const getUserProfile = createAsyncThunk<
   }
 });
 
+// update user profile
 export const updateUserProfile = createAsyncThunk<
   UpdateUserProfileResponse,
   { data: EditUserProfile; token: string },
@@ -72,7 +74,7 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      /*Get user profile */
+      // get user profile
       .addCase(getUserProfile.pending, (state) => {
         state.profile.loading = true;
         state.profile.error = undefined;
@@ -85,7 +87,7 @@ const userSlice = createSlice({
         state.profile.loading = false;
         state.profile.error = action.payload;
       })
-      /*Update user profile */
+      // update user profile
       .addCase(updateUserProfile.pending, (state) => {
         state.update.loading = true;
         state.update.error = undefined;
